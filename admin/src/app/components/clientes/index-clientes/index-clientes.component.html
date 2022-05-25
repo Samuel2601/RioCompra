@@ -1,0 +1,97 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Clientes
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <!-- Card -->
+            <div class="card">
+              <div class="card-header">
+
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Mostrando todos tus clientes: {{clientes.length}}
+                </h4>
+
+              </div>
+              <div class="card-body">
+                <div class="input-group input-group-merge">
+                    <input type="text" class="form-control form-control-appended" placeholder="Buscar cliente" name="filtro" [(ngModel)]="filtro">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" (click)="filtrar_cliente()">
+                          Buscar
+                      </button>
+                    </div>
+                  </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm table-nowrap card-table">
+                  <thead>
+                    <tr>
+                      <th>Cliente</th>
+                      <th>Correo</th>
+                      <th>Telefono</th>
+                      <th>Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody class="font-size-base">
+                    <tr *ngFor="let item of clientes | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                      <td>
+                        <a class="text-primary">{{item.nombres}} {{item.apellidos}}</a>
+                      </td>
+                      <td>
+                        {{item.email}}
+                      <td>
+                        <span *ngIf="item.telefono">{{item.telefono}}</span>
+                        <span *ngIf="!item.telefono">No registrado</span>
+                      </td>
+                      <td>
+                        <span class="badge badge-secondary">Detalles</span>
+                      </td>
+                    </tr>
+                   
+                  </tbody>
+                </table>
+                
+              </div>
+
+            </div>
+                <ngb-pagination *ngIf="clientes.length >= 1"
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [maxSize]="10"
+                        [rotate]="true" [boundaryLinks]="true"
+                [collectionSize]="clientes.length"></ngb-pagination>
+  
+            <br>
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>

@@ -1,0 +1,10 @@
+
+a#btnBuy,.btnBuy {
+    color: white;
+    width: 100%;
+    text-align: center;
+}
+
+.ocultar-paypal{
+    display: none !important;
+}

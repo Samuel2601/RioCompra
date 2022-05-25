@@ -1,0 +1,189 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Ventas
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+      
+
+            <!-- Card -->
+            <div class="card">
+              <div class="card-header">
+
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Mostrando todos tus ventas {{ventas.length}}
+                </h4>
+
+              </div>
+              <div class="card-body">
+                    <div class="row justify-content-between mb-4">
+                        <div class="col-6">
+                            <div class="input-group input-group-merge">
+                                <input type="text" class="form-control form-control-appended" placeholder="Buscar venta por código" name="filtro" [(ngModel)]="filtro">
+                                <div class="input-group-append">
+                                  <button class="btn btn-primary" (click)="filtrar_ventas()">
+                                      Buscar
+                                  </button>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="col">
+                            <a class="btn btn-primary btn-block" [routerLink]="['/ventas/create']" routerLinkActive="router-link-active"  style="cursor: pointer;">
+                                Nueva venta
+                            </a>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <input type="date" class="form-control" name="desde" [(ngModel)]="desde">
+                        </div>
+                        <div class="col">
+                            <input type="date" class="form-control" name="hasta" [(ngModel)]="hasta">
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-primary btn-block" (click)="filtrar_fechas()">
+                                Buscar
+                            </button>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-danger btn-block" (click)="reset_data()">
+                                Reset
+                            </button>
+                        </div>
+                    </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm table-nowrap card-table">
+                  <thead>
+                    <tr>
+                      <th>Cliente</th>
+                      
+                      <th>Monto</th>
+                      <th>Metodo</th>
+                      <th>Estado</th>
+                      <th>Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody class="font-size-base" *ngIf="!load">
+                    <tr *ngFor="let item of ventas | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                      <td>
+                        <a class="text-primary">{{item.cliente.nombres}} {{item.cliente.apellidos}}</a><br>
+                        <small class="text-muted"> {{item._id}} </small>
+                      </td>
+                      <td>
+                        <!--<span *ngIf="item.currency == 'PEN'">{{item.total_pagar|currency:'PEN'}}</span>-->
+                        <span *ngIf="item.currency == 'USD'">{{item.total_pagar|currency:'USD'}}</span>
+                      </td>
+                      <td>
+                        {{item.metodo_pago}}
+                      </td>
+                      <td>
+                        <span class="badge badge-warning" *ngIf="item.estado == 'En espera'">{{item.estado}}</span>
+                        <span class="badge badge-success" *ngIf="item.estado == 'Procesando'">{{item.estado}}</span>
+                        <span class="badge badge-info" *ngIf="item.estado == 'Enviado'">{{item.estado}}</span>
+                        <span class="badge badge-danger" *ngIf="item.estado == 'Finalizado'">{{item.estado}}</span>
+                      </td>
+                      <td>
+                        <div class="dropdown">
+
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonAlias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Opciones
+                            </button>
+                          
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonAlias">
+                              <li>
+                                <a class="dropdown-item" [routerLink]="['/ventas/',item._id]">Detalles</a>
+                              </li>
+                              
+                            </ul>
+                            
+                        </div>
+
+                        <div class="modal fade" id="delete-{{item._id}}" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-card card" data-list="{&quot;valueNames&quot;: [&quot;name&quot;]}">
+                                <div class="card-header">
+                    
+                                  <!-- Title -->
+                                  <h4 class="card-header-title" id="exampleModalCenterTitle">
+                                    Confirmación de eliminación
+                                  </h4>
+                    
+                                  <!-- Close -->
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                  </button>
+                    
+                                </div>
+                             
+                                <div class="card-body">
+                                  <p>Desea eliminar el cupón?</p>
+                    
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                  <button type="button" class="btn btn-danger" (click)="eliminar(item._id)">Eliminar</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      
+                      </td>
+                    </tr>
+                   
+                  </tbody>
+                  <tbody *ngIf="load">
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
+                        </td>
+                    </tr>
+                  </tbody>  
+                </table>
+                
+              </div>
+
+            </div>
+                <ngb-pagination *ngIf="ventas.length >= 1"
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [maxSize]="10"
+                        [rotate]="true" [boundaryLinks]="true"
+                [collectionSize]="ventas.length"></ngb-pagination>
+  
+            <br>
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>

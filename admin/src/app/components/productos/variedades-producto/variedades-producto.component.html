@@ -1,0 +1,186 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Productos
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <ng-container *ngIf="!load_data">
+              <!-- Card -->
+              <div class="card">
+                <div class="card-header">
+
+                  <!-- Title -->
+                  <h4 class="card-header-title">
+                    Variedades de productos
+                  </h4>
+
+                </div>
+                <ng-container *ngIf="!load_data">
+                  <div class="card-body"  *ngIf="producto">
+                    <div style="max-width: 48rem;">
+
+                  
+
+                      <div class="form-group row align-items-center">
+                        <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Variedades</label>
+                        <div class="col-md-9">
+                          <div class="input-group">
+                              <input class="form-control" type="text" placeholder="Nueva variedad" name="nueva_variedad" [(ngModel)]="nueva_variedad">
+                              <div class="input-group-append">
+                                <button *ngIf="!load_agregar" class="btn btn-primary" type="button" (click)="agregar_variedad()">Agregar</button>
+                                <button *ngIf="load_agregar" type="button" class="btn btn-primary">
+                                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                  Agregando...
+                                </button>
+                        
+                              </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+
+                        </div>
+                        <div class="col-md-9">
+
+                          <div class="table-responsive mt-3">
+                            <table class="table table-sm" *ngIf="variedades">
+                              <thead class="thead-dark">
+                                <tr>
+                          
+                                  <th>Valor</th>
+                                  <th>Stock</th>
+                                  <th>Eliminar</th>
+                                </tr>
+                              </thead>
+                              <ng-container *ngIf="variedades.length== 0">
+                                <tbody>
+                                  <tr>
+                                    <td colspan="2" class="text-center">
+                                      <span class="text-muted">No hay variedades disponibles</span>
+                                    </td>
+                                    
+                                  </tr>
+                                </tbody>
+                              </ng-container>
+                              <ng-container *ngIf="variedades.length>=1">
+                                <tbody *ngFor="let item of variedades; let indice = index">
+                                  <tr>
+                                    <td>{{item.valor}}</td>
+                                    <td>{{item.stock}}</td>
+                                    <td><a style="cursor: pointer;" class="text-danger" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#delete-'+item._id">[Eliminar]</a></td>
+
+                                    <div class="modal fade" id="delete-{{item._id}}" tabindex="-1" style="display: none;" aria-hidden="true">
+                                      <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                          <div class="modal-header">
+                                            <h4 class="modal-title">Confirmación de eliminación</h4>
+                                            <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                          </div>
+                                          <div class="modal-body">
+                                            <p>{{item.valor}}, desea eliminar esta variedad?</p>
+                                            <p>Si la variedad tiene stock, no se podrá eliminar</p>
+                                          </div>
+                                          <div class="modal-footer">
+                                            <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                                            <ng-container *ngIf="item.stock != 0">
+                                              <button class="btn btn-danger btn-shadow btn-sm" disabled type="button">Si, eliminar</button>
+                                            </ng-container>
+                                            <ng-container  *ngIf="item.stock == 0">
+                                              <button *ngIf="!load_del" class="btn btn-danger btn-shadow btn-sm" (click)="eliminar_variedad(item._id)" type="button">Si, eliminar</button>
+                                            </ng-container>
+                                            
+                                            <button disabled *ngIf="load_del" type="button" class="btn btn-danger btn-shadow btn-sm">
+                                              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                              Eliminando...
+                                            </button>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </tr>
+                                </tbody>
+                              </ng-container>
+                              
+                            </table>
+                          </div>
+                        </div>
+                      
+                      </div>
+                    
+                    </div>
+                  
+                  </div>
+                  <div class="card-body" *ngIf="!producto">
+                      <div class="row">
+                          <div class="col-sm-6 col-md-3 text-center mb-md-0 mb-4 pb-md-0 pb-3 mx-auto">
+                              <img class="mb-4" src="assets/img/advertencia.png" width="48" alt="Worldwide Shipping">
+                              <h5 class="h5 mb-2">ERROR 403</h5>
+                              <p class="mb-0 text-muted">Código del producto no existe en la base de datos.</p>
+                          </div>
+                      
+                    </div>
+                  </div>
+                
+                </ng-container>
+                <ng-container *ngIf="load_data">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-12 text-center">
+                        <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                          <span class="visually-hidden"></span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </ng-container>
+
+
+              </div>
+            </ng-container>
+            <ng-container *ngIf="load_data">
+              <div class="card">
+                <div class="card-body">
+                    <div class="row">
+                      <div class="col-12 text-center">
+                        <div class="spinner-border text-primary" role="status">
+                          <span class="visually-hidden"></span>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+              </div>
+            </ng-container>
+            
+  
+      
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>

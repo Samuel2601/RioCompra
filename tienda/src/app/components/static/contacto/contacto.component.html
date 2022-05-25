@@ -1,0 +1,96 @@
+<app-nav></app-nav>
+
+<div class="ps-page--default ps-page--contact">
+    <div class="ps-page__header bg--top" style="background: url(assets/img/bg/contact-bg.jpg);">
+      <div class="container">
+        <h3>{{ 'menu.item_cuatro' | translate }}</h3>
+        <ul class="ps-breadcrumb">
+          <li><a [routerLink]="['/']" style="cursor: pointer;">Home</a></li>
+          <li>{{ 'menu.item_cuatro' | translate }}</li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="ps-page__content">
+      <div class="container">
+        
+        <div class="ps-post__text" style="margin-top: 80px !important;">
+          <h4 class="text-center">{{ 'contacto.item_uno' | translate }}</h4>
+        </div>
+
+        <div class="ps-contact">
+          
+          <div class="ps-section__left">
+            <form class="ps-form--contact" #registroForm="ngForm" (ngSubmit)="registro(registroForm)">
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
+                  <div class="form-group">
+                    <label>{{ 'contacto.item_dos' | translate }} *</label>
+                    <input class="form-control" type="text"  placeholder="John Doe" required="" name="cliente" [(ngModel)]="contacto.cliente">
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
+                  <div class="form-group">
+                    <label>{{ 'contacto.item_tres' | translate }} *</label>
+                    <input class="form-control" type="email" placeholder="johndoe@example.com" required="" name="correo" [(ngModel)]="contacto.correo">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
+                  <div class="form-group">
+                    <label>{{ 'contacto.item_cuatro' | translate }} *</label>
+                    <input class="form-control" type="text" required placeholder="00-000-0000" name="telefono" [(ngModel)]="contacto.telefono">
+                  </div>
+                </div>
+                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-12 col-12 ">
+                  <div class="form-group">
+                    <label>{{ 'contacto.item_cinco' | translate }} *</label>
+                    <input class="form-control" type="email" required placeholder="Asunto del mensaje" name="asunto" [(ngModel)]="contacto.asunto">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label>{{ 'contacto.item_seis' | translate }}</label>
+                <textarea class="form-control" rows="6" placeholder="Escribe tu consulta" required="" name="mensaje" [(ngModel)]="contacto.mensaje"></textarea>
+              </div>
+              <div class="form-group submit">
+                <button class="ps-btn ps-btn--black" type="submit">
+                  {{ 'contacto.item_ocho' | translate }}
+                  
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="ps-section__right">
+          
+            <figure>
+              <figcaption>{{ 'contacto.item_tres' | translate }}</figcaption>
+            
+            </figure>
+            <figure>
+   
+              <aside>
+                <p><strong class="text-uppercase">Correo</strong></p>
+                <p>contacto@domain.com</p>
+                <p>domain@gmail.com</p>
+              </aside>
+              <aside>
+                <p><strong class="text-uppercase">{{ 'contacto.item_cuatro' | translate }}</strong></p>
+                <p>(+51) 943 283 912</p>
+              </aside>
+              <aside>
+                <p style="color: #000;"><strong class="text-uppercase">LA TIENDA</strong></p>
+                <p style="color: #000;"><span class="__cf_email__" >CIUDAD, PAÍS</span></p>
+              </aside>
+            </figure>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  
+  </div>
+
+
+<app-footer></app-footer>

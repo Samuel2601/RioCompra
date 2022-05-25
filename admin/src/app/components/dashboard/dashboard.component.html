@@ -1,0 +1,382 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Reportes
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                      Estado de Tienda
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Nav -->
+                    <ul class="nav nav-tabs nav-overflow header-tabs">
+                      <li class="nav-item">
+                        <a  class="nav-link" style="Cursor : pointer" (click)="estadoventas()">
+                          Ventas
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a  class="nav-link" style="Cursor : pointer" (click)="estadoproductos()">
+                          Productos
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" style="Cursor : pointer">
+                          Clientes
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a  class="nav-link" style="Cursor : pointer">
+                          Cupones
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a  class="nav-link" style="Cursor : pointer">
+                          Peticiones de Contacto
+                        </a>
+                      </li>
+                    </ul>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div  *ngIf="load_ventas==true">
+                    <!-- Alert -->
+                    <div class="alert alert-danger" *ngIf="ventas==undefined">
+                      <i class="fe fe-info mr-1"></i> No tienes Ventas por mostrar
+                    </div>
+                    <div class="card-body">
+                      <div class="row">
+                          <div class="col-12">
+                              <canvas id="myChart" width="10%" height="5%" style="display: block; box-sizing: border-box; height: 35px; width: 75px;"></canvas>
+                          </div>
+                      </div>
+                  </div>
+            </div>
+                    <div class="row">
+                      <div class="col-12 col-md-6">
+            
+                <!-- Card -->
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      <div class="col">
+
+                        
+
+                        <!-- Title -->
+                        <h6 class="text-uppercase text-muted mb-2">
+                          Ventas Finalizadas {{(factual)|date: 'MMMM'}}
+                        </h6>
+
+                        <!-- Heading -->
+                        <span class="h2 mb-0" *ngFor="let item of idmactual">
+                          {{anio[item.k].data[(mactual)-1] |currency:item.tipo}}/mes
+                        </span>
+
+                      </div>
+                      
+                    </div> <!-- / .row -->
+
+                  </div>
+                </div>
+
+              </div>
+              <div class="col-12 col-md-6">
+
+                <!-- Card -->
+                <div class="card">
+                  <div class="card-body">
+                    <div class="row align-items-center">
+                      
+                      <div class="col">
+
+                        <!-- Title -->
+                        <h6 class="text-uppercase text-muted mb-1">
+                          VENTAS DEL ANUALES {{(faux)|date: 'YYYY'}}:
+                        </h6>
+                      
+                        <!-- Heading -->
+                        <span class="h2 mb-0">
+                          <br style="margin-right: 100%;"> {{totalfaux[0]|currency: 'USD'}}
+                          <!--<br style="margin-right: 100%;">{{totalfaux[1]|currency: 'PEN'}}
+                          <br>{{totalfaux[2]|currency: 'COP'}}-->
+                        </span>
+                
+                      </div>
+
+                      <div class="col">
+
+                        <!-- Title -->
+                        <h6 class="text-uppercase text-muted mb-1">
+                          VENTAS DEL ANUALES {{(factual)|date: 'YYYY'}}:
+                        </h6>
+                        
+                        <!-- Heading -->
+                        
+                        <span class="h2 mb-0">
+                          
+                           <br style="margin-right: 100%;">{{totalfactual[0]|currency: 'USD'}}
+                           <!--<br style="margin-right: 100%;">{{totalfactual[1]|currency: 'PEN'}}
+                           <br>{{totalfactual[2]|currency: 'COP'}}-->
+                        </span>
+                      </div>
+                      
+
+                      <div class="col-auto">
+
+                        <!-- Chart -->
+                        <div class="chart chart-sparkline"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
+                          <canvas class="chart-canvas chartjs-render-monitor" id="sparklineChart" style="display: block; width: 75px; height: 35px;" width="75" height="35"></canvas>
+                        </div>
+
+                      </div>
+                    </div> <!-- / .row -->
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Card -->
+            <div class="card">
+              <div class="card-header">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Title -->
+                    <h4 class="card-header-title">
+                      Payment methods
+                    </h4>
+
+                  </div>
+                  <div class="col-auto">
+
+                    <!-- Button -->
+                    <a class="btn btn-sm btn-primary" href="#!">
+                      Add method
+                    </a>
+
+                  </div>
+                </div>
+              </div>
+              <div class="card-body">
+
+                <!-- List group -->
+                <div class="list-group list-group-flush my-n3">
+                  <div class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+
+                        <!-- Image -->
+                        <img class="img-fluid" src="assets/img/payment-methods/visa.svg" alt="..." style="max-width: 38px;">
+
+                      </div>
+                      <div class="col ml-n2">
+
+                        <!-- Heading -->
+                        <h4 class="mb-1">
+                          Visa ending in 1234
+                        </h4>
+
+                        <!-- Text -->
+                        <small class="text-muted">
+                          Expires 3/2024
+                        </small>
+
+                      </div>
+                      <div class="col-auto mr-n3">
+
+                        <!-- Badge -->
+                        <span class="badge badge-light">
+                          Default
+                        </span>
+
+                      </div>
+                      <div class="col-auto">
+
+                        <!-- Dropdown -->
+                        <div class="dropdown">
+                          <a class="dropdown-ellipses dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fe fe-more-vertical"></i>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#!">
+                              Action
+                            </a>
+                            <a class="dropdown-item" href="#!">
+                              Another action
+                            </a>
+                            <a class="dropdown-item" href="#!">
+                              Something else here
+                            </a>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div> <!-- / .row -->
+                  </div>
+                  <div class="list-group-item">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+
+                        <!-- Image -->
+                        <img class="img-fluid" src="assets/img/payment-methods/mastercard.svg" alt="..." style="max-width: 38px;">
+
+                      </div>
+                      <div class="col ml-n2">
+
+                        <!-- Heading -->
+                        <h4 class="mb-1">
+                          Mastercard ending in 1234
+                        </h4>
+
+                        <!-- Text -->
+                        <small class="text-muted">
+                          Expires 3/2024
+                        </small>
+
+                      </div>
+                      <div class="col-auto">
+
+                        <!-- Dropdown -->
+                        <div class="dropdown">
+                          <a class="dropdown-ellipses dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fe fe-more-vertical"></i>
+                          </a>
+                          <div class="dropdown-menu dropdown-menu-right">
+                            <a class="dropdown-item" href="#!">
+                              Action
+                            </a>
+                            <a class="dropdown-item" href="#!">
+                              Another action
+                            </a>
+                            <a class="dropdown-item" href="#!">
+                              Something else here
+                            </a>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div> <!-- / .row -->
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Card -->
+            <div class="card">
+              <div class="card-header">
+
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Invoices
+                </h4>
+
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm table-nowrap card-table">
+                  <thead>
+                    <tr>
+                      <th>Invoice ID</th>
+                      <th>Date</th>
+                      <th>Amount</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody class="font-size-base">
+                    <tr>
+                      <td>
+                        <a href="invoice.html">Invoice #10395</a>
+                      </td>
+                      <td>
+                        <time datetime="2020-04-24">Apr. 24, 2020</time>
+                      </td>
+                      <td>
+                        $29.00
+                      </td>
+                      <td>
+                        <span class="badge badge-secondary">Outstanding</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="invoice.html">Invoice #10244</a>
+                      </td>
+                      <td>
+                        <time datetime="2020-03-24">Mar. 24, 2020</time>
+                      </td>
+                      <td>
+                        $29.00
+                      </td>
+                      <td>
+                        <span class="badge badge-success">Paid</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="invoice.html">Invoice #10119</a>
+                      </td>
+                      <td>
+                        <time datetime="2020-02-24">Feb. 24, 2020</time>
+                      </td>
+                      <td>
+                        $29.00
+                      </td>
+                      <td>
+                        <span class="badge badge-success">Paid</span>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>
+                        <a href="invoice.html">Invoice #10062</a>
+                      </td>
+                      <td>
+                        <time datetime="2020-01-24">Jan. 24, 2020</time>
+                      </td>
+                      <td>
+                        $29.00
+                      </td>
+                      <td>
+                        <span class="badge badge-success">Paid</span>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Text -->
+            <p class="text-center">
+              <small class="text-muted">Don’t need Dashkit anymore? <a href="#!">Cancel your account</a></small>
+            </p>
+
+            <br>
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+      
+</div>
+

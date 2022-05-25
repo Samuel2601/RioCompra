@@ -1,0 +1,107 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-Ecuador2 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Configuraciones
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <!-- Card -->
+            <form #actualizarForm="ngForm" (ngSubmit)="actualizar(actualizarForm)">
+              <div class="card">
+                <div class="card-header">
+  
+                  <!-- Title -->
+                  <h4 class="card-header-title">
+                    Configuraciones de la tienda
+                  </h4>
+  
+                </div>
+  
+                <div class="card-body" *ngIf="!load_data">
+                    <div class="row mb-3">
+                        <div class="col-12">
+                            <h4 class="card-header-title">
+                                Establecer envio gratis
+                            </h4>
+                            <hr>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Monto soles</label>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control" name="monto_min_soles" [(ngModel)]="config.monto_min_soles">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Monto dolares</label>
+                        <div class="col-sm-6">
+                          <input type="text" class="form-control" name="monto_min_dolares" [(ngModel)]="config.monto_min_dolares">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <label for="inputEmail3" class="col-sm-2 col-form-label">Activación</label>
+                        <div class="col-sm-6">
+                            <select class="form-control" name="envio_activacion" [(ngModel)]="config.envio_activacion">
+                                <option value="Desactivado" >Desactivado</option>
+                                <option value="Ecuador">Ecuador</option>
+                                <option value="Exterior">Exterior</option>
+                                <option value="Todo el mundo">Todo el mundo</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <ng-container *ngIf="load_data">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-12 text-center">
+                          <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                            <span class="visually-hidden"></span>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                </ng-container>
+                <div class="card-footer">
+
+                    <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Actualizar</button>
+                                    
+                    <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Actualizando...
+                    </button>
+  
+                    
+                </div>
+              </div>
+            </form>
+              
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>

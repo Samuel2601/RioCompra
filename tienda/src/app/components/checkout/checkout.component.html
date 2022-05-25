@@ -1,0 +1,326 @@
+<app-nav></app-nav>
+<div class="ps-page--default">
+    <div class="container">
+      <div class="ps-page__header">
+        <h3>Checkout</h3>
+        <ul class="ps-breadcrumb">
+          <li><a [routerLink]="['/']">Home</a></li>
+          <li>Checkout</li>
+        </ul>
+      </div>
+      <div class="ps-page__content">
+        <div class="ps-checkout">
+         
+            <div class="row">
+                <div class="col-md-6">
+                  <ng-container *ngIf="direcciones.length == 0">
+                      <div class="ps-form__billings">
+                          <h4 class="ps-form__heading">Destinatario</h4>
+                          <form #registroForm="ngForm" (ngSubmit)="registrar(registroForm)">
+                            <div class="row">
+                                <div class="col-sm-6 form-group">
+                                    <label for="ac-fn">Nombres</label>
+                                    <input type="text" required class="form-control form-control-lg" name="nombres" [(ngModel)]="direccion.nombres" placeholder="Nombres completos">
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label for="ac-fn">Apellidos</label>
+                                    <input type="text" required class="form-control form-control-lg" name="apellidos" [(ngModel)]="direccion.apellidos" placeholder="Apellidos completos">
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label for="ac-fn">Documento de Identidad
+                                        <span *ngIf="currency != 'USD'"> (Opcional)</span>
+                                    </label>
+                                    <input *ngIf="currency == 'USD'" type="text" required class="form-control form-control-lg" name="dni" [(ngModel)]="direccion.dni" placeholder="Documento de Identidad">
+                                    <input *ngIf="currency != 'USD'" type="text" class="form-control form-control-lg" name="dni" [(ngModel)]="direccion.dni" placeholder="Documento de Identidad">
+                                </div>
+                                <div class="col-sm-6 form-group">
+                                    <label for="ac-fn">Telefono</label>
+                                    <input type="text" required class="form-control form-control-lg" name="telefono" [(ngModel)]="direccion.telefono" placeholder="Telefono">
+                                </div>
+
+                                <div class="col-sm-12 form-group">
+                                    <label for="ac-fn">País</label>
+                                    <select class="form-control" name="str_pais" required [(ngModel)]="str_pais" (change)="select_pais()">
+                                        <option value="" selected disabled>Seleccionar</option>
+                                        <ng-container *ngFor="let item of zonas">
+                                            <ng-container  *ngIf="currency =='USD'">
+                                                <option value="{{item.country}}_{{item.zona}}" *ngIf="item.country =='Ecuador'">{{item.country}}</option>
+                                            </ng-container>
+                                            <ng-container  *ngIf="currency !='USD'">
+                                                <option value="{{item.country}}_{{item.zona}}" *ngIf="item.country !='Ecuador'">{{item.country}}</option>
+                                            </ng-container>
+                                           
+                                        </ng-container>
+                                    </select>
+                                </div>
+                                
+
+                                <div class="col-sm-12 form-group">
+                                    <label for="ac-fn">Dirección</label>
+                                    <textarea required class="form-control" placeholder="Direccion" name="direccion" [(ngModel)]="direccion.direccion" rows="3"></textarea>
+                                </div>
+
+                                <div class="col-sm-12 form-group">
+                                    <label for="ac-fn">Referencia
+                                        <span *ngIf="currency != 'USD'"> (Opcional)</span>
+                                    </label>
+                                    <textarea *ngIf="currency == 'USD'" type="text" required class="form-control" placeholder="Referencia" name="referencia" [(ngModel)]="direccion.referencia" rows="2"></textarea>
+                                    <textarea *ngIf="currency != 'USD'" type="text" class="form-control" placeholder="Referencia" name="referencia" [(ngModel)]="direccion.referencia" rows="2"></textarea>
+                                </div>
+
+                                <div class="col-sm-6 form-group">
+                                    <label for="ac-fn">ZIP
+                                        <span *ngIf="currency == 'USD'"> (Opcional)</span>
+                                    </label>
+                                    <input *ngIf="currency != 'USD'" type="text" required class="form-control form-control-lg" name="zip" [(ngModel)]="direccion.zip" placeholder="Código postal">
+                                    <input *ngIf="currency == 'USD'" type="text" class="form-control form-control-lg" name="zip" [(ngModel)]="direccion.zip" placeholder="Código postal">
+                                </div>
+                                
+                               
+                                
+                                <div class="col-sm-6 form-group" *ngIf="direccion.pais != 'Ecuador'">
+                                    <label for="ac-fn">Distrito/Suburbio</label>
+                                    <input type="text" required class="form-control form-control-lg" name="distrito" [(ngModel)]="direccion.distrito" placeholder="Ciudad">
+                                </div>
+                                <div class="col-sm-6 form-group" *ngIf="direccion.pais == 'Ecuador'">
+                                    <label for="ac-fn">Región</label>
+                                    <select id="sl-region"  name="region" [(ngModel)]="direccion.region" class="form-control" disabled (change)="select_region()">
+                                        <option value="" selected disabled>Seleccionar</option>
+                                        <option value="{{item.id}}" *ngFor="let item of regiones">{{item.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6 form-group" *ngIf="direccion.pais == 'Ecuador'">
+                                    <label for="ac-fn">Provincia</label>
+                                    <select id="sl-provincia" name="provincia" [(ngModel)]="direccion.provincia" class="form-control" disabled (change)="select_provincia()">
+                                        <option value="" selected disabled>Seleccionar</option>
+                                        <option value="{{item.id}}" *ngFor="let item of provincias">{{item.name}}</option>
+                                    </select>
+                                </div>
+                                <div class="col-sm-6 form-group" *ngIf="direccion.pais == 'Ecuador'">
+                                    <label for="ac-fn">Distrito</label>
+                                    <select id="sl-distrito" name="distrito" [(ngModel)]="direccion.distrito" class="form-control" disabled>
+                                        <option value="" selected disabled>Seleccionar</option>
+                                        <option value="{{item.id}}" *ngFor="let item of distritos">{{item.name}}</option>
+                                    </select>
+                                </div>
+                               
+                                <div class="col-sm-12">
+                                  <button type="submit" class="ps-btn ps-btn--fullwidth ps-btn--black">Crear dirección</button>
+                                </div>
+                                
+                            </div>
+                          </form>
+                      </div>
+                  </ng-container>
+                  <ng-container  *ngIf="direcciones.length >= 1">
+                      <h4 class="ps-form__heading" style="margin-bottom: 2rem!important;">Mis direcciones</h4>
+  
+                      <div class="card mb-3" *ngFor="let item of direcciones">
+                          <div class="card-body">
+                              <figure>
+                                  <figcaption>{{item.destinatario}}</figcaption>
+                                  <span class="d-block mb-3 font-size-sm text-muted">{{item.zip}}</span>
+                          
+                                  <div class="row">
+                                      <div class="col" *ngIf="item.pais == 'Ecuador'">
+                                          <p>
+                                              {{item.direccion}}
+                                              <ng-container *ngIf="item.referencia">
+                                                  <br>
+                                                  {{item.referencia}}
+                                              </ng-container>
+                                              
+                                          </p>
+                                          <p>
+                                            {{item.pais}}, {{item.region}}
+                                           <br>
+                                            <span>{{item.provincia}}, {{item.distrito}}</span>
+                                          </p>
+                                      </div>
+                                      <div class="col" *ngIf="item.pais != 'Ecuador'">
+                                          <p>
+                                              {{item.direccion}}
+                                          </p>
+                                          <p>
+                                          {{item.pais}}, {{item.distrito}}
+                                          </p>
+                                          
+                                      </div>
+                                      <ng-container *ngIf="currency != 'USD'">
+                                        <a *ngIf="item.pais != 'Ecuador'" class="text-success mt-4" style="cursor: pointer;margin-right: 2rem;" (click)="select_direccion_envio(item)">
+                                            [Seleccionar]
+                                        </a>
+                                        <a *ngIf="item.pais == 'Ecuador'" class="text-danger mt-4" style="cursor: pointer;margin-right: 2rem;cursor: not-allowed;">
+                                            [Seleccionar]
+                                        </a>
+                                      </ng-container>
+                                      <ng-container *ngIf="currency == 'USD'">
+                                        <a *ngIf="item.pais == 'Ecuador'" class="text-success mt-4" style="cursor: pointer;margin-right: 2rem;" (click)="select_direccion_envio(item)">
+                                            [Seleccionar]
+                                        </a>
+                                        <a *ngIf="item.pais != 'Ecuador'" class="text-danger mt-4" style="cursor: pointer;margin-right: 2rem;cursor: not-allowed;">
+                                            [Seleccionar]
+                                        </a>
+                                      </ng-container>
+                                  </div>
+                              </figure>
+                          </div>
+                      </div>
+
+                        <figure style="margin-top: 30px;">
+                            <a class="ps-btn ps-btn--outline" [routerLink]="['/cuenta/direcciones']" >Nueva dirección</a>
+  
+                        </figure>
+                  </ng-container>
+                  <div class="ps-shopping-cart" style="margin-top: 5rem;">
+                    <div class="ps-section__actions">
+                        <div class="form-group">
+                            <label style="color: #dc1d61 !important;">Cupón de descuento</label>
+                            <div class="form-group__content">
+                                <input class="form-control" type="text" placeholder="Ingresa tu código" name="cupon" [(ngModel)]="venta.cupon">
+                                <a style="cursor: pointer;" (click)="validar_cupon()" >Aplicar</a>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  
+                  
+                </div>
+                <div class="col-md-6">
+                  <div class="ps-form__orders">
+                    <h3>Tu orden</h3>
+                    <div class="ps-block--checkout-order">
+                        
+                      <div class="ps-block__content">
+                        <figure>
+                          <figcaption><strong>Producto</strong><strong>Subtotal</strong></figcaption>
+                        </figure>
+                        <figure class="ps-block__items">
+                            <a [routerLink]="['/productos/',item.producto.slug]" *ngFor="let item of carrito_arr" style="font-size: 14px !important;">
+                                <div class="ps-product--sidebar">
+                                    <div class="ps-product__thumbnail" style="max-width: 40px;"><a class="ps-product__overlay" [routerLink]="['/productos/',item.producto.slug]"></a>
+                                        <img [src]="url +'obtener_portada/'+item.producto.portada" alt="">
+                                    </div>
+                                    <div class="ps-product__content">
+                                        <a class="ps-product__title" href="product-default.html" style="padding: 0px;">{{item.producto.titulo}}
+                                            <span  style="margin-bottom: 0px;"> &nbsp;x{{item.cantidad}}</span></a>
+                                        <p  style="margin-bottom: 0px;"> Tallas: {{item.variedad.valor}}</p>
+                                    </div>
+                                </div>
+                                
+      
+                                
+                               
+
+                                <small style="padding-top: 1rem;">
+                                    <ng-container *ngIf="currency != 'PEN'">
+                                        ${{item.producto.precio_dolar*item.cantidad}}
+                                    </ng-container>
+                                    <ng-container *ngIf="currency == 'PEN'">
+                                        S/{{item.producto.precio*item.cantidad}}
+                                    </ng-container>
+                                </small>
+
+                                
+                            </a>
+                        </figure>
+                        <figure>
+                          <figcaption><strong>Subtotal</strong>
+                            <small>
+                                <span *ngIf="currency != 'PEN'">${{subtotal}}</span>
+                                <span *ngIf="currency == 'PEN'">S/{{subtotal}}</span>
+                            </small>
+                        </figcaption>
+                        </figure>
+                        <figure class="ps-block__shipping">
+                          <h3>Envio</h3>
+                          <p>Selecciona la dirección de envio</p>
+                        </figure>
+                        
+                        <figure class="ps-block__total">
+                            <figcaption style="margin-top: 2rem;">
+                                <span *ngIf="!envio_gratis">Envio</span>
+                                <span *ngIf="envio_gratis" style="color: #127c5f;"><b>Envio gratis</b></span>
+                                <span>
+                                    <span *ngIf="currency != 'PEN'">${{envio}}</span>
+                                <span *ngIf="currency == 'PEN'">S/{{envio}}</span>
+                                </span>
+                            </figcaption>
+                        </figure>
+                        <figure class="ps-block__total">
+                            <figcaption style="margin-top: 2rem;">Descuento
+                                <span>
+                                    <span *ngIf="currency != 'PEN'">- ${{descuento}}</span>
+                                <span *ngIf="currency == 'PEN'">- S/{{descuento}}</span>
+                                </span>
+                            </figcaption>
+                        </figure>
+                        <figure class="ps-block__total">
+                          <figcaption>Total
+                              <span>
+                                <span *ngIf="currency != 'PEN'">${{total_pagar}}</span>
+                                <span *ngIf="currency == 'PEN'">S/{{total_pagar}}</span>
+                              </span>
+                            </figcaption>
+                        </figure>
+                        <figure class="ps-block__payment-methods">
+                            <ng-container *ngIf="currency == 'USD'">
+                                <div class="ps-radio" style="display: flex; justify-content: space-between;">
+                                    <input class="form-control" type="radio" id="shipping-3" name="metodo_pago" [(ngModel)]="metodo_pago" value="Tarjeta de crédito">
+                                    <label for="shipping-3" class="text-muted"><b>Tarjeta de crédito</b></label>
+
+                                    <img src="assets/img/payments.png" style="width: 130px;">
+                                </div>
+                                <div class="ps-radio">
+                                    <input class="form-control" type="radio" id="shipping-1" name="metodo_pago" [(ngModel)]="metodo_pago" value="Yape o Plin">
+                                    <label for="shipping-1" class="text-muted"><b>¡Paga al instante con Yape o Plin!</b></label>
+
+                                    <p *ngIf="metodo_pago == 'Yape o Plin'" style="font-size: 13px;margin-bottom: 2.3rem;">(Luego de hacer click en "PROCESAR PEDIDO" podrás visualizar nuestros datos de pago).</p>
+                                </div>
+                                <div class="ps-radio">
+                                    <input class="form-control" type="radio" id="shipping-2" name="metodo_pago" [(ngModel)]="metodo_pago" value="Transferencia o Deposito">
+                                    <label for="shipping-2" class="text-muted"><b>Transferencia o Deposito</b></label>
+
+                                    <p *ngIf="metodo_pago == 'Transferencia o Deposito'" style="font-size: 13px">(Luego de hacer click en "PROCESAR PEDIDO" podrás visualizar nuestros datos de pago).</p>
+                                </div>
+                               
+                            </ng-container>
+                            
+                        <p>Deberes e impuestos no están incluidos en paquetes con envio internacional. /Tus datos personales serán utilizados para procesar tu pedido y respaldar tu experiencia en este sitio web.</p>
+                        <a [routerLink]="['/terminos-condiciones']"> <b> Términos y privacidad.</b></a>
+                        </figure>
+                      </div>
+                      <div class="ps-block__footer">
+                        <ng-container *ngIf="direccion_envio != undefined">
+                            <ng-container *ngIf="carrito_arr.length >= 1">
+                              <ng-container *ngIf="currency == 'USD'">
+                                <div class="ps-block__bottom" *ngIf="metodo_pago == 'Tarjeta de crédito'">
+                                  <a *ngIf="!btn_load" class="ps-btn ps-btn--black" id="btnBuy" style="cursor: pointer;" (click)="get_token_culqi()">Procesar pago</a>
+                                  <button *ngIf="btn_load" class="ps-btn ps-btn--black btnBuy" style="cursor: pointer;" disabled>Procesando...</button>
+                                </div>
+                                <div class="ps-block__bottom" *ngIf="metodo_pago == 'Yape o Plin'">
+                                  <a *ngIf="!btn_load" class="ps-btn ps-btn--black" id="btnBuy" style="cursor: pointer;" (click)="generar_pedido('Yape o Plin')">Enviar pedido</a>
+                                  <button *ngIf="btn_load" class="ps-btn ps-btn--black btnBuy" style="cursor: pointer;" disabled>Procesando...</button>
+                                </div>
+                                <div class="ps-block__bottom" *ngIf="metodo_pago == 'Transferencia o Deposito'">
+                                  <a *ngIf="!btn_load" class="ps-btn ps-btn--black" id="btnBuy" style="cursor: pointer;" (click)="generar_pedido('Transferencia o Deposito')">Enviar pedido</a>
+                                  <button *ngIf="btn_load" class="ps-btn ps-btn--black btnBuy" style="cursor: pointer;" disabled>Procesando...</button>
+                                </div>
+                              </ng-container>
+                              
+                            </ng-container>
+                        </ng-container>
+
+                        <div class="pt-3 pb-0 contpaypal" #paypalButton>
+                        
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<app-footer></app-footer>

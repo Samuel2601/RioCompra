@@ -1,0 +1,246 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Productos
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <!-- Card -->
+            <div class="card">
+              <div class="card-header">
+
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Mostrando todos tus productos
+                </h4>
+              </div>
+              <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="input-group input-group-merge ">
+                                <input type="text" class="form-control form-control-appended" placeholder="Buscar producto" name="filtro" [(ngModel)]="filtro">
+                                <div class="input-group-append">
+                                  <button class="btn btn-primary" (click)="filtrar_producto()">
+                                      Buscar
+                                  </button>
+                                </div>
+                              </div>
+                        </div>
+                        <div class="col">
+                            <button class="btn btn-primary mr-3" data-toggle="modal" [attr.data-target]="'#modalCentered'">Nueva etiqueta</button>
+                            <a class="btn btn-primary" [routerLink]="['/productos/create']" routerLinkActive="router-link-active"  style="cursor: pointer;">Nuevo producto</a>
+                            <div id="modalCentered" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h4 class="modal-title" id="exampleModalCenterTitle">Etiquetas</h4>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">×</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body" >
+                                      <div class="input-group mb-3">
+                                        <input type="text" class="form-control" placeholder="Nueva etiqueta" name="nueva_etiqueta" [(ngModel)]="nueva_etiqueta">
+                                        <button *ngIf="!load_btn_etiqueta" class="btn btn-primary" style="border-radius: 0px;" (click)="agregar_etiqueta()">Agregar</button>
+                                        <button type="button" class="btn btn-primary"  *ngIf="load_btn_etiqueta">
+                                          <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                          Agregando...
+                                        </button>
+                                      </div>
+                                    </div>
+                                    <div class="modal-body" style="padding-top: 0px !important;max-height: 300px;overflow: hidden;overflow-y: auto;">
+                                      <table class="table table-bordered table-striped table-hover">
+                                        <tbody *ngIf="load_data_etiqueta">
+                                          <tr>
+                                            <td class="text-center" colspan="5">
+                                              <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+                                                <span class="sr-only">Loading...</span>
+                                              </div>
+                                            </td>
+                                          </tr>
+                                      </tbody>
+                        
+                                      <ng-container  *ngIf="!load_data_etiqueta">
+                                        <tbody *ngFor="let item of etiquetas| slice: (page-1)*pageSize : (page-1) * pageSize + pageSize; let indice = index">
+                                          <tr>
+                                            <td>{{item.titulo}}</td>
+                        
+                                            <td>
+                                              <a *ngIf="item._id != '61a390d39b40d02e0cb9d789'" style="cursor: pointer;" class="text-danger" (click)="eliminar_etiqueta(item._id)">[Eliminar]</a>
+                                              <a *ngIf="item._id == '61a390d39b40d02e0cb9d789'" style="cursor: pointer;" class="text-danger">[No eliminable]</a>
+                                            </td>
+                                          </tr>
+                                        </tbody>
+                                      </ng-container>
+                                      </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                   
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm table-nowrap card-table">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                      <!--<th>P. soles</th>-->
+                      <th>p. dolares</th>
+                      <th>Stock</th>
+                      <th>Opciones</th>
+                    </tr>
+                  </thead>
+                  <tbody class="font-size-base" *ngIf="!load">
+                    <tr *ngFor="let item of productos | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                      <td>
+                        <div class="d-flex align-items-center">
+
+                          <!-- Image -->
+                          <div class="avatar mr-3">
+                            <img class="avatar-img rounded me-3 mr-3" [src]="url +'obtener_portada/'+item.portada" alt="...">
+                          </div>
+
+                          <div class="ms-3">
+
+                            <!-- Heading -->
+                            <h4 class="fw-normal mb-1">{{item.titulo}}</h4>
+
+                            <!-- Text -->
+                            <span class="badge badge-success" *ngIf="item.estado == 'Publicado'">{{item.estado}}</span>
+                            <span class="badge badge-warning" *ngIf="item.estado == 'Edicion'">{{item.estado}}</span>
+
+                          </div>
+
+                        </div>
+         
+                    
+                      </td>
+                     <!--<td>
+                        {{item.precio|currency:'PEN'}}
+                      </td> -->
+                      <td>
+                        {{item.precio_dolar|currency:'USD'}}
+                      </td>
+                      <td>
+                        {{item.stock}}
+                      </td>
+                      <td>
+                        <div class="dropdown">
+                          <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonAlias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Opciones
+                          </button>
+                        
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonAlias">
+                            <li>
+                              <a class="dropdown-item" [routerLink]="['/productos/edit',item._id]">Editar</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" [routerLink]="['/productos/variedades',item._id]">Variedades</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" [routerLink]="['/productos/inventario',item._id]">Inventario</a>
+                            </li>
+                            <li>
+                              <a class="dropdown-item" [routerLink]="['/productos/galeria',item._id]">Galería</a>
+                            </li>
+
+                            <a *ngIf="item.estado == 'Edicion'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Mostrar producto</a>
+                            <a *ngIf="item.estado == 'Publicado'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Ocultar producto</a>
+                          </ul>
+                        </div>
+
+                        <div class="modal fade" id="vs-{{item._id}}" tabindex="-1" style="display: none;" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <h4 class="modal-title">Confirmación de visibilidad</h4>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                              </div>
+                              <div class="modal-body">
+                                <div class="alert d-flex alert-danger" role="alert" *ngIf="item.galeria.length!= 4">
+                                  <i class="ci-close-round lead me-3"></i>
+                                  <div>
+                                    Debe tener 4 imagenes en la galería.
+                                  </div>
+                                </div>
+      
+                                <p *ngIf="!item.vs">Desea hacer visible el producto en la tienda?</p>
+                                <p *ngIf="item.vs">Desea ocultar el producto de la tienda?</p>
+                              </div>
+                              <div class="modal-footer">
+                                <button class="btn btn-secondary btn-sm" type="button" data-dismiss="modal">Cancelar</button>
+                                <ng-container *ngIf="!load_estado">
+                                  <button *ngIf="item.galeria.length!= 4" class="btn btn-danger btn-shadow btn-sm" disabled type="button">Si, cambiar</button>
+                                  <button *ngIf="item.galeria.length== 4" class="btn btn-danger btn-shadow btn-sm" (click)="cambiar_vs(item._id,item.estado)" type="button">Si, cambiar</button>
+                                </ng-container>
+                                
+                                
+                                <button disabled *ngIf="load_estado" type="button" class="btn btn-danger btn-shadow btn-sm">
+                                  <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                  Cambiando...
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                   
+                  </tbody>
+                  <tbody *ngIf="load">
+                    <tr>
+                        <td colspan="5" class="text-center">
+                            <div class="spinner-border text-primary" role="status">
+                                <span class="visually-hidden"></span>
+                            </div>
+                        </td>
+                    </tr>
+                  </tbody>  
+                </table>
+                
+              </div>
+
+            </div>
+                <ngb-pagination *ngIf="productos.length >= 1"
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [maxSize]="10"
+                        [rotate]="true" [boundaryLinks]="true"
+                [collectionSize]="productos.length"></ngb-pagination>
+  
+            <br>
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>

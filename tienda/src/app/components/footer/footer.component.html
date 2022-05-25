@@ -1,0 +1,78 @@
+<!-- Footer -->
+<footer class="ps-footer--2 ps-footer--fullwidth">
+    <div class="container">
+        <div class="ps-footer__content">
+            <div class="row">
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 ">
+                    <aside class="widget widget_footer widget_align-right">
+                        <h3 class="widget-title">{{ 'footer.item_uno' | translate }}</h3>
+                        <ul class="ps-list--line">
+                            <li><a  class="text-white" style="cursor: pointer;" [routerLink]="['/politicas-envio']" >{{ 'footer.item_dos' | translate }}</a></li>
+                            <li><a  class="text-white" style="cursor: pointer;" [routerLink]="['/terminos-condiciones']">{{ 'footer.item_tres' | translate }}</a></li>
+                            <li><a  class="text-white" style="cursor: pointer;" [routerLink]="['/contacto']">{{ 'footer.item_cuatro' | translate }}</a></li>
+                        </ul>
+                    </aside>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 ">
+                    <aside class="widget widget_footer widget_align-right">
+                        <h3 class="widget-title">{{ 'footer.item_seis' | translate }}</h3>
+                        <ul class="ps-list--line">
+                            <li><a  class="text-white" style="cursor: pointer;" [routerLink]="['/nosotros']" >{{ 'menu.item_seis' | translate }}</a></li>
+                            <li><a class="text-white" [routerLink]="['/embajadoras']" >{{ 'menu.item_nueve' | translate }}</a></li>
+                            <li><a class="text-white" [routerLink]="['/nosotros']">{{ 'menu.item_siete' | translate }}</a></li>
+                            <li><a class="text-white" [routerLink]="['/impacto-social']">{{ 'menu.item_ocho' | translate }}</a></li>
+                        </ul>
+                    </aside>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 ">
+                    <aside class="widget widget_footer widget_align-right">
+                        <h3 class="widget-title">{{ 'footer.item_siete' | translate }}</h3>
+                        <ul class="ps-list--line">
+                            <li *ngFor="let item of categorias">
+                              <a style="cursor: pointer;" class="text-white" [routerLink]="['/productos/categoria/'+item.slug]">{{item.titulo}}</a>
+                            </li>
+                     
+                        </ul>
+                    </aside>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 ">
+                    <aside class="widget widget_footer widget_align-right">
+                        <h3 class="widget-title">{{ 'footer.item_ocho' | translate }}</h3>
+                        <select class="form-control" (change)="cambiarLenguaje()" name="activeLang" [(ngModel)]="activeLang">
+                            <option value="es">Español</option>
+                            <option value="en">Ingles</option>
+                        </select>
+                    </aside>
+                </div>
+                <div class="col-xl-3 col-lg-4 col-md-4 col-sm-6 col-6 ">
+                    <aside class="widget widget_footer widget_align-right">
+                        <h3 class="widget-title">{{ 'footer.item_nueve' | translate }}</h3>
+  
+                        <h5>
+                          <ng-container *ngIf="currency != 'PEN'">
+                              USD
+                            </ng-container>
+                            <ng-container *ngIf="currency == 'PEN'">
+                              PEN
+                            </ng-container>
+                        </h5>
+                       
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ps-footer__bottom">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-6 col-lg-4 col-md-6 col-sm-6 col-12 ">
+                    <p class="ps-footer__copyright">&copy; <strong class="text-white">NTienda</strong>. {{ 'footer.item_diez' | translate }}</p>
+                </div>
+                <div class="col-xl-6 col-lg-4 col-md-12 col-sm-12 col-12 ">
+                   <img src="assets/img/payment.png" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+  </footer>
+  

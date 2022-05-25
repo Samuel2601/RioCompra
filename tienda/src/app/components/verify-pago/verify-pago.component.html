@@ -1,0 +1,15 @@
+<app-nav></app-nav>
+<div class="ps-page__content" style="padding-top: 100px;margin-bottom: 100px;">
+    <form class="ps-form--404" action="404-page.html" method="get" *ngIf="!load">
+      <div class="ps-form__header"><i class="icon-heart"></i></div>
+      <h3 *ngIf="tipo == 'failure'">La confirmación del pago no se pudo concretar.</h3>
+      <p *ngIf="tipo == 'pending' || tipo == 'failure'">Esta es una ventana de confirmacion de pago, si deseas regresar al <a style="cursor: pointer;" 
+        [routerLink]="['/']"> Home</a></p>
+    </form>
+    <form class="ps-form--404" action="404-page.html" method="get" *ngIf="load">
+        <div class="ps-form__header"><i class="icon-confused"></i></div>
+        <h3 *ngIf="tipo == 'success'">Cargando...</h3>
+    </form>
+</div>
+
+<app-footer></app-footer>

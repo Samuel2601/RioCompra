@@ -1,0 +1,116 @@
+<app-nav></app-nav>
+
+<div class="ps-page--default">
+  <div class="container">
+    <div class="ps-page__header">
+      <h3>Mi cuenta</h3>
+      <ul class="ps-breadcrumb">
+        <li><a  style="cursor: pointer;" [routerLink]="['/cuenta/perfil']">Mi perfil</a></li>
+        <li><a style="cursor: pointer;" [routerLink]="['/cuenta/direcciones']">Direcciones</a></li>
+        <li class="active"><a><b>Mis pedidos</b></a></li>
+        <li><a  style="cursor: pointer;" [routerLink]="['/cuenta/reviews']">Mis reseñas</a></li>
+        
+      </ul>
+    </div>
+    <div class="ps-page__content">
+      <div class="ps-checkout">
+        
+        <form class="ps-form--checkout">
+          <div class="row">
+            <div class="col-md-8 mx-auto">
+              <div class="ps-form__billings">
+                <h4 class="ps-form__heading">Mis ordenes</h4>
+                <div class="row" *ngIf="load_data">
+                  <div class="col-12 text-center">
+                    <span >Cargando...</span>
+                  </div>
+                </div>
+
+
+                <div class="row"  *ngIf="!load_data">
+                  <div class="col-12" *ngIf="ordenes.length >= 1">
+                    <div class="ps-shopping-cart">
+                      <div class="table-responsive">
+                        <table class="table ps-table ps-table--shopping-cart">
+                          <thead>
+                            <tr>
+                              <th>ID Venta</th>
+                              <th>Monto</th>
+                              <th>Fecha</th>
+                              <th>Estado</th>
+                              <th>Detalles</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            <tr *ngFor="let item of ordenes">
+                              <td style="min-width: 300px !important;">
+                                <div class="ps-product--sidebar">
+                                  <div class="ps-product__content" style="padding-left: 0px !important;">
+                                    <a class="ps-product__title">
+                                      {{item._id}}
+                                    </a>
+                                    <p class="ps-product__price">Código de compra</p>
+                                  </div>
+                                </div>
+                              </td>
+                              <td>
+                                  <span *ngIf="item.currency == 'USD'">${{item.total_pagar}}</span>
+                                  <span *ngIf="item.currency == 'PEN'">S/{{item.total_pagar}}</span>
+                              </td>
+                              <td>
+                                {{item.createdAt|date}}
+                              </td>
+
+                              <td>
+                                {{item.estado}}
+                              </td>
+                              <td>
+                                <a style="font-size: 1.3rem;cursor: pointer;color: #127c5f;
+                                font-weight: 700;" [routerLink]="['/cuenta/pedidos/'+item._id]">Ver detalles</a>
+                              </td>
+                          
+                            </tr>
+                         
+                          </tbody>
+                        </table>
+
+                        <p class="text-muted">
+                          {{ 'menu.item_docho' | translate }}
+                        </p>
+                      </div>
+
+                      <ngb-pagination
+                        [(page)]="page"
+                        [pageSize]="pageSize"
+                        [collectionSize]="ordenes.length"
+                      ></ngb-pagination>
+                    </div>
+                  </div>
+
+                  <div class="col-12" *ngIf="ordenes.length == 0">
+                    <div class="rounded mb-5 p-3">
+                      <form class="ps-form--404" action="404-page.html" method="get">
+                        <div class="ps-form__header">
+                          <img src="assets/images/icono-no-orden.png" alt="">
+                        </div>
+                        <h3 class="text-muted">No has realizado ningun pedido.</h3>
+                        <p class="text-muted">Cuando realices un pedido futbolero, todos los detalles apareceran aquí.</p>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

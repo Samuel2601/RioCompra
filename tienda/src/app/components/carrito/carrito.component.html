@@ -1,0 +1,375 @@
+<app-nav></app-nav>
+
+<div class="ps-page--default">
+    <div class="container">
+      <div class="ps-page__header">
+        <h3>Carrito</h3>
+        <ul class="ps-breadcrumb">
+          <li><a [routerLink]="['/']">Home</a></li>
+          <li><a [routerLink]="['/productos']">Shop</a></li>
+          <li>Carrito</li>
+        </ul>
+      </div>
+      <div class="ps-page__content">
+        
+
+        <ng-container *ngIf="user_lc != undefined">
+          <div class="ps-shopping-cart" *ngIf="carrito_arr.length >= 1">
+            <div class="table-responsive">
+              <table class="table ps-table ps-table--shopping-cart">
+                  <thead>
+                    <tr>
+                      <th>Producto</th>
+                 
+                      <th>Talla</th>
+                      <th>precio</th>
+                      <th>Cantidad</th>
+                      <th>Subtotal</th>
+                      <th></th>
+                    </tr>
+                  </thead>
+                  
+                  
+                  <tbody>
+                    <ng-container *ngIf="carrito_arr.length >= 1">
+                        <tr *ngFor="let item of carrito_arr">
+                            <td>
+                              <div class="ps-product--sidebar">
+                                <div class="ps-product__thumbnail"><a class="ps-product__overlay" [routerLink]="['/productos/',item.producto.slug]"></a>
+                                    <img [src]="url +'obtener_portada/'+item.producto.portada" alt="">
+                                </div>
+                                <div class="ps-product__content">
+                                    <a class="ps-product__title" [routerLink]="['/productos/',item.producto.slug]">{{item.producto.titulo}}</a>
+                                </div>
+                              </div>
+                            </td>
+                      
+                            <td>{{item.variedad.valor}}</td>
+                            <td>
+                                <strong>
+                                    <ng-container >
+                                        ${{item.producto.precio_dolar}}
+                                    </ng-container>
+                                    <!--<ng-container *ngIf="currency == 'PEN'">
+                                        S/{{item.producto.precio}}
+                                    </ng-container>-->
+                                </strong>
+                            </td>
+                            <td>
+                              <!-- <div class="form-group--number">
+                                <button class="up"></button>
+                                <button class="down"></button>
+                                <input class="form-control" type="text" placeholder="1">
+                              </div> -->
+                              {{item.cantidad}}
+                            </td>
+                            <td>
+                              <p>
+                                <strong>
+                                    <ng-container>
+                                        ${{item.producto.precio_dolar*item.cantidad}}
+                                    </ng-container>
+                                    <!--<ng-container *ngIf="currency == 'PEN'">
+                                        S/{{item.producto.precio*item.cantidad}}
+                                    </ng-container>-->
+                                </strong>
+                              </p>
+                            </td>
+                            <td><a class="ps-icon" style="cursor: pointer;" (click)="eliminar_item(item._id)"><i class="icon-cross"></i></a></td>
+                        </tr>
+                    </ng-container>
+                    <ng-container *ngIf="carrito_arr.length == 0">
+                        <tr>
+                            <td colspan="6" class="text-center">
+                                <span class="text-muted">No hay productos en tu carrito</span>
+                            </td>
+                        </tr>
+                    </ng-container>
+                    
+                  
+                  </tbody>
+              </table>
+  
+              <p class="text-muted">
+                {{ 'menu.item_docho' | translate }}
+              </p>
+            </div>
+            <div class="ps-section__content">
+              <div class="ps-section__actions">
+                  <figure>
+                   
+                  </figure>
+                
+              </div>
+              <div class="ps-block--checkout-total">
+                <div class="ps-block__top">
+                  <h4 style="margin-bottom: 20px !important;">Subtotal 
+                          <!--<span *ngIf="currency != 'PEN'">S/{{subtotal}}</span>-->
+                          <span >${{subtotal}}</span>
+                  </h4>
+  
+                  <div class="ps-block__shipping">
+                    <h4>Envio
+                          <span >${{precio_envio_dolares}}</span>
+                          <!--<span *ngIf="currency == 'PEN'">S/{{precio_envio_soles}}</span>-->
+                    </h4>
+                    <p>
+                      <a class="ps-product__title" [routerLink]="['/politicas-envio']" >
+                          Consultar precios de envio
+                      </a>
+                    </p>
+                  </div>
+                  
+                  
+                  <div class="ps-block__caculate" style="    margin-top: 15px !important;">
+                    <h5>Calcular envio</h5>
+                      <div class="form-group">
+                          <select class="form-control" name="str_pais" required [(ngModel)]="str_pais" (change)="select_pais()">
+                              <option value="" selected disabled>Seleccionar</option>
+                              <ng-container *ngFor="let item of zonas">
+                                  <ng-container  *ngIf="currency =='PEN'">
+                                      <option value="{{item.country}}_{{item.zona}}" *ngIf="item.country !='Ecuador'">{{item.country}}</option>
+                                  </ng-container>
+                                  <ng-container  *ngIf="currency !='PEN'">
+                                      <option value="{{item.country}}_{{item.zona}}" >{{item.country}}</option>
+                                  </ng-container>
+                              
+                              </ng-container>
+                          </select>
+                      </div>
+           
+                      <div class="form-group" *ngIf="direccion.pais == 'Ecuador'">
+                          
+                          <select id="sl-region"  name="region" [(ngModel)]="direccion.region" class="form-control" disabled (change)="select_region()">
+                              <option value="" selected disabled>Seleccionar</option>
+                              <option value="{{item.id}}" *ngFor="let item of regiones">{{item.name}}</option>
+                          </select>
+                      </div>
+                
+                  </div>
+                  <div class="ps-block__total">
+                    <h3>Total
+                      <span *ngIf="currency != 'PEN'">${{total_pagar}}</span>
+                      <span *ngIf="currency == 'PEN'">S/{{total_pagar}}</span>
+                    </h3>
+                  </div>
+                </div>
+                  <div class="ps-block__bottom">
+                    <a class="ps-btn ps-btn--black" [routerLink]="['/login']" *ngIf="user_lc == undefined">Checkout</a>
+                    <a class="ps-btn ps-btn--black" [routerLink]="['/checkout']" *ngIf="user_lc != undefined">Checkout</a>
+  
+                    <ng-container>
+                      <br>
+                      <br>
+                      <h5 class="text-center"><b style="color: #127c5f;">Antes de realizar tu compra</b></h5>
+                     
+                      <br>
+                      <p>
+                          <b style="color: #191919;">{{ 'menu.item_quince' | translate }}</b> {{ 'menu.item_catorce' | translate }}
+                      </p>
+                      <p>
+                          <b style="color: #191919;">{{ 'menu.item_dsiete' | translate }}</b> {{ 'menu.item_dseis' | translate }}
+                      </p>
+                  </ng-container>
+                  </div>
+              </div>
+  
+              
+            </div>
+          </div>
+          <div class="row" *ngIf="carrito_arr.length == 0">
+              <div class="col-12 text-center">
+                <div class="cart__content">
+                  <div class="ps-form__header">
+                      <img src="assets/img/carrito-de-compras.png" style="width: 220px !important; " alt="">
+                  </div>
+                  <h3 class="text-muted mb-5">¡Tu carrito esta vacio!</h3>
+                  <a [routerLink]="['/productos']" routerLinkActive="router-link-active"  style="text-decoration: underline;
+                  font-weight: 700;font-size: 2rem;">Volver a la tienda</a>
+                </div>
+              </div>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="user_lc == undefined">
+          <div class="ps-shopping-cart" *ngIf="carrito_logout.length >= 1">
+            <div class="table-responsive">
+              <table class="table ps-table ps-table--shopping-cart" *ngIf="user_lc == undefined">
+                <thead>
+                  <tr>
+                    <th>Producto</th>
+               
+                    <th>Talla</th>
+                    <th>precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                
+                
+                <tbody>
+                  <ng-container *ngIf="carrito_logout.length >= 1">
+                      <tr *ngFor="let item of carrito_logout">
+                          <td>
+                            <div class="ps-product--sidebar">
+                              <div class="ps-product__thumbnail"><a class="ps-product__overlay" [routerLink]="['/productos/',item.producto.slug]"></a>
+                                  <img [src]="url +'obtener_portada/'+item.producto.portada" alt="">
+                              </div>
+                              <div class="ps-product__content">
+                                  <a class="ps-product__title" [routerLink]="['/productos/',item.producto.slug]">{{item.producto.titulo}}</a>
+                              </div>
+                            </div>
+                          </td>
+                    
+                          <td>{{item.variedad.variedad}}</td>
+                          <td>
+                              <strong>
+                                  <ng-container *ngIf="currency != 'PEN'">
+                                      ${{item.producto.precio_dolar}}
+                                  </ng-container>
+                                  <ng-container *ngIf="currency == 'PEN'">
+                                      S/{{item.producto.precio}}
+                                  </ng-container>
+                              </strong>
+                          </td>
+                          <td>
+                            <!-- <div class="form-group--number">
+                              <button class="up"></button>
+                              <button class="down"></button>
+                              <input class="form-control" type="text" placeholder="1">
+                            </div> -->
+                            {{item.cantidad}}
+                          </td>
+                          <td>
+                            <p>
+                              <strong>
+                                  <ng-container *ngIf="currency != 'PEN'">
+                                      ${{item.producto.precio_dolar*item.cantidad}}
+                                  </ng-container>
+                                  <ng-container *ngIf="currency == 'PEN'">
+                                      S/{{item.producto.precio*item.cantidad}}
+                                  </ng-container>
+                              </strong>
+                            </p>
+                          </td>
+                          <td><a class="ps-icon" style="cursor: pointer;" (click)="eliminar_item_guest(item)"><i class="icon-cross"></i></a></td>
+                      </tr>
+                  </ng-container>
+                  <ng-container *ngIf="carrito_logout.length == 0">
+                      <tr>
+                          <td colspan="6" class="text-center">
+                              <span class="text-muted">No hay productos en tu carrito</span>
+                          </td>
+                      </tr>
+                  </ng-container>
+                  
+                
+                </tbody>
+              </table>
+
+              <p class="text-muted">
+                {{ 'menu.item_docho' | translate }}
+              </p>
+            </div>
+            <div class="ps-section__content">
+              <div class="ps-section__actions">
+                  <figure>
+                   
+                  </figure>
+                
+              </div>
+              <div class="ps-block--checkout-total">
+                <div class="ps-block__top">
+                  <h4 style="margin-bottom: 20px !important;">Subtotal 
+                          <span *ngIf="currency != 'PEN'">${{subtotal}}</span>
+                          <span *ngIf="currency == 'PEN'">S/{{subtotal}}</span>
+                  </h4>
+  
+                  <div class="ps-block__shipping">
+                    <h4>Envio
+                          <span *ngIf="currency != 'PEN'">${{precio_envio_dolares}}</span>
+                          <span *ngIf="currency == 'PEN'">S/{{precio_envio_soles}}</span>
+                    </h4>
+                    <p>
+                      <a class="ps-product__title" [routerLink]="['/politicas-envio']" >
+                          Consultar precios de envio
+                      </a>
+                    </p>
+                  </div>
+                  
+                  
+                  <div class="ps-block__caculate" style="    margin-top: 15px !important;">
+                    <h5>Calcular envio</h5>
+                      <div class="form-group">
+                          <select class="form-control" name="str_pais" required [(ngModel)]="str_pais" (change)="select_pais()">
+                              <option value="" selected disabled>Seleccionar</option>
+                              <ng-container *ngFor="let item of zonas">
+                                  <ng-container  *ngIf="currency =='PEN'">
+                                      <option value="{{item.country}}_{{item.zona}}" *ngIf="item.country =='Ecuador'">{{item.country}}</option>
+                                  </ng-container>
+                                  <ng-container  *ngIf="currency !='PEN'">
+                                      <option value="{{item.country}}_{{item.zona}}" *ngIf="item.country !='Ecuador'">{{item.country}}</option>
+                                  </ng-container>
+                              
+                              </ng-container>
+                          </select>
+                      </div>
+           
+                      <div class="form-group" *ngIf="direccion.pais == 'Ecuador'">
+                          
+                          <select id="sl-region"  name="region" [(ngModel)]="direccion.region" class="form-control" disabled (change)="select_region()">
+                              <option value="" selected disabled>Seleccionar</option>
+                              <option value="{{item.id}}" *ngFor="let item of regiones">{{item.name}}</option>
+                          </select>
+                      </div>
+                
+                  </div>
+                  <div class="ps-block__total">
+                    <h3>Total
+                      <span *ngIf="currency != 'PEN'">${{total_pagar}}</span>
+                      <span *ngIf="currency == 'PEN'">S/{{total_pagar}}</span>
+                    </h3>
+                  </div>
+                </div>
+                  <div class="ps-block__bottom">
+                    <a class="ps-btn ps-btn--black" [routerLink]="['/login']" *ngIf="user_lc == undefined">Checkout</a>
+                    <a class="ps-btn ps-btn--black" [routerLink]="['/checkout']" *ngIf="user_lc != undefined">Checkout</a>
+  
+                    <ng-container>
+                      <br>
+                      <br>
+                      <h5 class="text-center"><b style="color: #127c5f;">Antes de realizar tu compra</b></h5>
+                     
+                      <br>
+                      <p>
+                          <b style="color: #191919;">{{ 'menu.item_quince' | translate }}</b> {{ 'menu.item_catorce' | translate }}
+                      </p>
+                      <p>
+                          <b style="color: #191919;">{{ 'menu.item_dsiete' | translate }}</b> {{ 'menu.item_dseis' | translate }}
+                      </p>
+                  </ng-container>
+                  </div>
+              </div>
+  
+              
+            </div>
+          </div>
+          <div class="row" *ngIf="carrito_logout.length == 0">
+              <div class="col-12 text-center">
+                <div class="cart__content">
+                  <div class="ps-form__header">
+                      <img src="assets/img/carrito-de-compras.png" style="width: 220px !important; " alt="">
+                  </div>
+                  <h3 class="text-muted mb-5">¡Tu carrito esta vacio!</h3>
+                  <a [routerLink]="['/productos']" routerLinkActive="router-link-active"  style="text-decoration: underline;
+                  font-weight: 700;font-size: 2rem;">Volver a la tienda</a>
+                </div>
+              </div>
+          </div>
+        </ng-container>
+        
+      </div>
+    </div>
+  </div>
+
+<app-footer></app-footer>

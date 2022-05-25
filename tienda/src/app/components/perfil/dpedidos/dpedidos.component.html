@@ -1,0 +1,335 @@
+<app-nav></app-nav>
+
+<div class="ps-page--default">
+  <div class="container">
+    <div class="ps-page__header">
+      <h3>Mi cuenta</h3>
+      <ul class="ps-breadcrumb">
+        <li><a  style="cursor: pointer;" [routerLink]="['/cuenta/perfil']">Mi perfil</a></li>
+        <li><a style="cursor: pointer;" [routerLink]="['/cuenta/direcciones']">Direcciones</a></li>
+        <li class="active"><a><b>Mis pedidos</b></a></li>
+        <li><a  style="cursor: pointer;" [routerLink]="['/cuenta/reviews']">Mis reseñas</a></li>
+      
+      </ul>
+    </div>
+    <div class="ps-page__content">
+      <div class="ps-checkout">
+        
+        <form class="ps-form--checkout">
+          <div class="row">
+            <div class="col-md-8 mx-auto">
+              <div class="ps-form__billings">
+                <h4 class="ps-form__heading">Código de compra #{{id.toUpperCase()}}</h4>
+                <div class="row" *ngIf="load_data">
+                  <div class="col-12 text-center">
+                    <span >Cargando...</span>
+                  </div>
+                </div>
+
+
+                <div class="row"  *ngIf="!load_data">
+                  <div class="col-lg-12 ml-auto" *ngIf="orden != undefined">
+                    <div class="d-flex align-items-center justify-content-between mb-4 pb-sm-2">
+                                          
+                      </div>
+
+                      <div class="row" *ngIf="orden.estado == 'En espera'">
+                        <div class="col-12 mb-4" *ngIf="orden.metodo_pago == 'Transferencia o Deposito'">
+                          <h4>¡Finaliza tu compra!</h4>
+                          <p style="font-size: 1.5rem;">Realiza el pago de tu pedido por {{orden.metodo_pago}}, y envíanos una imagen de la operación a nuestro número de <b style="color: #191919;">WhatsApp 987654321</b> para confirmar la compra y agendar el envío de tu pedido.</p>
+
+                          <p style="font-size: 1.5rem;">*Si te encuentras fuera de Lima y deseas realizar el pago vía Depósito, no olvides agregar S/7.50 de comisión bancaria al monto total de tu compra.</p>
+
+                          <h4>Datos de pago:</h4> 
+                          <p>
+                            <b style="color: #191919;" style="font-size: 1.5rem;">Nro. de Cuenta Soles:</b> 878-654619584654-3 <br>
+                            <b style="color: #191919;" style="font-size: 1.5rem;">Código Interbancario:</b> 002-13245674987414654 <br>
+                            <b style="color: #191919;" style="font-size: 1.5rem;">Titular:</b> Grupo NTienda E.I.R.L. <br>
+                            <b style="color: #191919;" style="font-size: 1.5rem;">RUC:</b> 20000000001 <br>
+                          </p>
+
+                          <p style="font-size: 1.5rem;">Realiza el pago en las próximas 24 horas. Pasadas las 24 horas, tu pedido será cancelado automáticamente.</p>
+
+                        </div>
+                        <div class="col-12 mb-4" *ngIf="orden.metodo_pago == 'Yape o Plin'">
+                            <p style="font-size: 1.5rem;">
+                              Realiza el pago de tu pedido usando <b>Yape o Plin al número 943283912</b> y envíanos una imagen de la operación por WhatsApp al mismo número para confirmar la compra y agendar el envío de tu pedido.
+                            </p>
+                            <p style="font-size: 1.5rem;">
+                              Realiza el pago en las próximas 24 horas. Pasadas las 24 horas, tu pedido será cancelado automáticamente.
+                            </p>
+                        </div>
+                      </div>
+          
+                      <div class="row">
+                        <div class="col-12" style="margin-bottom: 4rem;">
+                          <div class="card card-body py-3 box-shadow ">
+                            <div class="row">
+                              <div class="col-lg-6">
+                                <table class="table mb-0">
+                                  <tbody>
+                                    <tr>
+                                      <th class="border-0 py-2 pl-0">Orden No:</th>
+                                      <td class="border-0 py-2 px-0 text-muted">{{id.toUpperCase()}}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="border-0 py-2 pl-0">Envio:</th>
+                                      <td class="border-0 py-2 px-0 text-muted">
+                                        <span *ngIf="orden.currency== 'USD'">${{orden.envio_precio}}</span>
+                                        <span *ngIf="orden.currency== 'PEN'">S/{{orden.envio_precio}}</span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th class="border-0 py-2 pl-0">Fecha:</th>
+                                      <td class="border-0 py-2 px-0 text-muted">{{orden.createdAt|date}}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="border-0 py-2 pl-0">Cupón:</th>
+                                      <td class="border-0 py-2 px-0 text-muted" *ngIf="orden.cupon && orden.cupon != 'undefined'">{{orden.cupon}}</td>
+                                      <td class="border-0 py-2 px-0 text-muted" *ngIf="!orden.cupon || orden.cupon == 'undefined'">No aplicado</td>
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                              <div class="col-lg-6">
+                                <table class="table mb-0">
+                                  <tbody>
+                                  
+                                    <tr>
+                                      <th class="border-0 py-2 pl-0">Tracking:</th>
+                                      <td class="border-0 py-2 px-0 text-muted" *ngIf="orden.tracking">{{orden.tracking}}</td>
+                                      <td class="border-0 py-2 px-0 text-muted" *ngIf="!orden.tracking">En proceso de envio</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="border-0 py-2 pl-0">Transaccion:</th>
+                                      <td class="border-0 py-2 px-0 text-muted">{{orden.transaccion}}</td>
+                                    </tr>
+                                    <tr>
+                                      <th class="border-0 py-2 pl-0">Estado:</th>
+                                      <td class="border-0 py-2 px-0 text-muted">
+                                        <span class="badge badge-success" style="background: black !important;">{{orden.estado}}</span>
+                                      </td>
+                                    </tr>
+                                    <tr>
+                                      <th class="border-0 py-2 pl-0">Metodo pago:</th>
+                                      <td class="border-0 py-2 px-0 text-muted">
+                                        <span>{{orden.metodo_pago}}</span>
+                                       
+                                      </td>
+                                  
+                                    </tr>
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                            
+                          </div>
+                        </div>
+                        <div class="col-12" style="margin-bottom: 4rem;" *ngIf="orden.direccion">
+                          <h4>Destinatario:</h4>
+                          <div class="card">
+                            <div class="card-body">
+                                <div class="row" >
+                                    
+                                    <div class="col-md-3 col-sm-4 mb-sm-0 mb-3">
+                                      <h4 class="mb-2 font-size-lg">{{orden.direccion.nombres}} {{orden.direccion.apellidos}}</h4>
+                                      <span class="d-block mb-3 font-size-sm text-muted">{{orden.direccion.dni}}</span>
+                                      <span class="d-block mb-3 font-size-sm text-muted">{{orden.direccion.telefono}}</span>
+                                    </div>
+                                    <div class="col">
+                                      <dl>
+                                        <ng-container>
+                                          {{orden.direccion.direccion}}, &nbsp;
+                                        </ng-container>
+                                        <span class="text-muted" *ngIf="orden.direccion.referencia">
+                                          {{orden.direccion.referencia}}
+                                        </span>
+                                      </dl>
+                                     
+                                      <dl>
+                                        <ng-container *ngIf="orden.direccion.pais != 'Ecuador'">
+                                          {{orden.direccion.pais}}, {{orden.direccion.distrito}}
+                                        </ng-container>
+                                        <ng-container *ngIf="orden.direccion.pais == 'Ecuador'">
+                                          <dd>{{orden.direccion.pais}}, 
+                                            <span *ngIf="orden.direccion.region">{{orden.direccion.region}}</span>,
+                                            <span *ngIf="orden.direccion.provincia">{{orden.direccion.provincia}}</span>,
+                                            <span *ngIf="orden.direccion.distrito">{{orden.direccion.distrito}}</span>
+                                          </dd>
+                                        </ng-container>
+            
+                                        <dd>
+                                          <span *ngIf="orden.direccion.zip">{{orden.direccion.zip}},</span>
+                                          <span *ngIf="!orden.direccion.zip">Sin ZIP,</span>
+                                        </dd>
+                                        
+                                      </dl>
+                                    </div>
+                                  </div>
+                            </div>
+                        </div>
+                        </div>
+                      </div>
+                      
+                      <h4>Productos:</h4>
+                      <div class="card border-bottom">
+                      
+                        <div id="order-1" class="collapse show" data-parent="#orders">
+                          <div class="rounded">
+                            <div class="table-responsive">
+                              <table class="table mb-0">
+                                <tbody>
+                                  <tr *ngFor="let item of detalles">
+                                    <td class="border-top-0">
+                                      <div class="media pl-2 py-2">
+                                        <a [routerLink]="['/productos/'+item.producto.slug]" style="min-width: 80px;cursor: pointer;">
+                                          <img [src]="url +'obtener_portada/'+item.producto.portada" width="80" alt="Product thumb">
+                                        </a>
+                                        <div class="media-body pl-3">
+                                          <h3 class="font-size-sm mb-3">
+                                            <a [routerLink]="['/productos/'+item.producto.slug]" style="cursor: pointer;" class="nav-link font-weight-bold">{{item.producto.titulo}}</a>
+                                          </h3>
+                                          <ul class="list-unstyled font-size-xs mt-n2 mb-2" style="margin-left: 1rem;">
+                                            <li class="mb-0"><span class="text-muted">TALLA:</span> {{item.variedad.valor}}</li>
+                                          </ul>
+                                          <a *ngIf="!item.estado" (click)="openModal(item)" style="cursor: pointer;color: #000;margin-left: 1rem;" data-toggle="modal" [attr.data-target]="'#review-'+item._id">[Emitir reseña]</a>
+                                          <span *ngIf="item.estado"  class="badge badge-warning" style="background-color: #f1ee51;margin-left: 1rem;">Comentario emitido</span>
+    
+                                          
+                                          <div class="modal fade" id="review-{{item._id}}" tabindex="-1" style="display: none;" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                              <div class="modal-content">
+                                                <div class="modal-header">
+                                                  <h4 class="modal-title">Dejanos una reseña</h4>
+                                                  <button style="font-size: 3rem;" class="close" type="button" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                  <div class="row">
+                                                    <div class="col-sm-12 form-group">
+                                                       
+                                                        <textarea required class="form-control" placeholder="¿Te gusto tu producto?" name="review" [(ngModel)]="review.review" rows="3"></textarea>
+                                                    </div>
+                                                  </div>
+                                                  <div class="row">
+                                                    <div class="col-lg-7">
+                                                      <span class="text-muted">¿Cuantas estrellas nos das?</span>
+                                                      <star-rating [value]="totalstar" size="45px"  checkedcolor="gold" uncheckedcolor="gray" [totalstars]="totalstar"
+                                                      (rate)="onRate($event)"></star-rating>
+                                                    </div>  
+                                                    <div class="col-lg-5">
+                                                      <button class="ps-btn ps-btn--outline" style="font-size: 13px !important;    margin-top: 1.5rem;" type="button" (click)="emitir(item._id)">Enviar reseña</button>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                                
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td class="border-top-0">
+                                      <div class="py-2">
+                                        <div class="font-size-xs text-muted mb-1">Precio:</div>
+                                        <div class="font-size-sm text-dark">
+                                          <span *ngIf="orden.currency == 'PEN'">S/{{item.subtotal}}</span>
+                                          <span  *ngIf="orden.currency == 'USD'">${{item.subtotal}}</span>
+                                          
+                                        </div>
+                                      </div>
+                                    </td>
+                                    <td class="border-top-0">
+                                      <div class="py-2">
+                                        <div class="font-size-xs text-muted mb-1">Cantidad:</div>
+                                        <div class="font-size-sm text-dark">{{item.cantidad}}</div>
+                                      </div>
+                                    </td>
+                                    <td class="border-top-0">
+                                      <div class="py-2 pr-3 text-right">
+                                        <div class="font-size-xs text-muted mb-1">Subtotal:</div>
+                                        <div class="font-size-sm font-weight-bold text-dark">
+                                          <span *ngIf="orden.currency == 'PEN'">S/{{item.subtotal*item.cantidad}}</span>
+                                          <span  *ngIf="orden.currency == 'USD'">${{item.subtotal*item.cantidad}}</span>
+                                          </div>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding-left: 1.3rem !important;" colspan="3">
+                                      <b>Subtotal</b>
+                                    </td>
+                                    <td class="" colspan="1">
+                                      <div class="py-2 pr-3 text-right">
+                                        <span *ngIf="orden.currency == 'PEN'">S/{{orden.subtotal}}</span>
+                                        <span  *ngIf="orden.currency == 'USD'">${{orden.subtotal}}</span>
+                                      </div>  
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding-left: 1.3rem !important;" colspan="3">
+                                      <b>Descuento</b>
+                                    </td>
+                                    <td class="" colspan="1">
+                                      <div class="py-2 pr-3 text-right">
+                                        <span *ngIf="orden.currency == 'PEN'">- S/{{orden.valor_descuento}}</span>
+                                        <span  *ngIf="orden.currency == 'USD'">- ${{orden.valor_descuento}}</span>
+                                      </div>  
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding-left: 1.3rem !important;" colspan="3">
+                                      <b>Envio</b>
+                                    </td>
+                                    <td class="" colspan="1">
+                                      <div class="py-2 pr-3 text-right">
+                                        <span *ngIf="orden.currency == 'PEN'">S/{{orden.envio_precio}}</span>
+                                        <span  *ngIf="orden.currency == 'USD'">${{orden.envio_precio}}</span>
+                                      </div>  
+                                    </td>
+                                  </tr>
+                                  <tr>
+                                    <td style="padding-left: 1.3rem !important;" colspan="3">
+                                      <b>Total</b>
+                                    </td>
+                                    <td class="" colspan="1">
+                                      <div  class="py-2 pr-3 text-right">
+                                        <span *ngIf="orden.currency == 'PEN'">S/{{orden.total_pagar}}</span>
+                                        <span  *ngIf="orden.currency == 'USD'">${{orden.total_pagar}}</span>
+                                      </div>
+                                    </td>
+                                  </tr>
+                                </tbody>
+                              </table>
+                            </div>
+                          </div>
+                      
+                        </div>
+                      </div>
+                  </div>
+        
+                  <div class="col-lg-12 ml-auto" *ngIf="orden == undefined">
+                      <div class="row">
+                        <div class="col-12">
+                          <div class="col-lg-12 col-md-5">
+                              <h3 class="h6 mb-2 text-uppercase">ERROR 404</h3>
+                              <h2 class="h3 pb-lg-3">No se encontro detalles con esta orden.</h2>
+        
+                          </div>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

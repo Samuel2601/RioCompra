@@ -1,0 +1,150 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Productos
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <!-- Card -->
+            <form #registroForm="ngForm" (ngSubmit)="registro(registroForm)">
+              <div class="card">
+                <div class="card-header">
+  
+                  <!-- Title -->
+                  <h4 class="card-header-title">
+                    Registro de un nuevo producto
+                  </h4>
+  
+                </div>
+  
+                <div class="card-body">
+                  <div class="row">
+                      <div class="col-lg-8">
+                          <div class="row">
+                              <div class="col-12">
+                                  <div class="form-group">
+                                      <label for="exampleInputEmail1">Titulo del producto (*)</label>
+                                      <input type="text" class="form-control" required placeholder="Titulo del producto" name="titulo" [(ngModel)]="producto.titulo">
+                                  </div>
+                              </div>
+                              <div class="col-6">
+                                  <div class="form-group">
+                                      <label for="exampleInputEmail1">SKU (*)</label>
+                                      <input type="text" class="form-control" required placeholder="Código del producto" name="sku" [(ngModel)]="producto.sku">
+                                  </div>
+                              </div>
+                              <div class="col-6">
+                                  <label for="exampleInputEmail1">Categoría (*)</label>
+                                  <select class="form-control custom-select" id="select-input" required name="categoria" [(ngModel)]="producto.categoria">
+                                      <option value="" selected disabled>Seleccionar</option>
+                                      <option value="{{item._id}}" *ngFor="let item of categorias">{{item.titulo}}</option>
+                                  </select>
+                              </div>
+           
+                              <div class="col-6 form-group">
+                                  <label for="">Mostrar (*)</label>
+                                  <select class="form-control custom-select" id="select-input" required name="visibilidad" [(ngModel)]="producto.visibilidad">
+                                      <option value="" selected disabled>Seleccionar</option>
+                                      <option value="Ecuador">Ecuador</option>
+                                      <option value="Exterior">Exterior</option>
+                                      <option value="Todo el mundo">Todo el mundo</option>
+                                  </select>
+                              </div>
+                              <div class="col-12 form-group" >
+                                <tinymce [config]="config" name="contenido" required [(ngModel)]="producto.contenido"></tinymce>
+                              </div>
+                              <div class="col-lg-12 form-group">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <label for=""><b>Etiquetas</b></label>
+                                        <select class="form-control custom-select" name="new_etiqueta" [(ngModel)]="new_etiqueta" (change)="agregar_etiqueta()">
+                                            <option value="" selected disabled>Seleccionar</option>
+                                            <option value="{{item._id}}_{{item.titulo}}" *ngFor="let item of etiquetas">{{item.titulo}}</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12">
+                                        <div class="ms-auto py-2">
+                                            <ng-container *ngFor="let item of arr_etiquetas; let indice = index">
+                                                <a class="badge badge-secondary text-white mr-3" style="cursor: pointer;" (click)="eliminar_etiqueta(indice)">
+                                                    {{item.titulo}}
+                                                </a>
+                                            </ng-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                      </div>
+                      <div class="col-lg-4">
+                          <div class="row">
+                              <div class="col-lg-12 form-group">	
+                                  <label for="">Precio soles(*)</label>
+                                  <input type="number" class="form-control" placeholder="Precio" required name="precio" [(ngModel)]="producto.precio">
+                              </div>
+                              <div class="col-lg-12 form-group">	
+                                  <label for="">Precio dolares(*)</label>
+                                  <input type="number" class="form-control" placeholder="Precio" required name="precio_dolar" [(ngModel)]="producto.precio_dolar">
+                              </div>
+                              <div class="col-lg-12 form-group">	
+                                  <label for="">Peso(*) </label>
+                                  <input type="text" class="form-control" placeholder="Peso" required name="peso" [(ngModel)]="producto.peso">
+                              </div>
+                              <div class="col-lg-12 form-group">	
+                                  <label for="">Portada (*)</label>
+                                  <div class="custom-file">
+                                      <input class="custom-file-input" type="file" id="file-input" (change)="fileChangeEvent($event)">
+                                      <label class="custom-file-label" id="input-portada" for="file-input" style="white-space:nowrap;overflow:hidden">Seleccionar imagen</label>
+                                  </div>
+                              </div>
+                              <div class="col-lg-12">
+                                  <img [src]="imgSelect" class="img-thumbnail" alt="Rounded image">
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="card-footer">
+  
+                    <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/productos']" routerLinkActive="router-link-active" >Regresar</a>
+                    <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Crear</button>
+                                    
+                    <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Creando...
+                    </button>
+  
+                    
+                </div>
+              </div>
+            </form>
+              
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>

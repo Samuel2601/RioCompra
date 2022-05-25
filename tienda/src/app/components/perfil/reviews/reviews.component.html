@@ -1,0 +1,128 @@
+<app-nav></app-nav>
+
+<div class="ps-page--default">
+  <div class="container">
+    <div class="ps-page__header">
+      <h3>Mi cuenta</h3>
+      <ul class="ps-breadcrumb">
+        <li><a  [routerLink]="['/cuenta/perfil']" >Mi perfil</a></li>
+          <li><a [routerLink]="['/cuenta/direcciones']">Direcciones</a></li>
+          
+          <li><a [routerLink]="['/cuenta/pedidos']">Mis pedidos</a></li>
+          <li class="active"><a><b>Mis reseñas</b></a></li>
+      </ul>
+    </div>
+    <div class="ps-page__content">
+      <div class="ps-checkout">
+        
+        <form class="ps-form--checkout">
+          <div class="row">
+            <div class="col-md-6 mx-auto">
+              <div class="ps-form__billings">
+                <h4 class="ps-form__heading">Mis reseñas</h4>
+                <div class="row" *ngIf="load_data">
+                  <div class="col-12 text-center">
+                    <span >Cargando...</span>
+                  </div>
+                </div>
+
+
+                <div class="row"  *ngIf="!load_data">
+
+                  <div class="col-12">
+                    <table class="table ps-table ps-table--shopping-cart">
+                      <tbody *ngIf="reviews.length >= 1">
+                        <tr *ngFor="let item of reviews | slice: (page-1)*pageSize : (page-1) * pageSize + pageSize">
+                          <td>
+                            <div class="ps-product--sidebar">
+                              <div class="ps-product__thumbnail"><a class="ps-product__overlay" href="product-default.html"></a>
+                                <img [src]="url +'obtener_portada/'+item.producto.portada" alt=""></div>
+                              <div class="ps-product__content"><a class="ps-product__title" [routerLink]="['/productos/',item.producto.slug]">{{item.producto.titulo}}</a>
+                                <p class="ps-product__price"> {{item.review}}</p>
+                                <span>{{item.createdAt|date}}</span>
+                              </div>
+                            </div>
+                          </td>
+                          <td>
+                            <div *ngIf="item.estrellas == 1">
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                            </div>
+                            <div *ngIf="item.estrellas == 2">
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                            </div>
+                            <div *ngIf="item.estrellas == 3">
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                            </div>
+                            <div *ngIf="item.estrellas == 4">
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#ccc!important"></i></span>
+                            </div>
+                            <div *ngIf="item.estrellas == 5">
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                              <span><i class="fa fa-star" style="color:#f1ee51!important"></i></span>
+                            </div>
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="col-12" *ngIf="reviews.length >= 1">
+                    <ngb-pagination
+                    [(page)]="page"
+                    [pageSize]="pageSize"
+                    [collectionSize]="reviews.length"
+                  ></ngb-pagination>
+
+                  <ng-container *ngIf="reviews.length == 0">
+                    <div class="col-12 mb-3">
+                      <div class="rounded mb-5 p-3">
+                        <form class="ps-form--404" action="404-page.html" method="get">
+                          <div class="ps-form__header">
+                            <img src="assets/images/Icono-no-resenas.png" alt="">
+                          </div>
+                          <h3>No tienes ninguna reseña.</h3>
+                          <p>Quieres seguir comprando? Regresara a <a style="cursor: pointer;" [routerLink]="['/productos']" > Home</a></p>
+                         
+                        </form>
+                      </div>
+                     
+                    </div>
+                  </ng-container>
+                  
+  
+                  
+                  </div>
+                </div>
+
+
+              </div>
+            </div>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

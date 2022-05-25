@@ -1,0 +1,83 @@
+<app-nav></app-nav>
+
+<div class="ps-page--default">
+  <div class="container">
+    <div class="ps-page__header">
+      <h3>Mi cuenta</h3>
+      <ul class="ps-breadcrumb">
+        <li class="active"><a><b>Mi perfil</b></a></li>
+        <li><a style="cursor: pointer;" [routerLink]="['/cuenta/direcciones']" >Direcciones</a></li>
+        <li><a  style="cursor: pointer;" [routerLink]="['/cuenta/pedidos']">Mis pedidos</a></li>
+        <li><a  style="cursor: pointer;" [routerLink]="['/cuenta/reviews']">Mis reseñas</a></li>
+       
+      </ul>
+    </div>
+    <div class="ps-page__content">
+      <div class="ps-checkout">
+        
+        <form class="ps-form--checkout" #actualizarForm="ngForm" (ngSubmit)="actualizar(actualizarForm)">
+          <div class="row">
+            <div class="col-md-6 mx-auto">
+              <div class="ps-form__billings">
+                <h4 class="ps-form__heading">Cuenta</h4>
+                <div class="row">
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Nombres <sup>*<sup></sup></sup></label>
+                      <input type="text" required class="form-control form-control-lg" name="nombres" [(ngModel)]="cliente.nombres" placeholder="Nombres completos">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Apellidos <sup>*<sup></sup></sup></label>
+                      <input type="text" required class="form-control form-control-lg" name="apellidos" [(ngModel)]="cliente.apellidos" placeholder="Apellidos completos">
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Correo electrónico</label>
+                      <input type="email" class="form-control form-control-lg" readonly value="{{cliente.email}}">
+                    </div>
+                  </div>
+                  <div class="col-sm-12">
+                    <div class="form-group">
+                      <label>Nueva contraseña</label>
+                      <input type="password" autocomplete="new-password" class="form-control form-control-lg" placeholder="Nueva contraseña" id="input_password">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Telefono <sup>*<sup></sup></sup></label>
+                      <input type="number" required class="form-control form-control-lg" placeholder="Telefono" name="telefono" [(ngModel)]="cliente.telefono">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>Fecha nacimiento <sup>*<sup></sup></sup></label>
+                      <input type="date" required class="form-control form-control-lg" name="f_nacimiento" [(ngModel)]="cliente.f_nacimiento">
+                    </div>
+                  </div>
+                  <div class="col-sm-6">
+                    <div class="form-group">
+                      <label>DNI <sup>*<sup></sup></sup></label>
+                      <input type="text" required class="form-control form-control-lg" placeholder="12345678" name="dni" [(ngModel)]="cliente.dni">
+                    </div>
+                  </div>
+                  
+                  <div class="col-sm-12">
+                    <button type="submit" class="ps-btn ps-btn--fullwidth ps-btn--black">Actualizar perfil</button>
+                  </div>
+                  
+                </div>
+              </div>
+            </div>
+          
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<app-footer></app-footer>

@@ -1,0 +1,115 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Cupones
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+
+
+            <!-- Card -->
+            <form #registroForm="ngForm" (ngSubmit)="registro(registroForm)">
+              <div class="card">
+                <div class="card-header">
+  
+                  <!-- Title -->
+                  <h4 class="card-header-title">
+                    Registro de un nuevo producto
+                  </h4>
+  
+                </div>
+  
+                <div class="card-body">
+                  <div class="row">
+                      <div class="col-lg-12">
+                          <div class="row">
+                              <div class="col-4">
+                                  <div class="form-group">
+                                      <label for="exampleInputEmail1">Código (*)</label>
+                                      <input type="text" required class="form-control" placeholder="Código del cupón" name="codigo" [(ngModel)]="cupon.codigo">
+                                  </div>
+                              </div>
+                              <div class="col-4">
+                                  <div class="form-group">
+                                      <label for="exampleInputEmail1">Tipo (*)</label>
+                                      <select  class="form-control custom-select" id="select-input" required name="disponibilidad" [(ngModel)]="cupon.disponibilidad">
+                                        <option value="" selected disabled>Seleccionar</option>
+                                        <option value="Ecuador">Ecuador</option>
+                                        <option value="Exterior">Exterior</option>
+                         
+                                    </select>
+                                  </div>
+                              </div>
+                              <div class="col-4">
+                                    <div class="form-group">
+                                        <label for="exampleInputEmail1">Canjes (*)</label>
+                                        <input type="number" class="form-control" required placeholder="Número de canjes" name="limite" [(ngModel)]="cupon.limite">
+                                    </div>
+                                </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-4">
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">Tipo descuento (*)</label>
+                                    <select class="form-control custom-select" id="select-input" required name="tipo" [(ngModel)]="cupon.tipo">
+                                      <option value="" selected disabled>Seleccionar</option>
+                                      <option value="Porcentaje">Porcentaje</option>
+                                        <option value="Valor fijo">Valor fijo</option>
+                                  </select>
+                                </div>
+                            </div>
+                            <div class="col-4">
+                                <label for="validationCustom01" class="form-label">
+                                    Valor
+                                </label>
+                                <input class="form-control" type="number" placeholder="Valor del descuento" required name="valor" [(ngModel)]="cupon.valor">
+                            </div>
+                          </div>
+                      </div>
+                     
+                     
+                  </div>
+                </div>
+                <div class="card-footer">
+  
+                    <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/cupones']" routerLinkActive="router-link-active" >Regresar</a>
+                    <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Crear</button>
+                                    
+                    <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Creando...
+                    </button>
+  
+                    
+                </div>
+              </div>
+            </form>
+              
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>

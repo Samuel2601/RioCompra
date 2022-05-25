@@ -1,0 +1,160 @@
+<nav class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light" id="sidebar">
+    <div class="container-fluid">
+
+      <!-- Toggler -->
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#sidebarCollapse" aria-controls="sidebarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <!-- Brand -->
+      <a class="navbar-brand" [routerLink]="['/clientes']" >
+        <img src="./assets/img/logo.svg" class="navbar-brand-img 
+        mx-auto" style="max-height: 4rem !important;" alt="...">
+      </a>
+
+      <!-- User (xs) -->
+      <div class="navbar-user d-md-none">
+
+        <!-- Dropdown -->
+        <div class="dropdown">
+
+          <!-- Toggle -->
+          <a href="#" id="sidebarIcon" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <div class="avatar avatar-sm avatar-online">
+              <img src="./assets/img/avatars/profiles/avatar.png" class="avatar-img rounded-circle" alt="...">
+            </div>
+          </a>
+
+          <!-- Menu -->
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sidebarIcon">
+            <a class="dropdown-item" style="cursor:pointer" (click)="logout()">
+              <span class="fe fe-log-out me-4"></span> Cerrar sesión
+            </a>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- Collapse -->
+      <div class="collapse navbar-collapse" id="sidebarCollapse">
+
+        <!-- Form -->
+        <form class="mt-4 mb-3 d-md-none">
+          <div class="input-group input-group-rounded input-group-merge">
+            <input type="search" class="form-control form-control-rounded form-control-prepended" placeholder="Search" aria-label="Search">
+            <div class="input-group-prepend">
+              <div class="input-group-text">
+                <span class="fe fe-search"></span>
+              </div>
+            </div>
+          </div>
+        </form>
+
+        <!-- Navigation -->
+        <ul class="navbar-nav">
+         
+          <li class="nav-item">
+            <a class="nav-link " [routerLink]="['/clientes']" routerLinkActive="active" >
+              <i class="fe fe-user"></i> Clientes
+            </a>
+          </li>
+        
+          <li class="nav-item d-md-none">
+            <a class="nav-link" href="#sidebarModalActivity" data-toggle="modal">
+              <span class="fe fe-bell"></span> Notifications
+            </a>
+          </li>
+        </ul>
+
+        <!-- Divider -->
+        <hr class="navbar-divider my-3">
+
+        <!-- Heading -->
+        <h6 class="navbar-heading">
+          CONTROL
+        </h6>
+
+        <!-- Navigation -->
+        <ul class="navbar-nav mb-md-4">
+          <li class="nav-item">
+            <a class="nav-link " [routerLink]="['/productos']" routerLinkActive="active" >
+              <i class="fe fe-shopping-bag"></i> Productos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " [routerLink]="['/cupones']" routerLinkActive="active" >
+              <i class="fe fe-tag"></i> Cupones
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " [routerLink]="['/ventas']" routerLinkActive="active" >
+              <i class="fe fe-shopping-cart"></i> Ventas
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " [routerLink]="['/dashboard']" routerLinkActive="active" >
+              <i class="fe fe-settings"></i> Dashboard
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link " [routerLink]="['/configuraciones']" routerLinkActive="active" >
+              <i class="fe fe-settings"></i> Configuraciones
+            </a>
+          </li>
+
+
+         
+        </ul>
+
+        <!-- Push content down -->
+        <div class="mt-auto"></div>
+
+
+
+        
+        <!-- User (md) -->
+        <div class="navbar-user d-none d-md-flex" id="sidebarUser" style="display: none !important">
+
+          <!-- Icon -->
+          <a href="#sidebarModalActivity" class="navbar-user-link" data-toggle="modal">
+            <span class="icon">
+              <i class="fe fe-bell"></i>
+            </span>
+          </a>
+
+          <!-- Dropup -->
+          <div class="dropup">
+
+            <!-- Toggle -->
+            <a href="#" id="sidebarIconCopy" class="dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <div class="avatar avatar-sm avatar-online">
+                <img src="./assets/img/avatars/profiles/avatar-1.jpg" class="avatar-img rounded-circle" alt="...">
+              </div>
+            </a>
+
+            <!-- Menu -->
+            <div class="dropdown-menu" aria-labelledby="sidebarIconCopy">
+              <a href="./profile-posts.html" class="dropdown-item">Profile</a>
+              <a href="./account-general.html" class="dropdown-item">Settings</a>
+              <hr class="dropdown-divider">
+              <a href="./sign-in.html" class="dropdown-item">Logout</a>
+            </div>
+
+          </div>
+
+          <!-- Icon -->
+          <a href="#sidebarModalSearch" class="navbar-user-link" data-toggle="modal">
+            <span class="icon">
+              <i class="fe fe-search"></i>
+            </span>
+          </a>
+
+        </div>
+        
+
+      </div> <!-- / .navbar-collapse -->
+
+    </div>
+</nav>
+<app-topnav></app-topnav>

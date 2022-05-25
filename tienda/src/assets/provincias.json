@@ -1,0 +1,118 @@
+
+[
+  {
+    "id": "0101",
+    "name": "Esmeraldas",
+    "department_id": "01"
+  },
+  {
+    "id": "0102",
+    "name": "Manabí",
+    "department_id": "01"
+  },
+  {
+    "id": "0103",
+    "name": "Los Ríos",
+    "department_id": "01"
+  },
+  {
+    "id": "0104",
+    "name": "Santa Elena",
+    "department_id": "01"
+  },
+  {
+    "id": "0105",
+    "name": "Guayas",
+    "department_id": "01"
+  },
+  {
+    "id": "0106",
+    "name": "Santo Domingo de los Tsáchilas",
+    "department_id": "01"
+  },
+  {
+    "id": "0107",
+    "name": "El Oro",
+    "department_id": "01"
+  },
+  {
+    "id": "0201",
+    "name": "Azuay",
+    "department_id": "02"
+  },
+  {
+    "id": "0202",
+    "name": "Bolívar",
+    "department_id": "02"
+  },
+  {
+    "id": "0203",
+    "name": "Cañar",
+    "department_id": "02"
+  },
+  {
+    "id": "0204",
+    "name": "Carchi",
+    "department_id": "02"
+  },
+  {
+    "id": "0205",
+    "name": "Cotopaxi",
+    "department_id": "02"
+  },
+  {
+    "id": "0206",
+    "name": "Chimborazo",
+    "department_id": "02"
+  },
+  {
+    "id": "0207",
+    "name": "Imbabura",
+    "department_id": "02"
+  },
+  {
+    "id": "0208",
+    "name": "Loja",
+    "department_id": "02"
+  },
+  {
+    "id": "0209",
+    "name": "Pichincha",
+    "department_id": "02"
+  },
+  {
+    "id": "0210",
+    "name": "Tungurahua",
+    "department_id": "02"
+  },
+  {
+    "id": "0301",
+    "name": "Morona Santiago",
+    "department_id": "03"
+  },
+  {
+    "id": "0302",
+    "name": "Napo",
+    "department_id": "03"
+  },
+  {
+    "id": "0303",
+    "name": "Orellana",
+    "department_id": "03"
+  },
+  {
+    "id": "0304",
+    "name": "Pastaza",
+    "department_id": "03"
+  },
+  {
+    "id": "0305",
+    "name": "Sucumbíos",
+    "department_id": "03"
+  },
+  {
+    "id": "0306",
+    "name": "Zamora Chinchipe",
+    "department_id": "03"
+  }
+]

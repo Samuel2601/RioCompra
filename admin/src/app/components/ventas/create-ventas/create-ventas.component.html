@@ -1,0 +1,312 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <!-- Header -->
+            <div class="header mt-md-5">
+                <div class="header-body">
+                  <div class="row align-items-center">
+                    <div class="col">
+  
+                      <!-- Pretitle -->
+                      <h6 class="header-pretitle">
+                        Módulo
+                      </h6>
+  
+                      <!-- Title -->
+                      <h1 class="header-title">
+                          Ventas
+                      </h1>
+  
+                    </div>
+                  </div> <!-- / .row -->
+        
+                </div>
+              </div>
+
+            <!-- Alert -->
+
+
+            <div class="card">
+                <div class="card-header">
+  
+                  <!-- Title -->
+                  <h4 class="card-header-title">
+                    Venta manual
+                  </h4>
+  
+                </div>
+  
+                <div class="card-body">
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="validationCustom01" class="form-label"><b>Cliente</b></label> <br>
+                            <div class="input-group">
+                                
+                                <input class="form-control" type="text" id="input-cliente" placeholder="Seleccionar cliente">
+                                <button class="btn btn-primary" type="button" data-toggle="modal" [attr.data-target]="'#modalCliente'">Go!</button>
+                            </div>
+    
+                            <div class="modal fade" id="modalCliente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLongTitle">Seleccion el cliente</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body" style="max-height: 600px;
+                                    overflow: hidden;
+                                    overflow-y: auto;">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" placeholder="Busca el cliente" name="filtro_cliente" [(ngModel)]="filtro_cliente">
+                                            <button class="btn btn-primary" type="button" (click)="func_filtro_cliente()">Buscar</button>
+                                        </div>
+                                      <table class="table">
+                                            <thead>
+                                                <th>Cliente</th>
+                                                <th>Acción</th>
+                                            </thead>
+                                            <tbody *ngIf="!load_clientes">
+                                                <tr *ngFor="let item of clientes| slice: (pageCliente-1)*pageSizeCliente : (pageCliente-1) * pageSizeCliente + pageSizeCliente; let indice = index">
+                                                    <td>{{item.nombres}} {{item.apellidos}}</td>
+                                                    <td><a style="cursor: pointer;" class="text-success" (click)="select_cliente(item)">[Seleccionar]</a></td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="load_clientes">
+                                                <tr>
+                                                    <td colspan="2" class="text-center">
+                                                        <div class="spinner-border" role="status">
+                                                            <span class="visually-hidden"></span>
+                                                          </div> 
+                                                    </td>
+                                                </tr> 
+                                            </tbody>
+                                      </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <ngb-pagination
+                                            [(page)]="pageCliente"
+                                            [pageSize]="pageSizeCliente"
+                                            [collectionSize]="clientes.length"
+                                        ></ngb-pagination>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <label for="validationCustom01" class="form-label"><b>Direccion</b></label> <br>
+                            <div class="input-group">
+                                <input class="form-control" id="input-direccion" type="text" placeholder="Direccion del cliente">
+                                <button class="btn btn-primary" type="button" data-toggle="modal" [attr.data-target]="'#modalDireccion'">Go!</button>
+                            </div>
+    
+                            <div class="modal fade" id="modalDireccion" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLongTitle">Direcciones del cliente</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body" style="max-height: 600px;
+                                    overflow: hidden;
+                                    overflow-y: auto;">
+                                       
+                                      <table class="table">
+                                            <thead>
+                                                <th>Direccion</th>
+                                                <th>Acción</th>
+                                            </thead>
+                                            <tbody *ngIf="!load_direcciones">
+                                                <tr *ngFor="let item of direcciones">
+                                                    <td>{{item.direccion}}, {{item.distrito}}</td>
+                                                    <td><a style="cursor: pointer;" class="text-success" (click)="select_direccion(item)">[Seleccionar]</a></td>
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="load_direcciones">
+                                                <tr>
+                                                    <td colspan="2" class="text-center">
+                                                        <div class="spinner-border" role="status">
+                                                            <span class="visually-hidden"></span>
+                                                          </div> 
+                                                    </td>
+                                                </tr> 
+                                            </tbody>
+                                      </table>
+                                    </div>
+    
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5">
+                            <label for="validationCustom01" class="form-label"><b>Metodo de pago</b></label> <br>
+                            <select class="form-control" id="select-input" name="metodo_pago" [(ngModel)]="venta.metodo_pago">
+                                <option selected disabled value="">Seleccionar</option>
+                                <option value="Tarjeta de crédito">Tarjeta de crédito</option>
+                                <option value="Yape o Plin">Yape o Plin</option>
+                                <option value="Transferencia o Deposito">Transferencia o Deposito</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="card-body">
+                    <div class="row form-group">
+                        <div class="col-lg-6">
+                            <label for="validationCustom01" class="form-label"><b>Producto</b></label> <br>
+                            <div class="input-group">
+                                <input class="form-control" type="text" placeholder="Seleccionar el producto" id="input-producto">
+                                <button class="btn btn-primary" type="button" data-toggle="modal" [attr.data-target]="'#modalProducto'">Go!</button>
+                            </div>
+    
+                            <div class="modal fade" id="modalProducto" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 550px;">
+                                  <div class="modal-content">
+                                    <div class="modal-header">
+                                      <h5 class="modal-title" id="exampleModalLongTitle">Seleccion el producto</h5>
+                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                      </button>
+                                    </div>
+                                    <div class="modal-body" style="max-height: 600px;
+                                    overflow: hidden;
+                                    overflow-y: auto;">
+                                        <div class="input-group">
+                                            <input class="form-control" type="text" placeholder="Busca el producto" name="filtro_producto" [(ngModel)]="filtro_producto">
+                                            <button class="btn btn-primary" type="button" (click)="func_filtro_producto()">Buscar</button>
+                                        </div>
+                                      <table class="table">
+                                            <thead>
+                                                <th>Producto</th>
+                                                <th>Talla</th>
+                                                <th>Stock</th>
+                                                <th>Acción</th>
+                                            </thead>
+                                            <tbody *ngIf="!load_variedades">
+                                                <tr *ngFor="let item of variedades| slice: (pageVariedad-1)*pageSizeVariedad : (pageVariedad-1) * pageSizeVariedad + pageSizeVariedad; let indice = index">
+                                                    <td>{{item.producto}}</td>
+                                                    <td>{{item.variedad}}</td>
+                                                    <td>{{item.cantidad}}</td>
+                                                    <td>
+                                                        <a style="cursor: pointer;" *ngIf="item.cantidad >= 1" class="text-success" (click)="select_producto(item)">[Seleccionar]</a>
+                                                        <button type="button" *ngIf="item.cantidad <= 0" class="text-success" disabled>[Seleccionar]</button>
+                                                    </td>
+    
+                                                </tr>
+                                            </tbody>
+                                            <tbody *ngIf="load_variedades">
+                                                <tr>
+                                                    <td colspan="2" class="text-center">
+                                                        <div class="spinner-border" role="status">
+                                                            <span class="visually-hidden"></span>
+                                                          </div> 
+                                                    </td>
+                                                </tr> 
+                                            </tbody>
+                                      </table>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <ngb-pagination
+                                            [(page)]="pageVariedad"
+                                            [pageSize]="pageSizeVariedad"
+                                            [collectionSize]="variedades.length"
+                                        ></ngb-pagination>
+                                    </div>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="validationCustom01" class="form-label"><b>Cantidad (*)</b></label>
+                            <input type="number" class="form-control" placeholder="1" name="cantidad" [(ngModel)]="cantidad">
+                        </div>
+                        <div class="col-lg-2">
+                            <label for="validationCustom01" class="form-label"><b>(*)</b></label>
+                            <br>
+                            <button class="btn btn-primary" (click)="addProducto()">Agregar</button>
+                        </div>
+                    </div>
+                    <div class="row form-group">
+                       
+                        <div class="col-12 form-group">
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                  <thead>
+                                    <tr>
+                                      <th>Producucto</th>
+                                      <th>Talla</th>
+                                      <th>Precio</th>
+                                      <th>Cantidad</th>
+                                      <th>Subtotal</th>
+                                      <th>Eliminar</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    <tr *ngFor="let item of dventa; let idx = index">
+                                      <th scope="row">{{item.titulo_producto}}</th>
+                                      <td>{{item.titulo_variedad}}</td>
+                                      <td>{{item.precio_und|currency:'USD'}}</td>
+                                      <td>{{item.cantidad}}</td>
+                                      <td>{{item.subtotal|currency:'USD'}}</td>
+                                      <td>
+                                          <a style="cursor: pointer;" class="text-danger" (click)="quitar(idx,item.subtotal)">[Delete]</a>
+                                      </td>
+                                    </tr>
+                                  </tbody>
+                                  <tfoot>
+                                      <tr>
+                                          <td colspan="5"><b>Total</b></td>
+                                          <td>{{total_pagar|currency:'USD'}}</td>
+                                      </tr>
+                                  </tfoot>
+                                </table>
+                              </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="row">
+                                <div class="col-4">
+                                    <label for="validationCustom01" class="form-label"><b>Total a pagar: (*)</b></label>
+                                    <h3>{{neto_pagar|currency:'USD'}}</h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="input-group">
+                                <input class="form-control" type="number" placeholder="Valor del descuento" name="descuento" [(ngModel)]="descuento">
+                                <button class="btn btn-primary" type="button" (click)="aplicarDescuento()">Go!</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer">
+  
+                    <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/ventas']" routerLinkActive="router-link-active" >Regresar</a>
+                    <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="button" (click)="registrar_venta()">Crear</button>
+                                    
+                    <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Creando...
+                    </button>
+  
+                    
+                </div>
+              </div>
+              
+
+          </div>
+        </div> <!-- / .row -->
+      </div>
+</div>
