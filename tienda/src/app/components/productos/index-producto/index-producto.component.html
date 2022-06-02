@@ -184,8 +184,8 @@
                     </div>
                   </div>
                 </ng-container>
-                <ng-container *ngIf="currency == 'PEN'">
-                  <ng-container *ngIf="item.visibilidad == 'Ecuador'">
+
+                  <ng-container *ngIf="item.visibilidad == country">
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 " >
                       <div class="ps-product">
                         <div class="ps-product__thumbnail">
@@ -220,9 +220,9 @@
                       </div>
                     </div>
                   </ng-container>
-                </ng-container>
-                <ng-container *ngIf="currency != 'PEN'">
-                  <ng-container *ngIf="item.visibilidad == 'Exterior'">
+            
+              
+                  <ng-container *ngIf="item.visibilidad != country">
                     <div class="col-xl-4 col-lg-4 col-md-4 col-sm-6 col-6 " >
                       <div class="ps-product">
                         <div class="ps-product__thumbnail">
@@ -257,7 +257,7 @@
                       </div>
                     </div>
                   </ng-container>
-                </ng-container>
+              
               </ng-container>
               
               
