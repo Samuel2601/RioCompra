@@ -77,7 +77,7 @@ const agregar_etiqueta_admin = async function(req,res){
         try {
             let data = req.body;
 
-            data.slug = data.titulo.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');;
+            data.slug = data.titulo.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
             var reg = await Etiqueta.create(data);
             res.status(200).send({data:reg});
         } catch (error) {

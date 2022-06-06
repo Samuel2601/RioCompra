@@ -19,12 +19,13 @@ test('Listar etiquetas',async()=>{
 
 });*/
 
+const { parse } = require('handlebars');
 const mongoose = require('mongoose');
 const supertest = require('supertest');
 const {app,sv} = require('../app');
 const api = supertest(app);
 let token = '';
-
+let id='';
 beforeAll(async () => {
   const response = await api
   .post('/api/login_admin')
@@ -33,6 +34,7 @@ beforeAll(async () => {
   expect(response.body.data).not.toEqual(undefined);
   expect(response.body.token).not.toEqual(undefined);
   token = response.body.token;
+
 });
 
 test('Login aceptado', async ()=>{
@@ -81,6 +83,48 @@ test('Listar etiquedas sin token', async()=>{
   
   expect(response2.body.message).toEqual('InvalidToken');
 })
+describe('Prueba de integración agregar eliminar etiqueta', ()=>{
+
+  test('agregar etiqueta admin', async()=>{
+    const response2 = await api 
+    .post('/api/agregar_etiqueta_admin')
+    .set('Authorization', `${token}`)
+    .send({titulo:'Prueba test',slug:'Prueba test'})
+    expect(response2.status).toEqual(200);
+    expect(response2.body.data).not.toEqual(undefined);
+    id=response2.body.data._id;
+  })
+  test('agregar etiqueta admin repetido', async()=>{
+    const response2 = await api 
+    .post('/api/agregar_etiqueta_admin')
+    .set('Authorization', `${token}`)
+    .send({titulo:'Prueba test',slug:'Prueba test'})
+    expect(response2.status).toEqual(200);
+    expect(response2.body.message).toEqual('Etiqueta ya existente');
+    expect(response2.body.data).toEqual(undefined);
+  })
+  test('eliminar etiqueta admin', async()=>{
+    const response3 = await api 
+    .delete('/api/eliminar_etiqueta_admin/'+id)
+    .set('Authorization', `${token}`)
+  
+    expect(response3.status).toEqual(200);
+    expect(response3.body.data).not.toEqual(undefined);
+  })
+  
+  
+})
+test('Obtener Configuracion', async()=>{
+  const response2 = await api 
+  .get('/api/obtener_config_admin')
+  //.set('Authorization', `${token}`)
+
+  expect(response2.status).toEqual(200);
+  
+  expect(response2.body.data).not.toEqual(undefined);
+})
+
+
 
 
 test('Listar Productos', async()=>{
@@ -104,6 +148,68 @@ test('Listar Productos sin token', async()=>{
   expect(response2.body.message).toEqual('InvalidToken');
 })
 
+test('listar etiquetas producto admin', async()=>{
+  const response2 = await api 
+  .get('/api/listar_etiquetas_producto_admin/61c003a61883d30198c8b066')
+  .set('Authorization', `${token}`)
+  
+  console.log(response2.body.message);
+  expect(response2.status).toEqual(200);
+  
+  expect(response2.body.data).not.toEqual(undefined);
+})
+test('listar etiquetas producto admin sin token', async()=>{
+  const response2 = await api 
+  .get('/api/listar_etiquetas_producto_admin/61c003a61883d30198c8b066')
+  .set('Authorization', `No${token}` )
+
+  console.log(response2.body.message);
+  expect(response2.status).toEqual(403);
+  
+  expect(response2.body.message).toEqual('InvalidToken');
+})
+
+test('listar variedades admin', async()=>{
+  const response2 = await api 
+  .get('/api/listar_variedades_admin/625b08288b79d122142d5310')
+  .set('Authorization', `${token}`)
+  
+  console.log(response2.body.message);
+  expect(response2.status).toEqual(200);
+  
+  expect(response2.body.data).not.toEqual(undefined);
+})
+test('listar variedades admin sin token', async()=>{
+  const response2 = await api 
+  .get('/api/listar_variedades_admin/625b08288b79d122142d5310')
+  .set('Authorization', `No${token}` )
+
+  console.log(response2.body.message);
+  expect(response2.status).toEqual(403);
+  
+  expect(response2.body.message).toEqual('InvalidToken');
+})
+
+test('listar inventario producto admin', async()=>{
+  const response2 = await api 
+  .get('/api/listar_inventario_producto_admin/61f062efb2f120193c7e0992')
+  .set('Authorization', `${token}`)
+  
+  console.log(response2.body.message);
+  expect(response2.status).toEqual(200);
+  
+  expect(response2.body.data).not.toEqual(undefined);
+})
+test('listar inventario producto admin sin token', async()=>{
+  const response2 = await api 
+  .get('/api/listar_inventario_producto_admin/61f06268b2f120193c7e096e')
+  .set('Authorization', `No${token}` )
+
+  console.log(response2.body.message);
+  expect(response2.status).toEqual(403);
+  
+  expect(response2.body.message).toEqual('InvalidToken');
+})
 
 test('Listar variedad Producto', async()=>{
   const response2 = await api 

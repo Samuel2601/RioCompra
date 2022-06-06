@@ -24,6 +24,7 @@ export class AdminService {
 
   listar_clientes_tienda(token:any):Observable<any>{
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
+    console.log(headers);
     return this._http.get(this.url + 'listar_clientes_tienda',{headers:headers});
   }
 
