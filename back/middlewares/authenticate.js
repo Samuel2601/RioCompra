@@ -13,7 +13,7 @@ exports.auth = function(req,res,next){
     var token = req.headers.authorization.replace(/['"]+/g,'');
 
     var segment = token.split('.');
-
+    
     if(segment.length != 3){
         return res.status(403).send({message: 'InvalidToken'});
     }else{

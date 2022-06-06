@@ -5,7 +5,7 @@ var bodyparser = require('body-parser');
 var mongoose = require('mongoose');
 var port = process.env.PORT || 4201;
 var app = express();
-
+var sv;
 var server = require('http').createServer(app);
 var io = require('socket.io')(server,{
     cors: {origin : '*'}
@@ -37,7 +37,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/tienda',{useUnifiedTopology: true, u
         console.log(err);
     }else{
         console.log("Corriendo....");
-        server.listen(port, function(){
+        sv=server.listen(port, ()=>{
             console.log("Servidor " + port );
         });
 
@@ -60,4 +60,4 @@ app.use('/api',cliente_routes);
 app.use('/api',admin_routes);
 app.use('/api',cupon_routes);
 
-module.exports = app;
+module.exports = {app,sv};
