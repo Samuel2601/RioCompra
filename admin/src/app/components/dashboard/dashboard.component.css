@@ -1,0 +1,12 @@
+.celda{
+    padding: 5px 10px;
+    text-align: center;
+    border: 1px solid #999;
+
+    }
+    div.b {
+        word-wrap: break-word;
+        width: 200px;
+        height: 100px;
+
+      }

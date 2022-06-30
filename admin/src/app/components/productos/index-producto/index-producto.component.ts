@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AdminService } from 'src/app/service/admin.service';
 import { GLOBAL } from 'src/app/service/GLOBAL';
 declare var iziToast:any;
@@ -17,7 +18,7 @@ export class IndexProductoComponent implements OnInit {
   public page = 1;
   public pageSize = 24;
   public filtro = '';
-
+  public id = '';
   public load_btn_etiqueta =false;
   public load_data_etiqueta =false;
   public nueva_etiqueta = '';
@@ -30,12 +31,24 @@ export class IndexProductoComponent implements OnInit {
   public url = GLOBAL.url;
 
   constructor(
+    private _route:ActivatedRoute,
     private _adminService:AdminService
   ) { }
 
   ngOnInit(): void {
     this.listar_etiquetas();
     this.init_data();
+    this._route.params.subscribe(
+      params=>{
+        this.id = params['id'];
+        if(this.id!=''&&this.id!='create'&&this.id!='edit'){
+          this.filtro=this.id;
+          //this.filtrar_producto();
+        }
+      }
+    );
+    this.filtrar_producto();
+   
   }
 
   init_data(){
@@ -144,10 +157,10 @@ export class IndexProductoComponent implements OnInit {
     }
   }
 
-  filtrar_producto(){
+    filtrar_producto(){
     if(this.filtro){
       var term = new RegExp(this.filtro.toString().trim() , 'i');
-      this.productos = this.productos_const.filter(item=>term.test(item.titulo)||term.test(item._id));
+      this.productos = this.productos_const.filter(item=>term.test(item.titulo)||term.test(item.slug)||term.test(item._id));
     }else{
       this.productos = this.productos_const;
     }

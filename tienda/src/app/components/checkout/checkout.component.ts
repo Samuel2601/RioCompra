@@ -82,8 +82,9 @@ export class CheckoutComponent implements OnInit {
     let lc_geo :any= localStorage.getItem('geo');
     this.geo = JSON.parse(lc_geo);
     this.country = this.geo.country_name;
-    //this.currency = this.geo.currency;
-
+    console.log(this.country);
+    this.currency = 'USD';
+    console.log(this.currency);
     this._guestService.get_Regiones().subscribe(
       response=>{
         this.regiones_arr = response;
@@ -478,7 +479,7 @@ export class CheckoutComponent implements OnInit {
               title: element.producto.titulo,
               description: element.producto.descripcion,
               quantity: element.cantidad,
-              currency_id: 'PEN',
+              currency_id: 'USD',
               unit_price: element.producto.precio
             });
           });
@@ -487,7 +488,7 @@ export class CheckoutComponent implements OnInit {
             title: 'Envio',
               description: 'Concepto de transporte y logistica',
               quantity: 1,
-              currency_id: 'PEN',
+              currency_id: 'USD',
               unit_price: this.envio
           });
 
@@ -496,18 +497,18 @@ export class CheckoutComponent implements OnInit {
               title: 'Descuento',
                 description: 'Cupón aplicado ' + this.venta.cupon,
                 quantity: 1,
-                currency_id: 'PEN',
+                currency_id: 'USD',
                 unit_price: -(this.descuento)
             });
           }
 
           let data = {
-            notification_url: 'https://hookb.in/6JlGBe8MYbsoRnwwRd1Z',
+            notification_url: 'https://hookb.in/2q0Y1B3PLKhdLKbdGWJ2',
             items: items,
             back_urls: {
-                failure: "http://localhost:5000/verificar-pago/failure/"+this.direccion_envio._id+'/'+this.venta.cupon+'/'+this.envio+'/'+this.tipo_descuento+'/'+this.valor_descuento+'/'+this.total_pagar+'/'+this.subtotal,
-                pending: "http://localhost:5000/verificar-pago/pending/"+this.direccion_envio._id+'/'+this.venta.cupon+'/'+this.envio+'/'+this.tipo_descuento+'/'+this.valor_descuento+'/'+this.total_pagar+'/'+this.subtotal,
-                success: "http://localhost:5000/verificar-pago/success/"+this.direccion_envio._id+'/'+this.venta.cupon+'/'+this.envio+'/'+this.tipo_descuento+'/'+this.valor_descuento+'/'+this.total_pagar+'/'+this.subtotal,
+                failure: "http://localhost:52092/verificar-pago/failure/"+this.direccion_envio._id+'/'+this.venta.cupon+'/'+this.envio+'/'+this.tipo_descuento+'/'+this.valor_descuento+'/'+this.total_pagar+'/'+this.subtotal,
+                pending: "http://localhost:52092/verificar-pago/pending/"+this.direccion_envio._id+'/'+this.venta.cupon+'/'+this.envio+'/'+this.tipo_descuento+'/'+this.valor_descuento+'/'+this.total_pagar+'/'+this.subtotal,
+                success: "http://localhost:52092/verificar-pago/success/"+this.direccion_envio._id+'/'+this.venta.cupon+'/'+this.envio+'/'+this.tipo_descuento+'/'+this.valor_descuento+'/'+this.total_pagar+'/'+this.subtotal,
             },
             auto_return: "approved"
           }

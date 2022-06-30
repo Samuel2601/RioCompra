@@ -158,9 +158,12 @@
                                         <a *ngIf="item.pais == 'Ecuador'" class="text-success mt-4" style="cursor: pointer;margin-right: 2rem;" (click)="select_direccion_envio(item)">
                                             [Seleccionar]
                                         </a>
-                                        <a *ngIf="item.pais != 'Ecuador'" class="text-danger mt-4" style="cursor: pointer;margin-right: 2rem;cursor: not-allowed;">
+                                        <a *ngIf="item.pais != 'Ecuador'" class="text-success mt-4" style="cursor: pointer;margin-right: 2rem;" (click)="select_direccion_envio(item)">
                                             [Seleccionar]
                                         </a>
+                                        <!--<a *ngIf="item.pais != 'Ecuador'" class="text-danger mt-4" style="cursor: pointer;margin-right: 2rem;cursor: not-allowed;">
+                                            [Seleccionar]
+                                        </a>-->
                                       </ng-container>
                                   </div>
                               </figure>
@@ -265,12 +268,12 @@
                         </figure>
                         <figure class="ps-block__payment-methods">
                             <ng-container *ngIf="currency == 'USD'">
-                                <div class="ps-radio" style="display: flex; justify-content: space-between;">
+                                <!--<div class="ps-radio" style="display: flex; justify-content: space-between;">
                                     <input class="form-control" type="radio" id="shipping-3" name="metodo_pago" [(ngModel)]="metodo_pago" value="Tarjeta de crédito">
                                     <label for="shipping-3" class="text-muted"><b>Tarjeta de crédito</b></label>
 
                                     <img src="assets/img/payments.png" style="width: 130px;">
-                                </div>
+                                </div>-->
                                 <div class="ps-radio">
                                     <input class="form-control" type="radio" id="shipping-1" name="metodo_pago" [(ngModel)]="metodo_pago" value="Yape o Plin">
                                     <label for="shipping-1" class="text-muted"><b>¡Paga al instante con Yape o Plin!</b></label>
@@ -293,11 +296,14 @@
                       <div class="ps-block__footer">
                         <ng-container *ngIf="direccion_envio != undefined">
                             <ng-container *ngIf="carrito_arr.length >= 1">
+                                
                               <ng-container *ngIf="currency == 'USD'">
+                                <!--
                                 <div class="ps-block__bottom" *ngIf="metodo_pago == 'Tarjeta de crédito'">
                                   <a *ngIf="!btn_load" class="ps-btn ps-btn--black" id="btnBuy" style="cursor: pointer;" (click)="get_token_culqi()">Procesar pago</a>
                                   <button *ngIf="btn_load" class="ps-btn ps-btn--black btnBuy" style="cursor: pointer;" disabled>Procesando...</button>
                                 </div>
+                                    -->
                                 <div class="ps-block__bottom" *ngIf="metodo_pago == 'Yape o Plin'">
                                   <a *ngIf="!btn_load" class="ps-btn ps-btn--black" id="btnBuy" style="cursor: pointer;" (click)="generar_pedido('Yape o Plin')">Enviar pedido</a>
                                   <button *ngIf="btn_load" class="ps-btn ps-btn--black btnBuy" style="cursor: pointer;" disabled>Procesando...</button>

@@ -95,7 +95,7 @@
                             </div>
                             <div class="col-md-9">
                   
-                              <div class="table-responsive mt-3">
+                              <div class="table-responsive mt-3 table-hover">
                                 <table class="table table-sm table-bordered" *ngIf="producto.galeria">
                                   <thead class="thead-dark">
                                     <tr>
@@ -176,7 +176,13 @@
                         </div>
                       </div>
                     </ng-container>
-        
+                    <div class="card-footer">
+  
+                      <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/productos']" routerLinkActive="router-link-active" >Regresar</a>
+
+    
+                      
+                  </div>
                   
               </div>
               <ng-container  *ngIf="producto == undefined">

@@ -48,6 +48,7 @@ export class VariedadesProductoComponent implements OnInit {
     this._adminService.listar_variedades_admin(this.id,this.token).subscribe(
       response=>{
         this.variedades = response.data;
+        console.log(this.variedades);
         this.load_data = false;
       }
     );

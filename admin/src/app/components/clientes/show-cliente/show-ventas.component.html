@@ -336,17 +336,6 @@
                         </tr>
                         <tr>
                           <td style="padding-left: 1.3rem !important;" colspan="3">
-                            <b>Descuento</b>
-                          </td>
-                          <td class="" colspan="1">
-                            <div class="py-2 pr-3 text-right">
-                              <!--<span *ngIf="venta.currency == 'PEN'">- S/{{venta.valor_descuento}}</span>-->
-                              <span  *ngIf="venta.currency == 'USD'">- ${{venta.valor_descuento}}</span>
-                            </div>  
-                          </td>
-                        </tr>
-                        <tr>
-                          <td style="padding-left: 1.3rem !important;" colspan="3">
                             <b>Subtotal</b>
                           </td>
                           <td class="" colspan="1">
@@ -356,7 +345,17 @@
                             </div>  
                           </td>
                         </tr>
-                        
+                        <tr>
+                          <td style="padding-left: 1.3rem !important;" colspan="3">
+                            <b>Descuento</b>
+                          </td>
+                          <td class="" colspan="1">
+                            <div class="py-2 pr-3 text-right">
+                              <!--<span *ngIf="venta.currency == 'PEN'">- S/{{venta.valor_descuento}}</span>-->
+                              <span  *ngIf="venta.currency == 'USD'">- ${{venta.valor_descuento}}</span>
+                            </div>  
+                          </td>
+                        </tr>
                         <tr>
                           <td style="padding-left: 1.3rem !important;" colspan="3">
                             <b>Envio</b>

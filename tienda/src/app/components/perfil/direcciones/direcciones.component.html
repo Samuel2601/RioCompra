@@ -73,13 +73,8 @@
                                     <select class="form-control" name="str_pais" required [(ngModel)]="str_pais" (change)="select_pais()">
                                         <option value="" selected disabled>Seleccionar</option>
                                         <ng-container *ngFor="let item of zonas">
-                                            
-                                            <ng-container  *ngIf="currency =='USD' && geo.country =='EC'">
-                                                <option value="{{item.country}}_{{item.zona}}" *ngIf="item.country =='Ecuador'">{{item.country}}</option>
-                                            </ng-container>
-                                            <ng-container  *ngIf="currency !='USD' || geo.country !='EC'">
-                                                <option value="{{item.country}}_{{item.zona}}" *ngIf="item.country !='Ecuador'">{{item.country}}</option>
-                                            </ng-container>
+                                            <option value="{{item.country}}_{{item.zona}}" >{{item.country}}</option>
+                                         
                                            
                                         </ng-container>
                                         

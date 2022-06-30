@@ -75,7 +75,7 @@ const validar_cupon_admin = async function(req,res){
 
         if(data){
            if(data.limite == 0){
-             res.status(200).send({data:undefined,message: 'Se superó el mimite máximo de canjes'});
+             res.status(200).send({data:undefined,message: 'Se superó el limite máximo de canjes'});
            }else{
              res.status(200).send({data:data});
            }

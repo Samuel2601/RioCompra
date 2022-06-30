@@ -27,6 +27,7 @@ const appRoute : Routes = [
     {path: 'clientes', component: IndexClientesComponent, canActivate:[AuthGuard]},
 
     {path: 'productos', component: IndexProductoComponent, canActivate:[AuthGuard]},
+    //{path: 'productos/:id', component: IndexProductoComponent, canActivate:[AuthGuard]},
     {path: 'productos/create', component: CreateProductoComponent, canActivate:[AuthGuard]},
     {path: 'productos/edit/:id', component: EditProductoComponent, canActivate:[AuthGuard]},
     {path: 'productos/variedades/:id', component: VariedadesProductoComponent, canActivate:[AuthGuard]},

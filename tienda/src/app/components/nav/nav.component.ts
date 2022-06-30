@@ -44,8 +44,9 @@ export class NavComponent implements OnInit {
     let lc_geo :any= localStorage.getItem('geo');
     this.geo = JSON.parse(lc_geo);
     this.country = this.geo.country_name;
-    //this.currency = this.geo.currency;
-
+    console.log(this.country);
+    this.currency = this.geo.currency;
+    console.log(this.currency);
     if(this.token){
       let obj_lc :any= localStorage.getItem('user_data');
       this.user_lc = JSON.parse(obj_lc);

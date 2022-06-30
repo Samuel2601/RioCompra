@@ -114,6 +114,41 @@ describe('Prueba de integración agregar eliminar etiqueta', ()=>{
   
   
 })
+
+describe('Prueba de integración agregar obtener y eliminar producto ', ()=>{
+
+  test('agregar etiqueta admin', async()=>{
+    const response2 = await api 
+    .post('/api/agregar_etiqueta_admin')
+    .set('Authorization', `${token}`)
+    .send({titulo:'Prueba test',slug:'Prueba test'})
+    expect(response2.status).toEqual(200);
+    expect(response2.body.data).not.toEqual(undefined);
+    id=response2.body.data._id;
+  })
+  test('agregar etiqueta admin repetido', async()=>{
+    const response2 = await api 
+    .post('/api/agregar_etiqueta_admin')
+    .set('Authorization', `${token}`)
+    .send({titulo:'Prueba test',slug:'Prueba test'})
+    expect(response2.status).toEqual(200);
+    expect(response2.body.message).toEqual('Etiqueta ya existente');
+    expect(response2.body.data).toEqual(undefined);
+  })
+  test('eliminar etiqueta admin', async()=>{
+    const response3 = await api 
+    .delete('/api/eliminar_etiqueta_admin/'+id)
+    .set('Authorization', `${token}`)
+  
+    expect(response3.status).toEqual(200);
+    expect(response3.body.data).not.toEqual(undefined);
+  })
+  
+  
+})
+
+
+
 test('Obtener Configuracion', async()=>{
   const response2 = await api 
   .get('/api/obtener_config_admin')

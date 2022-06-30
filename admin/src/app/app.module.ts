@@ -34,6 +34,9 @@ import {registerLocaleData} from '@angular/common';
 registerLocaleData(localeES,'es');
 
 @NgModule({
+  exports:[
+
+  ],
   declarations: [
     AppComponent,
     LoginComponent,
@@ -56,6 +59,7 @@ registerLocaleData(localeES,'es');
     CreateVentasComponent
   ],
   imports: [
+    
     BrowserModule,
     AppRoutingModule,
     routing,
@@ -63,7 +67,7 @@ registerLocaleData(localeES,'es');
     HttpClientModule,
     NgbPaginationModule,
     NgxTinymceModule.forRoot({
-      baseURL: '../../../assets/tinymce/',
+      baseURL: '//cdnjs.cloudflare.com/ajax/libs/tinymce/5.7.1/',
     }),
   ],
   providers: [{provide:LOCALE_ID,useValue:'es'}],

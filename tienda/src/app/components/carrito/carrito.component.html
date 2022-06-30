@@ -15,7 +15,7 @@
 
         <ng-container *ngIf="user_lc != undefined">
           <div class="ps-shopping-cart" *ngIf="carrito_arr.length >= 1">
-            <div class="table-responsive">
+            <div class="table-responsive table-hover">
               <table class="table ps-table ps-table--shopping-cart">
                   <thead>
                     <tr>
@@ -192,7 +192,7 @@
         </ng-container>
         <ng-container *ngIf="user_lc == undefined">
           <div class="ps-shopping-cart" *ngIf="carrito_logout.length >= 1">
-            <div class="table-responsive">
+            <div class="table-responsive table-hover">
               <table class="table ps-table ps-table--shopping-cart" *ngIf="user_lc == undefined">
                 <thead>
                   <tr>

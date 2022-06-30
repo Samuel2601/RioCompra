@@ -109,7 +109,7 @@
                         </div>
                     </div>
               </div>
-              <div class="table-responsive">
+              <div class="table-responsive table-hover" style="min-height: 200px">
                 <table class="table table-sm table-nowrap card-table">
                   <thead>
                     <tr>
@@ -155,7 +155,7 @@
                         {{item.stock}}
                       </td>
                       <td>
-                        <div class="dropdown">
+                        <div class="dropdown" >
                           <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonAlias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Opciones
                           </button>
@@ -163,20 +163,16 @@
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonAlias">
                             <li>
                               <a class="dropdown-item" [routerLink]="['/productos/edit',item._id]">Editar</a>
-                            </li>
-                            <li>
                               <a class="dropdown-item" [routerLink]="['/productos/variedades',item._id]">Variedades</a>
-                            </li>
-                            <li>
                               <a class="dropdown-item" [routerLink]="['/productos/inventario',item._id]">Inventario</a>
-                            </li>
-                            <li>
                               <a class="dropdown-item" [routerLink]="['/productos/galeria',item._id]">Galería</a>
+                              <a *ngIf="item.estado == 'Edicion'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Mostrar producto</a>
+                              <a *ngIf="item.estado == 'Publicado'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Ocultar producto</a>
+                            
                             </li>
+                            
 
-                            <a *ngIf="item.estado == 'Edicion'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Mostrar producto</a>
-                            <a *ngIf="item.estado == 'Publicado'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Ocultar producto</a>
-                          </ul>
+                           </ul>
                         </div>
 
                         <div class="modal fade" id="vs-{{item._id}}" tabindex="-1" style="display: none;" aria-hidden="true">

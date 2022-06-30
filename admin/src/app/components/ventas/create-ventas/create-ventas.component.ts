@@ -40,7 +40,7 @@ export class CreateVentasComponent implements OnInit {
   public pageSizeVariedad = 20;
   public load_variedades= false;
   public producto_select :any= undefined;
-
+  public auxneto=0;
   public cantidad = 1;
   public venta :any = {
     metodo_pago: ''
@@ -52,7 +52,7 @@ export class CreateVentasComponent implements OnInit {
   public neto_pagar = 0;
   public filtro_producto = '';
   public descuento = 0;
-
+  public descuento_aplicado = 0;
   constructor(
     private _adminService:AdminService,
     private _router:Router
@@ -173,10 +173,19 @@ export class CreateVentasComponent implements OnInit {
   }
 
   addProducto(){
+    var con=0;
     if(this.geo.currency!="USD"){
       if(this.producto_select != undefined){
         if(this.cantidad >= 1){
-          if(this.cantidad <= this.producto_select.cantidad){
+          con=0;
+          this.dventa.forEach((element:any) => {
+            if(element.titulo_producto==this.producto_select.producto && element.variedad == this.producto_select.idvariedad){
+              con=element.cantidad+con;
+            }
+          });
+          console.log(con);
+          if((this.cantidad+con)<= this.producto_select.cantidad){
+            
             this.dventa.push({
               titulo_producto: this.producto_select.producto,
               precio_und: this.producto_select.precio_soles,
@@ -222,7 +231,15 @@ export class CreateVentasComponent implements OnInit {
     }else{
       if(this.producto_select != undefined){
         if(this.cantidad >= 1){
-          if(this.cantidad <= this.producto_select.cantidad){
+          console.log("Producto ingresado:",this.producto_select.producto);
+          con=0;
+          this.dventa.forEach((element:any) => {
+            if(element.titulo_producto==this.producto_select.producto && element.variedad == this.producto_select.idvariedad){
+              con=element.cantidad+con;
+            }
+          });
+          console.log(con);
+          if((this.cantidad+con)<= this.producto_select.cantidad){
             this.dventa.push({
               titulo_producto: this.producto_select.producto,
               precio_und: this.producto_select.precio_dolar,
@@ -355,6 +372,8 @@ export class CreateVentasComponent implements OnInit {
       });
     }else{
       this.load_btn = true;
+      //console.log(this.venta);
+
       this._adminService.registro_compra_manual_cliente(this.venta,this.token).subscribe(
         response=>{
           this.load_btn = false;
@@ -367,10 +386,23 @@ export class CreateVentasComponent implements OnInit {
   }
 
   aplicarDescuento(){
+
     if(this.neto_pagar >= 0){
-      if(this.descuento <= this.neto_pagar){
-        this.neto_pagar = this.neto_pagar - this.descuento;
+      if(this.descuento_aplicado==0){
+        this.auxneto=this.neto_pagar;
       }else{
+        this.neto_pagar=this.auxneto;
+      }
+
+      if(this.descuento <= this.neto_pagar){
+          if(this.descuento!=this.descuento_aplicado){
+
+            this.descuento_aplicado=this.descuento;
+            this.neto_pagar = this.neto_pagar - this.descuento;
+          }
+
+      }else{
+        this.descuento=0;
         iziToast.show({
             title: 'ERROR',
             titleColor: '#FF0000',

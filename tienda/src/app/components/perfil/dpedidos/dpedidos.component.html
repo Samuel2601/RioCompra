@@ -38,7 +38,7 @@
                           <h4>¡Finaliza tu compra!</h4>
                           <p style="font-size: 1.5rem;">Realiza el pago de tu pedido por {{orden.metodo_pago}}, y envíanos una imagen de la operación a nuestro número de <b style="color: #191919;">WhatsApp 987654321</b> para confirmar la compra y agendar el envío de tu pedido.</p>
 
-                          <p style="font-size: 1.5rem;">*Si te encuentras fuera de Lima y deseas realizar el pago vía Depósito, no olvides agregar S/7.50 de comisión bancaria al monto total de tu compra.</p>
+                          <p style="font-size: 1.5rem;">*Si te encuentras fuera de Lima y deseas realizar el pago vía Depósito, no olvides agregar $/0.50 de comisión bancaria al monto total de tu compra.</p>
 
                           <h4>Datos de pago:</h4> 
                           <p>
@@ -159,8 +159,8 @@
                                         </ng-container>
             
                                         <dd>
-                                          <span *ngIf="orden.direccion.zip">{{orden.direccion.zip}},</span>
-                                          <span *ngIf="!orden.direccion.zip">Sin ZIP,</span>
+                                          <span *ngIf="orden.direccion.zip">{{orden.direccion.zip}}</span>
+                                          <span *ngIf="!orden.direccion.zip">Sin ZIP</span>
                                         </dd>
                                         
                                       </dl>
@@ -176,7 +176,7 @@
                       
                         <div id="order-1" class="collapse show" data-parent="#orders">
                           <div class="rounded">
-                            <div class="table-responsive">
+                            <div class="table-responsive table-hover">
                               <table class="table mb-0">
                                 <tbody>
                                   <tr *ngFor="let item of detalles">
@@ -260,11 +260,18 @@
                                     </td>
                                     <td class="" colspan="1">
                                       <div class="py-2 pr-3 text-right">
+                                        <ng-container *ngIf="orden.valor_descuento!=0">
+
+                                          <span *ngIf="orden.currency == 'PEN'">Descuento(- S/{{orden.valor_descuento}}):</span>
+                                          <span  *ngIf="orden.currency == 'USD'">Descuento(- ${{orden.valor_descuento}}):</span>
+                                        </ng-container>
+
                                         <span *ngIf="orden.currency == 'PEN'">S/{{orden.subtotal}}</span>
                                         <span  *ngIf="orden.currency == 'USD'">${{orden.subtotal}}</span>
                                       </div>  
                                     </td>
                                   </tr>
+                                  <!--
                                   <tr>
                                     <td style="padding-left: 1.3rem !important;" colspan="3">
                                       <b>Descuento</b>
@@ -276,6 +283,7 @@
                                       </div>  
                                     </td>
                                   </tr>
+                                  -->
                                   <tr>
                                     <td style="padding-left: 1.3rem !important;" colspan="3">
                                       <b>Envio</b>

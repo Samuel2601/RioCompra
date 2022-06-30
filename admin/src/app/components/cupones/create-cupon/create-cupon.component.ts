@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { AdminService } from 'src/app/service/admin.service';
 declare var iziToast:any;
 
@@ -27,6 +28,8 @@ export class CreateCuponComponent implements OnInit {
 
   registro(registroForm:any){
     if(registroForm.valid){
+      this.cupon.valor=parseFloat(this.cupon.valor);
+      this.cupon.limite=parseFloat(this.cupon.limite);
       this.load_btn = true;
       this._adminService.registro_cupon_admin(this.cupon,this.token).subscribe(
         response=>{

@@ -1,9 +1,5 @@
 [
-    {
-        "country"  :     "Ecuador",
-        "zona"  :     "Zona 0",
-        "price":     10
-    },
+   
     {
         "country"  :     "Anguila",
         "zona"  :     "Zona 1",

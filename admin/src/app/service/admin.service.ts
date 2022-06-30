@@ -52,7 +52,7 @@ export class AdminService {
     const fd = new FormData();
     fd.append('titulo',data.titulo);
     fd.append('etiquetas',JSON.stringify(data.etiquetas));
-    fd.append('precio',data.precio);
+   // fd.append('precio',data.precio);
     fd.append('precio_dolar',data.precio_dolar);
     fd.append('peso',data.peso);
     fd.append('sku',data.sku);
@@ -138,6 +138,18 @@ export class AdminService {
   listar_inventario_producto_admin(id:any,token:any):Observable<any>{
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
     return this._http.get(this.url+'listar_inventario_producto_admin/'+id,{headers:headers});
+  }
+  listar_inventario_admin(token:any):Observable<any>{
+    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
+    return this._http.get(this.url + 'listar_inventario_admin',{headers:headers});
+  }
+  listar_mensaje_contacto(token:any):Observable<any>{
+    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
+    return this._http.get(this.url + 'listar_mensaje_contacto',{headers:headers});
+  }
+  cerrar_mensaje_contacto(id:any,token:any):Observable<any>{
+    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
+    return this._http.get(this.url+'cerrar_mensaje_contacto/'+id,{headers:headers});
   }
 
   registro_inventario_producto_admin(data:any,token:any):Observable<any>{

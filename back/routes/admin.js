@@ -26,6 +26,7 @@ api.put('/actualizar_producto_variedades_admin/:id',auth.auth,AdminController.ac
 api.delete('/eliminar_variedad_admin/:id',auth.auth,AdminController.eliminar_variedad_admin);
 api.post('/agregar_nueva_variedad_admin',auth.auth,AdminController.agregar_nueva_variedad_admin);
 
+api.get('/listar_inventario_admin',auth.auth,AdminController.listar_inventario_admin);
 api.get('/listar_inventario_producto_admin/:id',auth.auth,AdminController.listar_inventario_producto_admin);
 api.post('/registro_inventario_producto_admin',auth.auth,AdminController.registro_inventario_producto_admin);
 api.put('/agregar_imagen_galeria_admin/:id',[auth.auth,path],AdminController.agregar_imagen_galeria_admin);
@@ -45,5 +46,9 @@ api.delete('/eliminar_orden_admin/:id',auth.auth,AdminController.eliminar_orden_
 api.put('/marcar_envio_orden/:id',auth.auth,AdminController.marcar_envio_orden);
 api.put('/confirmar_pago_orden/:id',auth.auth,AdminController.confirmar_pago_orden);
 api.post('/registro_compra_manual_cliente',auth.auth,AdminController.registro_compra_manual_cliente);
+
+api.get('/listar_mensaje_contacto',auth.auth,AdminController.listar_mensaje_contacto);
+api.get('/cerrar_mensaje_contacto/:id',auth.auth,AdminController.cerrar_mensaje_contacto);
+
 
 module.exports = api;

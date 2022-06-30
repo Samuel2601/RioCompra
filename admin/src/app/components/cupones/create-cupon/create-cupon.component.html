@@ -66,7 +66,7 @@
                               <div class="col-4">
                                     <div class="form-group">
                                         <label for="exampleInputEmail1">Canjes (*)</label>
-                                        <input type="number" class="form-control" required placeholder="Número de canjes" name="limite" [(ngModel)]="cupon.limite">
+                                        <input type="text" class="form-control" required pattern="^[0-9]+$"maxlength="3" minlength="0" placeholder="Número de canjes" name="limite" [(ngModel)]="cupon.limite">
                                     </div>
                                 </div>
                           </div>
@@ -85,7 +85,7 @@
                                 <label for="validationCustom01" class="form-label">
                                     Valor
                                 </label>
-                                <input class="form-control" type="number" placeholder="Valor del descuento" required name="valor" [(ngModel)]="cupon.valor">
+                                <input class="form-control" type="text" placeholder="Valor del descuento" pattern="^[0-9]+$"maxlength="3" minlength="0" required name="valor" [(ngModel)]="cupon.valor">
                             </div>
                           </div>
                       </div>

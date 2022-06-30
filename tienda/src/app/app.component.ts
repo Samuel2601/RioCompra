@@ -34,6 +34,7 @@ export class AppComponent {
           this._guestService.obtener_data_cliente(response.ip).subscribe(
             response=>{
               localStorage.setItem('geo',JSON.stringify(response));
+              console.log(localStorage.setItem('geo',JSON.stringify(response)));
               window.location.reload();
               
             }

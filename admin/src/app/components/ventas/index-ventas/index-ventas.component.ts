@@ -31,73 +31,11 @@ export class IndexVentasComponent implements OnInit {
         this.ventas = response.data;
         console.log(this.ventas);
         //36.230.233//36.131.233//138.36.233//233.40.36//233.138.36
-        for(var i =0; i<this.ventas.length;i++){
-          if(i==0){
-            
-            this.anio.push({
-              label:(new Date(this.ventas[i].createdAt).getFullYear()).toString()+' '+this.ventas[i].estado,
-              data: [0,0,0,0,0,0,0,0,0,0,0,0],
-              backgroundColor:'rgba(54,162,235,0.2)',
-              borderColor:'rgba(54,162,235,1)',
-              borderWidth:2
-            });
-            this.anio[0].data[(new Date(this.ventas[i].createdAt).getMonth()-1)]=this.anio[0].data[(new Date(this.ventas[i].createdAt).getMonth()-1)]+this.ventas[i].total_pagar;
-           
-          }else{
-            let aux=(new Date(this.ventas[i].createdAt).getFullYear()).toString()+' '+this.ventas[i].estado;
-            let con=-1;
-            for(var j=0; j<this.anio.length;j++){
-              if((this.anio[j].label).toString()==aux){
-                con=j;
-              }
-            }
-            if(con==-1){
-              this.anio.push({
-                label:(new Date(this.ventas[i].createdAt).getFullYear()).toString()+' '+this.ventas[i].estado,
-                data: [0,0,0,0,0,0,0,0,0,0,0,0],
-                backgroundColor:'rgba('+(36/(i+1)+54).toString()+','+(230/(i+1)).toString()+',233,0.2)',
-                borderColor:'rgba('+(36/(i+1)+54).toString()+','+(230/(i+1)).toString()+',233,1)',
-                borderWidth:2
-              });
-              this.anio[this.anio.length-1].data[(new Date(this.ventas[i].createdAt).getMonth()-1)]=this.anio[this.anio.length-1].data[(new Date(this.ventas[i].createdAt).getMonth()-1)]+this.ventas[i].total_pagar;
-              
-            }else{
-              this.anio[con].data[(new Date(this.ventas[i].createdAt).getMonth()-1)]=this.anio[con].data[(new Date(this.ventas[i].createdAt).getMonth()-1)]+this.ventas[i].total_pagar;
-              
-            }
-          }
-      }
-        console.log(this.anio);
+       
 
         this.const_ventas = this.ventas;
         this.load = false;
-        var canvas = <HTMLCanvasElement> document.getElementById('myChart');
-        var ctx:CanvasRenderingContext2D|any;
-        ctx = canvas.getContext('2d');
-
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Dicembre'],
-                datasets: [
-                ]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
-                    }
-                }
-            }
-        });
-
-        this.anio.forEach(element => {    
-        myChart.data.datasets.push(element);
-        });
-        console.log(myChart);
-        myChart.update();
-       
-
+        
 
 
       }
@@ -107,7 +45,16 @@ export class IndexVentasComponent implements OnInit {
   filtrar_ventas(){
     if(this.filtro){
       var term = new RegExp(this.filtro.toString().trim() , 'i');
-      this.ventas = this.const_ventas.filter(item=>term.test(item._id)||term.test(item.cliente.email)||term.test(item.cliente.apellidos)||term.test(item.dni));
+      this.ventas = this.const_ventas.filter(
+        item=>term.test(item._id)||
+        term.test(item.cliente.email)||
+        term.test(item.cliente.nombres+' '+item.cliente.apellidos)||
+        term.test(item.cliente.apellidos+' '+item.cliente.nombres.nombres)||
+        term.test(item.cliente.nombres)||
+        term.test(item.cliente.apellidos)||
+        term.test(item.estado)||
+        term.test(item.metodo_pago)||
+        term.test(item.dni));
     }else{
       this.ventas = this.const_ventas;
     }

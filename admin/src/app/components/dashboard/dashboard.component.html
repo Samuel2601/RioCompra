@@ -29,27 +29,28 @@
                     <!-- Nav -->
                     <ul class="nav nav-tabs nav-overflow header-tabs">
                       <li class="nav-item">
-                        <a  class="nav-link" style="Cursor : pointer" (click)="estadoventas()">
+                        <a *ngIf="!load_ventas"  class="nav-link" style="Cursor : pointer" (click)="estadoventas()">
+                          Ventas
+                        </a>
+                        <a *ngIf="load_ventas" class="nav-link active " style="Cursor : pointer;background: rgba(255, 255, 255, 0.365);">
                           Ventas
                         </a>
                       </li>
                       <li class="nav-item">
-                        <a  class="nav-link" style="Cursor : pointer" (click)="estadoproductos()">
+                        <a *ngIf="!load_productos" class="nav-link" style="Cursor : pointer" (click)="estadoproductos()">
+                          Productos
+                        </a>
+                        <a *ngIf="load_productos" class="nav-link active " style="Cursor : pointer;background: rgba(255, 255, 255, 0.365);">
                           Productos
                         </a>
                       </li>
+
+                   
                       <li class="nav-item">
-                        <a class="nav-link" style="Cursor : pointer">
-                          Clientes
+                        <a *ngIf="!load_contacto" class="nav-link" style="Cursor : pointer" (click)="estadocontacto()">
+                          Peticiones de Contacto
                         </a>
-                      </li>
-                      <li class="nav-item">
-                        <a  class="nav-link" style="Cursor : pointer">
-                          Cupones
-                        </a>
-                      </li>
-                      <li class="nav-item">
-                        <a  class="nav-link" style="Cursor : pointer">
+                        <a *ngIf="load_contacto" class="nav-link active " style="Cursor : pointer;background: rgba(255, 255, 255, 0.365);">
                           Peticiones de Contacto
                         </a>
                       </li>
@@ -61,315 +62,407 @@
             </div>
             <div  *ngIf="load_ventas==true">
                     <!-- Alert -->
+                    <div class="col">
+                    <ul class="nav nav-tabs nav-overflow header-tabs">
+
+                      <ng-container *ngFor="let item of fventas">
+                        <li class="nav-item">
+                          <a *ngIf="venta_act!=item"  class="nav-link" style="Cursor : pointer" (click)="armado_ventas(item)">
+                            {{item}}
+                          </a>
+                          <a *ngIf="venta_act==item" class="nav-link active " style="Cursor : pointer;background: rgba(255, 255, 255, 0.365);">
+                            {{item}}
+                          </a>
+                        </li>
+                      </ng-container>
+                      
+                    </ul>
+                  </div>
                     <div class="alert alert-danger" *ngIf="ventas==undefined">
                       <i class="fe fe-info mr-1"></i> No tienes Ventas por mostrar
                     </div>
                     <div class="card-body">
+                      <h2>Ventas del año, por estado:</h2>
                       <div class="row">
                           <div class="col-12">
-                              <canvas id="myChart" width="10%" height="5%" style="display: block; box-sizing: border-box; height: 35px; width: 75px;"></canvas>
+                              <canvas class="chart-canvas chartjs-render-monitor"id="myChart" width="10%" height="5%" style="display: block; box-sizing: border-box; height: 35px; width: 75px;"></canvas>
                           </div>
                       </div>
                   </div>
-            </div>
-                    <div class="row">
-                      <div class="col-12 col-md-6">
-            
-                <!-- Card -->
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      <div class="col">
+                  <div class="row">
+                    <div class="col-12 col-md-6">
+          
+                      <!-- Card -->
+                      <div class="card">
+                        <div class="card-body">
+                          <div class="row align-items-center">
+                            <div class="col">
 
-                        
+                              
 
-                        <!-- Title -->
-                        <h6 class="text-uppercase text-muted mb-2">
-                          Ventas Finalizadas {{(factual)|date: 'MMMM'}}
-                        </h6>
+                              <!-- Title -->
+                              <h6 class="text-uppercase text-muted mb-2">
+                                Ventas Finalizadas {{(factual)|date: 'MMMM'}}
+                              </h6>
 
-                        <!-- Heading -->
-                        <span class="h2 mb-0" *ngFor="let item of idmactual">
-                          {{anio[item.k].data[(mactual)-1] |currency:item.tipo}}/mes
-                        </span>
+                              <!-- Heading -->
+                              <span class="h2 mb-0" *ngIf="anio!=undefined" >
+                                <ng-container *ngFor="let pago of anio; let idx = index">
+                                
+                                  <ng-container *ngIf="pago.label.includes(fanio+' Finalizado')">
+                                    {{pago.data[(mactual)-1] |currency:'USD'}}/mes
+                                  </ng-container>
+                                </ng-container>
+                              </span>
 
-                      </div>
-                      
-                    </div> <!-- / .row -->
+                            </div>
+                            
+                          </div> <!-- / .row -->
 
-                  </div>
-                </div>
-
-              </div>
-              <div class="col-12 col-md-6">
-
-                <!-- Card -->
-                <div class="card">
-                  <div class="card-body">
-                    <div class="row align-items-center">
-                      
-                      <div class="col">
-
-                        <!-- Title -->
-                        <h6 class="text-uppercase text-muted mb-1">
-                          VENTAS DEL ANUALES {{(faux)|date: 'YYYY'}}:
-                        </h6>
-                      
-                        <!-- Heading -->
-                        <span class="h2 mb-0">
-                          <br style="margin-right: 100%;"> {{totalfaux[0]|currency: 'USD'}}
-                          <!--<br style="margin-right: 100%;">{{totalfaux[1]|currency: 'PEN'}}
-                          <br>{{totalfaux[2]|currency: 'COP'}}-->
-                        </span>
-                
-                      </div>
-
-                      <div class="col">
-
-                        <!-- Title -->
-                        <h6 class="text-uppercase text-muted mb-1">
-                          VENTAS DEL ANUALES {{(factual)|date: 'YYYY'}}:
-                        </h6>
-                        
-                        <!-- Heading -->
-                        
-                        <span class="h2 mb-0">
-                          
-                           <br style="margin-right: 100%;">{{totalfactual[0]|currency: 'USD'}}
-                           <!--<br style="margin-right: 100%;">{{totalfactual[1]|currency: 'PEN'}}
-                           <br>{{totalfactual[2]|currency: 'COP'}}-->
-                        </span>
-                      </div>
-                      
-
-                      <div class="col-auto">
-
-                        <!-- Chart -->
-                        <div class="chart chart-sparkline"><div class="chartjs-size-monitor"><div class="chartjs-size-monitor-expand"><div class=""></div></div><div class="chartjs-size-monitor-shrink"><div class=""></div></div></div>
-                          <canvas class="chart-canvas chartjs-render-monitor" id="sparklineChart" style="display: block; width: 75px; height: 35px;" width="75" height="35"></canvas>
                         </div>
-
                       </div>
-                    </div> <!-- / .row -->
 
-                  </div>
+                    </div>
+            <div class="col-12 col-md-6">
+
+              <!-- Card -->
+              <div class="card">
+                <div class="card-body">
+                  <div class="row align-items-center">
+                    
+                    <div class="col">
+
+                      <!-- Title -->
+                      <h6 class="text-uppercase text-muted mb-1">
+                        VENTAS ANUALES {{(faux)|date: 'YYYY'}}:
+                      </h6>
+                    
+                      <!-- Heading -->
+                      <span class="h2 mb-0">
+                        <br style="margin-right: 100%;"> {{totalfaux|currency: 'USD'}}
+                        <!--<br style="margin-right: 100%;">{{totalfaux[1]|currency: 'PEN'}}
+                        <br>{{totalfaux[2]|currency: 'COP'}}-->
+                      </span>
+              
+                    </div>
+
+                    <div class="col">
+
+                      <!-- Title -->
+                      <h6 class="text-uppercase text-muted mb-1">
+                        VENTAS ANUALES {{(factual)|date: 'YYYY'}}:
+                      </h6>
+                      
+                      <!-- Heading -->
+                      
+                      <span class="h2 mb-0">
+                        
+                         <br style="margin-right: 100%;">{{totalfactual|currency: 'USD'}} 
+                         <!--<br style="margin-right: 100%;">{{totalfactual[1]|currency: 'PEN'}}
+                         <br>{{totalfactual[2]|currency: 'COP'}}-->
+                      </span>
+                    </div>
+                    
+
+                    <div class="col-auto">
+
+                      <!-- Chart -->
+                      <div class="chart chart-sparkline">
+                        <div class="chartjs-size-monitor">
+                          <div class="chartjs-size-monitor-expand">
+                            <div class=""></div></div>
+                            <div class="chartjs-size-monitor-shrink">
+                              <div class=""></div>
+                            </div>
+                          </div>
+                        <canvas class="chart-canvas chartjs-render-monitor" id="sparklineChart" style="display: block; width: 75px; height: 35px;" width="75" height="35"></canvas>
+                      </div>
+
+                    </div>
+                  </div> <!-- / .row -->
+
                 </div>
-
               </div>
-            </div>
 
-            <!-- Card -->
-            <div class="card">
+            </div>
+          </div>
+        
+          <ng-container  *ngFor="let tipovent of anio; let idvt = index">
+            <div id="total" class="card">
               <div class="card-header">
-                <div class="row align-items-center">
-                  <div class="col">
 
-                    <!-- Title -->
-                    <h4 class="card-header-title">
-                      Payment methods
-                    </h4>
-
-                  </div>
-                  <div class="col-auto">
-
-                    <!-- Button -->
-                    <a class="btn btn-sm btn-primary" href="#!">
-                      Add method
-                    </a>
-
-                  </div>
-                </div>
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  {{tipovent.label}} </h4>
+                  <button id="btnbecados{{tipovent.label}}"  mat-raised-button class="btn btn-primary text-white mr-3" (click)="exportTable(tipovent.label)">Descargar</button>
+                
               </div>
-              <div class="card-body">
+            <div class="table-responsive table-hover">
+                <table id="{{tipovent.label}}" class="table table-sm table-nowrap card-table">
+                  <thead>
+                    <tr>
+                      <th>Mes</th>
+                      <th>Valor</th>
+                    </tr>
+                  </thead>
+                  <tbody class="font-size-base">
+                    <ng-container *ngFor="let vent of anio[idvt].data; let idm = index">
+                    <tr *ngIf="vent!=0">
+                      <td>
+                        
+                        <a *ngIf="idm==0 && (idm)!=mactual">Enero </a>
+                        <a *ngIf="idm==0 && (idm)==mactual">Enero (Actual)</a>
+                        <a *ngIf="idm==1 && (idm)!=mactual">Febrero </a>
+                        <a *ngIf="idm==1 && (idm)==mactual">Febrero (Actual)</a>
+                        <a *ngIf="idm==2 && (idm)!=mactual">Marzo </a>
+                        <a *ngIf="idm==2 && (idm)==mactual">Marzo (Actual)</a>
+                        <a *ngIf="idm==3 && (idm)!=mactual">Abril </a>
+                        <a *ngIf="idm==3 && (idm)==mactual">Abril (Actual)</a>
+                        <a *ngIf="idm==4 && (idm)!=mactual">Mayo </a>
+                        <a *ngIf="idm==4 && (idm)==mactual">Mayo (Actual)</a>
+                        <a *ngIf="idm==5 && (idm)!=mactual">Junio </a>
+                        <a *ngIf="idm==5 && (idm)==mactual">Junio (Actual)</a>
+                        <a *ngIf="idm==6 && (idm)!=mactual">Julio </a>
+                        <a *ngIf="idm==6 && (idm)==mactual">Julio (Actual)</a>
+                        <a *ngIf="idm==7 && (idm)!=mactual">Agosto </a>
+                        <a *ngIf="idm==7 && (idm)==mactual">Agosto (Actual)</a>
+                        <a *ngIf="idm==8 && (idm)!=mactual">Septiembre </a>
+                        <a *ngIf="idm==8 && (idm)==mactual">Septiembre (Actual)</a>
+                        <a *ngIf="idm==9 && (idm)!=mactual">Octubre </a>
+                        <a *ngIf="idm==9 && (idm)==mactual">Octubre (Actual)</a>
+                        <a *ngIf="idm==10 && (idm)!=mactual">Noviembre </a>
+                        <a *ngIf="idm==10 && (idm)==mactual">Noviembre (Actual)</a>
+                        <a *ngIf="idm==11 && (idm)!=mactual">Diciembre </a>
+                        <a *ngIf="idm==11 && (idm)==mactual">Diciembre (Actual)</a>
 
-                <!-- List group -->
-                <div class="list-group list-group-flush my-n3">
-                  <div class="list-group-item">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-
-                        <!-- Image -->
-                        <img class="img-fluid" src="assets/img/payment-methods/visa.svg" alt="..." style="max-width: 38px;">
-
-                      </div>
-                      <div class="col ml-n2">
-
-                        <!-- Heading -->
-                        <h4 class="mb-1">
-                          Visa ending in 1234
-                        </h4>
-
-                        <!-- Text -->
-                        <small class="text-muted">
-                          Expires 3/2024
-                        </small>
-
-                      </div>
-                      <div class="col-auto mr-n3">
-
-                        <!-- Badge -->
-                        <span class="badge badge-light">
-                          Default
-                        </span>
-
-                      </div>
-                      <div class="col-auto">
-
-                        <!-- Dropdown -->
-                        <div class="dropdown">
-                          <a class="dropdown-ellipses dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fe fe-more-vertical"></i>
-                          </a>
-                          <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#!">
-                              Action
-                            </a>
-                            <a class="dropdown-item" href="#!">
-                              Another action
-                            </a>
-                            <a class="dropdown-item" href="#!">
-                              Something else here
-                            </a>
-                          </div>
-                        </div>
-
-                      </div>
-                    </div> <!-- / .row -->
-                  </div>
-                  <div class="list-group-item">
-                    <div class="row align-items-center">
-                      <div class="col-auto">
-
-                        <!-- Image -->
-                        <img class="img-fluid" src="assets/img/payment-methods/mastercard.svg" alt="..." style="max-width: 38px;">
-
-                      </div>
-                      <div class="col ml-n2">
-
-                        <!-- Heading -->
-                        <h4 class="mb-1">
-                          Mastercard ending in 1234
-                        </h4>
-
-                        <!-- Text -->
-                        <small class="text-muted">
-                          Expires 3/2024
-                        </small>
-
-                      </div>
-                      <div class="col-auto">
-
-                        <!-- Dropdown -->
-                        <div class="dropdown">
-                          <a class="dropdown-ellipses dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <i class="fe fe-more-vertical"></i>
-                          </a>
-                          <div class="dropdown-menu dropdown-menu-right">
-                            <a class="dropdown-item" href="#!">
-                              Action
-                            </a>
-                            <a class="dropdown-item" href="#!">
-                              Another action
-                            </a>
-                            <a class="dropdown-item" href="#!">
-                              Something else here
-                            </a>
-                          </div>
-                        </div>
-
-                      </div>
-                    </div> <!-- / .row -->
-                  </div>
-                </div>
-
+                      </td>
+                      <td>
+                       {{vent|currency: 'USD'}}
+                      </td> 
+                    </tr>
+                  </ng-container>
+                  </tbody>
+                  <tfoot>
+                    <tr><td>Total</td> <td>
+                      <ng-container *ngFor="let t of totales">
+                        <ng-container *ngIf="tipovent.label==t.label">
+                          {{t.total|currency: 'USD'}}
+                        </ng-container>
+                      </ng-container>
+                    </td>
+                    </tr>
+                  </tfoot>
+                </table>
               </div>
             </div>
+          </ng-container>
+        
+            </div><!--Final Ventas-->
+            <div  *ngIf="load_productos==true">
+                      <!-- Alert -->
 
-            <!-- Card -->
+                      <div class="alert alert-danger" *ngIf="productos==undefined">
+                        <i class="fe fe-info mr-1"></i> No tienes Productos por mostrar
+                      </div>
+                      <div id="nproducto" class="card-body">
+                        <div class="row">
+                          <h2>Número de ventas por Categoría</h2>
+                            <div class="col-12">
+                                <canvas id="myChart2" width="10%" height="5%" style="display: block; box-sizing: border-box; height: 35px; width: 75px;"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+
+                  <ng-container  *ngIf="mtablap">
+                    <div id="total" class="card">
+                      <div class="card-header">
+        
+                        <!-- Title -->
+                        <h4 class="card-header-title">
+                          Lista de Productos 
+                        </h4>
+                        <div class="col-6">
+                         
+                          <div class="input-group input-group-merge ">
+                            <input type="text" class="form-control form-control-appended" placeholder="Buscar producto" name="filtro" [(ngModel)]="filtro">
+                            <div class="input-group-append">
+                              <button class="btn btn-primary" (click)="filtrar_producto()">
+                                  Buscar
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                        <button id="mcerrado" class="btn btn-success" *ngIf="filtro_p=='Edicion'" (click)="filtro_producto()"> Publicados</button>
+                        <button id="mabierto" class="btn btn-danger" *ngIf="filtro_p=='Publicado'" (click)="filtro_producto()"> Edición</button>
+                      </div>
+                    <div class="table-responsive table-hover">
+                        <table class="table table-sm table-nowrap card-table">
+                          <thead>
+                            <tr>
+                              <th>Nombre del producto</th>
+                              <th>Categoría</th>
+                              <th>Estado</th>
+                            </tr>
+                          </thead>
+                          <tbody class="font-size-base">
+                            <ng-container *ngFor="let item of productos | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let idm = index">
+                            <tr *ngIf="productos!=undefined && item.estado==filtro_p ">
+                              <!--; let idm = index-->
+                              <td>
+                                <a style="cursor: pointer;" (click)="armado_inventario(idm)">{{item.titulo}}</a>    
+                              </td>
+                              <td>
+                                <ng-container *ngFor="let ic of categorias">
+                                  
+                                  <ng-container *ngIf="item.categoria == ic._id">
+                                    {{ic.titulo}}
+                                  </ng-container>
+                                </ng-container>
+                              </td>
+                              <td>
+                               <span *ngIf="item.estado=='Edicion'">Edición</span>
+                               <span *ngIf="item.estado!='Edicion'">{{item.estado}}</span>
+                              </td> 
+                            </tr>
+                          </ng-container>
+                          </tbody>
+                          
+                        </table>
+                      
+                        <ngb-pagination *ngIf="productos.length >= 1"
+                          [(page)]="page"
+                          [pageSize]="pageSize"
+                          [maxSize]="10"
+                          [rotate]="true" [boundaryLinks]="true"
+                          [collectionSize]="productos.length"></ngb-pagination>
+                      
+                      </div>
+                      
+                    </div>
+                   
+                  </ng-container> 
+
+                  <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                          <ng-container *ngIf="idp!=-1&&!mtablap">
+                            <h3><ng-container *ngFor="let ic of categorias">
+                              <ng-container *ngIf="this.productos[idp].categoria == ic._id">
+                                {{ic.titulo}}
+                              </ng-container>
+                            </ng-container></h3>
+                            <h2> <a style="cursor: pointer;text-decoration: underline wavy ;"(click)="devolver()">{{this.productos[idp].titulo}}</a>: {{this.productos[idp].stock}} (Stock)</h2>
+                            
+                          </ng-container >
+                          
+                            <canvas id="myChart3" width="10%" height="5%" style="display: block; box-sizing: border-box; height: 35px; width: 75px;"></canvas>
+                         
+
+                          <div class="alert alert-danger" *ngIf="datos!=undefined&&datos.length==0&&idp!=-1&&!mtablap" >
+                            <i class="fe fe-info mr-1"></i> No tienes ningún inventario por mostrar
+                          </div>
+                            
+                           </div>
+                    </div>
+                </div>
+          
+            </div><!--Final Ventas-->
+
+            <div  *ngIf="load_contacto==true">
+              <!-- Alert -->
+              <div class="alert alert-danger" *ngIf="mensajes==undefined">
+                <i class="fe fe-info mr-1"></i> No tienes Productos por mostrar
+              </div>
+
+
+            
+
+          <ng-container>
             <div class="card">
               <div class="card-header">
 
                 <!-- Title -->
                 <h4 class="card-header-title">
-                  Invoices
+                  Mensajes: {{mensajes.length}}
                 </h4>
-
+                <button id="mcerrado" class="btn btn-danger" (click)="cerrado()"> Cerrados</button>
+                <button id="mabierto" class="btn btn-success" (click)="abierto()"> Abiertos</button>
               </div>
-              <div class="table-responsive">
-                <table class="table table-sm table-nowrap card-table">
+            <div class="table-responsive table-hover">
+                <table class="table table-sm  card-table">
                   <thead>
                     <tr>
-                      <th>Invoice ID</th>
-                      <th>Date</th>
-                      <th>Amount</th>
-                      <th>Status</th>
+                      <th>Asunto</th>
+                      <th>Cliente</th>
+                      <th>Fecha</th>
+                      <th>Mensaje</th>
+                      <th>Opción</th>
                     </tr>
                   </thead>
                   <tbody class="font-size-base">
-                    <tr>
+                    <ng-container *ngFor="let item of mensajes | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize; let idm = index">
+                    <tr *ngIf="mensajes!=undefined ">
+                      <!--; let idm = index-->
                       <td>
-                        <a href="invoice.html">Invoice #10395</a>
+                      <h3>{{item.asunto}}</h3> 
+                      <span class="badge badge-success" *ngIf="item.estado=='Abierto'">{{item.estado}}</span>
+                        <span class="badge badge-danger" *ngIf="item.estado=='Cerrado'">{{item.estado}}</span>
                       </td>
                       <td>
-                        <time datetime="2020-04-24">Apr. 24, 2020</time>
+                        <h3><a>{{item.cliente}}</a></h3>
+                        <div>
+                          <span class="badge badge-info"> <a href="mailto:{{item.correo}}" style="color: azure;"> {{item.correo}}</a></span></div>
+                      <span class="badge badge-info"><a href="https://wa.me/{{item.telefono}}" target="_blank" rel="noopener noreferrer" style="color: azure;">{{item.telefono}}</a></span>
                       </td>
                       <td>
-                        $29.00
+                        {{item.createdAt |date:'longDate' }}
                       </td>
-                      <td>
-                        <span class="badge badge-secondary">Outstanding</span>
+                      <td style="max-width:200px; text-align: justify;" >
+                        {{item.mensaje}}
+                     
                       </td>
+                      <td >
+                        <a *ngIf="item.estado=='Abierto'" style="cursor: pointer;" class="text-danger" (click)="finalizarcontacto(idm)">[Cerrar]</a>
+                      </td> 
                     </tr>
-                    <tr>
-                      <td>
-                        <a href="invoice.html">Invoice #10244</a>
-                      </td>
-                      <td>
-                        <time datetime="2020-03-24">Mar. 24, 2020</time>
-                      </td>
-                      <td>
-                        $29.00
-                      </td>
-                      <td>
-                        <span class="badge badge-success">Paid</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <a href="invoice.html">Invoice #10119</a>
-                      </td>
-                      <td>
-                        <time datetime="2020-02-24">Feb. 24, 2020</time>
-                      </td>
-                      <td>
-                        $29.00
-                      </td>
-                      <td>
-                        <span class="badge badge-success">Paid</span>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <a href="invoice.html">Invoice #10062</a>
-                      </td>
-                      <td>
-                        <time datetime="2020-01-24">Jan. 24, 2020</time>
-                      </td>
-                      <td>
-                        $29.00
-                      </td>
-                      <td>
-                        <span class="badge badge-success">Paid</span>
-                      </td>
-                    </tr>
+                  </ng-container>
                   </tbody>
+                  
                 </table>
+              
+              
               </div>
+              
+              <ngb-pagination *ngIf="mensajes.length >= 1"
+                [(page)]="page"
+                [pageSize]="pageSize"
+                [maxSize]="10"
+                [rotate]="true" [boundaryLinks]="true"
+                [collectionSize]="mensajes.length"></ngb-pagination>
             </div>
+          
+          </ng-container> 
+
+          <div class="card-body">
+            <div class="row">
+                <div class="col-12">
+                  <ng-container *ngIf="idp!=-1&&!mtablap">
+                    <h2> <a style="cursor: pointer;"(click)="devolver()">{{this.productos[idp].titulo}}</a></h2>
+                  
+                  </ng-container>
+                    <canvas id="myChart3" width="10%" height="5%" style="display: block; box-sizing: border-box; height: 35px; width: 75px;"></canvas>
+                  
+                  </div>
+            </div>
+        </div>
+
+           </div><!--Final Ventas-->
 
             <!-- Text -->
             <p class="text-center">
-              <small class="text-muted">Don’t need Dashkit anymore? <a href="#!">Cancel your account</a></small>
+              <small class="text-muted">Alguna duda? <a href="#!">Contactanos</a></small>
             </p>
 
             <br>

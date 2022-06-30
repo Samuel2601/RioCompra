@@ -11,7 +11,7 @@ var jwt = require('../helpers/jwt');
 var Venta = require('../models/Venta');
 var Dventa = require('../models/Dventa');
 var Carrito = require('../models/Carrito');
-
+var Contacto = require('../models/Contacto');
 var fs = require('fs');
 var handlebars = require('handlebars');
 var ejs = require('ejs');
@@ -267,7 +267,7 @@ const actualizar_producto_admin = async function(req,res){
 const listar_variedades_admin = async function(req,res){
     if(req.user){
         var id = req.params['id'];
-        let data = await Variedad.find({producto:id});
+        let data = await Variedad.find({producto:id}).populate('producto');
         res.status(200).send({data:data});
         
     }else{
@@ -322,6 +322,14 @@ const listar_inventario_producto_admin = async function(req,res){
         var id = req.params['id'];
 
         var reg = await Inventario.find({producto: id}).populate('variedad').sort({createdAt:-1});
+        res.status(200).send({data:reg});
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+const listar_inventario_admin = async function(req,res){
+    if(req.user){
+        var reg = await Inventario.find().sort({createdAt:-1}).populate('producto');
         res.status(200).send({data:reg});
     }else{
         res.status(500).send({message: 'NoAccess'});
@@ -812,6 +820,33 @@ const enviar_orden_compra = async function(venta){
         console.log(error);
     }
 }
+const listar_mensaje_contacto  = async function(req,res){
+    
+
+        if(req.user){
+            var reg = await Contacto.find();
+            res.status(200).send({data:reg});
+        }else{
+            res.status(500).send({message: 'NoAccess'});
+        }
+    
+    
+
+}
+const  cerrar_mensaje_contacto  = async function(req,res){
+    
+    
+    if(req.user){
+        var id = req.params['id'];
+        var reg = await Contacto.findByIdAndUpdate({_id:id},{
+            estado:'Cerrado'
+        });
+        res.status(200).send({message:'Cerrado con Exito'});
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+
+}
 
 module.exports = {
     login_admin,
@@ -846,5 +881,8 @@ module.exports = {
     marcar_envio_orden,
     confirmar_pago_orden,
     registro_compra_manual_cliente,
-    listar_variedades_productos_admin
+    listar_variedades_productos_admin,
+    listar_mensaje_contacto,
+    cerrar_mensaje_contacto,
+    listar_inventario_admin
 }

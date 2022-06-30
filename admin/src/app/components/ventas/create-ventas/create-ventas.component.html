@@ -153,7 +153,7 @@
                             <label for="validationCustom01" class="form-label"><b>Metodo de pago</b></label> <br>
                             <select class="form-control" id="select-input" name="metodo_pago" [(ngModel)]="venta.metodo_pago">
                                 <option selected disabled value="">Seleccionar</option>
-                                <option value="Tarjeta de crédito">Tarjeta de crédito</option>
+                                <!--<option value="Tarjeta de crédito">Tarjeta de crédito</option>-->
                                 <option value="Yape o Plin">Yape o Plin</option>
                                 <option value="Transferencia o Deposito">Transferencia o Deposito</option>
                             </select>
@@ -240,7 +240,7 @@
                     <div class="row form-group">
                        
                         <div class="col-12 form-group">
-                            <div class="table-responsive">
+                            <div class="table-responsive table-hover">
                                 <table class="table table-striped">
                                   <thead>
                                     <tr>
@@ -269,11 +269,22 @@
                                           <td colspan="5"><b>Total</b></td>
                                           <td>{{total_pagar|currency:'USD'}}</td>
                                       </tr>
+                                      <tr>
+                                        <td colspan="5"><b>Valor de Envio:</b></td>
+                                        <td>{{envio_input|currency:'USD'}}</td>
+                                    </tr>
+                                    <tr>
+                                      <td colspan="5"><b>Descuento:</b></td>
+                                      <td *ngIf="descuento_aplicado==0">{{descuento_aplicado|currency:'USD'}}</td>
+                                      <td *ngIf="descuento_aplicado!=0">-{{descuento_aplicado|currency:'USD'}}</td>
+
+                                  </tr>
                                   </tfoot>
                                 </table>
                               </div>
                         </div>
                         <div class="col-12">
+                            
                             <div class="row">
                                 <div class="col-4">
                                     <label for="validationCustom01" class="form-label"><b>Total a pagar: (*)</b></label>

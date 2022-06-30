@@ -18,7 +18,7 @@
 
                     <!-- Title -->
                     <h1 class="header-title">
-                        Productos
+                        Inventario de Producto: {{producto.titulo}}
                     </h1>
 
                   </div>
@@ -81,6 +81,8 @@
                         
                                     <td>{{item.variedad.valor}}</td>
                                     <td>{{item.cantidad}}</td>
+                                    <td>{{item.createdAt|date: 'short'}}</td>
+                                    
                         
                                 </tr>
                                 </tbody>
@@ -152,7 +154,13 @@
                 </div>
               </div>
             </ng-container>
+            <div class="card-footer">
   
+              <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/productos']" routerLinkActive="router-link-active" >Regresar</a>
+
+
+              
+          </div>
       
 
           </div>

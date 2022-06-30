@@ -3,7 +3,7 @@ right: 0;
 left: 0;
 z-index: 1030;
 background: #f1ee51;
-color:#191919" *ngIf="config.envio_activacion != 'Desactivado'">
+color:#191919" *ngIf="config.envio_activacion != 'Desactivado' && ((country=='Ecuador'&&country==config.envio_activacion)||(country!='Ecuador'&&country==config.envio_activacion))">
     <div class="col-12 text-center">
         ENVIO GRATIS POR COMPRAS MAYORES A
         <span *ngIf="currency == 'PEN'">S/{{config.monto_min_soles}}</span>
