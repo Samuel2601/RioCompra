@@ -81,7 +81,7 @@
                         
                                     <td>{{item.variedad.valor}}</td>
                                     <td>{{item.cantidad}}</td>
-                                    <td>{{item.createdAt|date: 'short'}}</td>
+                                    <td>{{item.createdAt|date: 'short'}} <a style="cursor: pointer; padding-left: 20%;" class="text-danger" (click)="eliminar_inventario(indice)">[Eliminar]</a></td>
                                     
                         
                                 </tr>

@@ -79,7 +79,33 @@ export class InventarioProductoComponent implements OnInit {
       }
     );
   }
+  eliminar_inventario(id:any){
 
+    this._adminService.eliminar_inventario_producto_admin(this.inventarios[id],this.token).subscribe(response=>{
+      if(response.message=='Eliminado'){
+        iziToast.show({
+          title: 'SUCCESS',
+          titleColor: '#1DC74C',
+          color: '#FFF',
+          class: 'text-success',
+          position: 'topRight',
+          message: response.message
+      });
+      this.ngOnInit();
+      }else{
+        iziToast.show({
+          title: 'ERROR',
+          titleColor: '#1DC74C',
+          color: '#FFF',
+          class: 'text-info',
+          position: 'topRight',
+          message: response.message
+      });
+      }
+      
+
+    });
+  }
   registro_inventario(inventarioForm:any){
     if(inventarioForm.valid){
        

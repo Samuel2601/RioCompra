@@ -54,8 +54,13 @@ if(admin_arr.length == 0){
 
 const listar_etiquetas_admin = async function(req,res){
     if(req.user){
-        var reg = await Etiqueta.find();
-        res.status(200).send({data:reg});
+        try {
+            var reg = await Etiqueta.find();
+            res.status(200).send({data:reg});
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
+        }
+        
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
@@ -63,10 +68,14 @@ const listar_etiquetas_admin = async function(req,res){
 
 const eliminar_etiqueta_admin = async function(req,res){
     if(req.user){
-        var id = req.params['id'];
+        try {
+            var id = req.params['id'];
 
-        let reg = await Etiqueta.findByIdAndRemove({_id:id});
-        res.status(200).send({data:reg});
+            let reg = await Etiqueta.deleteOne({_id:id});
+            res.status(200).send({data:reg});
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
+        }
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
@@ -91,33 +100,37 @@ const agregar_etiqueta_admin = async function(req,res){
 
 const registro_producto_admin = async function(req,res){
     if(req.user){
-        let data = req.body;
-  
-        let productos = await Producto.find({titulo:data.titulo});
-        
-        let arr_etiquetas = JSON.parse(data.etiquetas);
+        try {
+            let data = req.body;
+    
+            let productos = await Producto.find({titulo:data.titulo});
+            
+            let arr_etiquetas = JSON.parse(data.etiquetas);
 
-        if(productos.length == 0){
-            var img_path = req.files.portada.path;
-            var name = img_path.split('\\');
-            var portada_name = name[2];
+            if(productos.length == 0){
+                var img_path = req.files.portada.path;
+                var name = img_path.split('\\');
+                var portada_name = name[2];
 
-            data.slug = data.titulo.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
-            data.portada = portada_name;
-            let reg = await Producto.create(data);
+                data.slug = data.titulo.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+                data.portada = portada_name;
+                let reg = await Producto.create(data);
 
-            if(arr_etiquetas.length >= 1){
-                for(var item of arr_etiquetas){
-                    await Producto_etiqueta.create({
-                        etiqueta: item.etiqueta,
-                        producto: reg._id,
-                    });
+                if(arr_etiquetas.length >= 1){
+                    for(var item of arr_etiquetas){
+                        await Producto_etiqueta.create({
+                            etiqueta: item.etiqueta,
+                            producto: reg._id,
+                        });
+                    }
                 }
-            }
 
-            res.status(200).send({data:reg});
-        }else{
-            res.status(200).send({data:undefined, message: 'El título del producto ya existe'});
+                res.status(200).send({data:reg});
+            }else{
+                res.status(200).send({data:undefined, message: 'El título del producto ya existe'});
+            }
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
         }
     }else{
         res.status(500).send({message: 'NoAccess'});
@@ -126,8 +139,13 @@ const registro_producto_admin = async function(req,res){
 
 listar_productos_admin = async function(req,res){
     if(req.user){
-        var productos = await Producto.find();
-        res.status(200).send({data:productos});
+        try {
+            var productos = await Producto.find();
+            res.status(200).send({data:productos});
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
+        }
+        
     }else{
         res.status(500).send({message: 'NoAccess'});
     } 
@@ -135,8 +153,14 @@ listar_productos_admin = async function(req,res){
 
 listar_variedades_productos_admin = async function(req,res){
     if(req.user){
-        var productos = await Variedad.find().populate('producto');
-        res.status(200).send({data:productos});
+        try {
+            var productos = await Variedad.find().populate('producto');
+            res.status(200).send({data:productos});
+
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
+        }
+        
     }else{
         res.status(500).send({message: 'NoAccess'});
     } 
@@ -159,9 +183,14 @@ const obtener_producto_admin = async function(req,res){
 
 const listar_etiquetas_producto_admin = async function(req,res){
     if(req.user){
-        var id = req.params['id'];
-        var etiquetas = await Producto_etiqueta.find({producto:id}).populate('etiqueta');
-        res.status(200).send({data:etiquetas});
+        try {
+            var id = req.params['id'];
+            var etiquetas = await Producto_etiqueta.find({producto:id}).populate('etiqueta');
+            res.status(200).send({data:etiquetas});
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
+        }
+        
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
@@ -171,7 +200,7 @@ const eliminar_etiqueta_producto_admin = async function(req,res){
     if(req.user){
         var id = req.params['id'];
         console.log(id);
-        let reg = await Producto_etiqueta.findByIdAndRemove({_id:id});
+        let reg = await Producto_etiqueta.deleteOne({_id:id});
         res.status(200).send({data:reg});
         
     }else{
@@ -181,10 +210,15 @@ const eliminar_etiqueta_producto_admin = async function(req,res){
 
 const agregar_etiqueta_producto_admin = async function(req,res){
     if(req.user){
-        let data = req.body;
+        try {
+            let data = req.body;
 
-        var reg = await Producto_etiqueta.create(data);
-        res.status(200).send({data:reg});
+            var reg = await Producto_etiqueta.create(data);
+            res.status(200).send({data:reg});
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
+        }
+       
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
@@ -207,58 +241,63 @@ const obtener_portada = async function(req,res){
 
 const actualizar_producto_admin = async function(req,res){
     if(req.user){
-        let id = req.params['id'];
-        let data = req.body;
+        try {
+            let id = req.params['id'];
+            let data = req.body;
 
-        if(req.files){
-            //SI HAY IMAGEN
-            var img_path = req.files.portada.path;
-            var name = img_path.split('\\');
-            var portada_name = name[2];
+            if(req.files){
+                //SI HAY IMAGEN
+                var img_path = req.files.portada.path;
+                var name = img_path.split('\\');
+                var portada_name = name[2];
 
-            let reg = await Producto.findByIdAndUpdate({_id:id},{
+                let reg = await Producto.updateOne({_id:id},{
+                    titulo: data.titulo,
+                    stock: data.stock,
+                    precio_antes_soles: data.precio_antes_soles,
+                    precio_antes_dolares: data.precio_antes_dolares,
+                    precio: data.precio,
+                    precio_dolar: data.precio_dolar,
+                    peso: data.peso,
+                    sku: data.sku,
+                    categoria: data.categoria,
+                    visibilidad: data.visibilidad,
+                    descripcion: data.descripcion,
+                    contenido:data.contenido,
+                    portada: portada_name
+                });
+
+                fs.stat('./uploads/productos/'+reg.portada, function(err){
+                    if(!err){
+                        fs.unlink('./uploads/productos/'+reg.portada, (err)=>{
+                            if(err) throw err;
+                        });
+                    }
+                })
+
+                res.status(200).send({data:reg});
+            }else{
+                //NO HAY IMAGEN
+            let reg = await Producto.updateOne({_id:id},{
                 titulo: data.titulo,
                 stock: data.stock,
                 precio_antes_soles: data.precio_antes_soles,
-                precio_antes_dolares: data.precio_antes_dolares,
+                    precio_antes_dolares: data.precio_antes_dolares,
                 precio: data.precio,
                 precio_dolar: data.precio_dolar,
-                peso: data.peso,
-                sku: data.sku,
+                    peso: data.peso,
+                    sku: data.sku,
                 categoria: data.categoria,
                 visibilidad: data.visibilidad,
                 descripcion: data.descripcion,
                 contenido:data.contenido,
-                portada: portada_name
             });
-
-            fs.stat('./uploads/productos/'+reg.portada, function(err){
-                if(!err){
-                    fs.unlink('./uploads/productos/'+reg.portada, (err)=>{
-                        if(err) throw err;
-                    });
-                }
-            })
-
             res.status(200).send({data:reg});
-        }else{
-            //NO HAY IMAGEN
-           let reg = await Producto.findByIdAndUpdate({_id:id},{
-               titulo: data.titulo,
-               stock: data.stock,
-               precio_antes_soles: data.precio_antes_soles,
-                precio_antes_dolares: data.precio_antes_dolares,
-               precio: data.precio,
-               precio_dolar: data.precio_dolar,
-                peso: data.peso,
-                sku: data.sku,
-               categoria: data.categoria,
-               visibilidad: data.visibilidad,
-               descripcion: data.descripcion,
-               contenido:data.contenido,
-           });
-           res.status(200).send({data:reg});
+            }
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
         }
+        
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
@@ -266,9 +305,17 @@ const actualizar_producto_admin = async function(req,res){
 
 const listar_variedades_admin = async function(req,res){
     if(req.user){
-        var id = req.params['id'];
-        let data = await Variedad.find({producto:id}).populate('producto');
-        res.status(200).send({data:data});
+        
+        try {
+            var id = req.params['id'];
+            let pro=await Producto.find({_id:id});
+           
+            let data = await Variedad.find({producto:id}).populate('producto');
+            res.status(200).send({data:data, producto:pro});       
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
+        }
+        
         
     }else{
         res.status(500).send({message: 'NoAccess'});
@@ -277,14 +324,20 @@ const listar_variedades_admin = async function(req,res){
 
 const actualizar_producto_variedades_admin = async function(req,res){
     if(req.user){
-        let id = req.params['id'];
-        let data = req.body;
+        try {
+            let id = req.params['id'];
+            let data = req.body;
 
-        console.log(data.titulo_variedad);
-        let reg = await Producto.findByIdAndUpdate({_id:id},{
-            titulo_variedad: data.titulo_variedad,
-        });
-        res.status(200).send({data:reg});
+            console.log(data.titulo_variedad);
+            let reg = await Producto.updateOne({_id:id},{
+                titulo_variedad: data.titulo_variedad,
+            });
+            res.status(200).send({data:reg});
+
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
+        }
+        
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
@@ -292,10 +345,23 @@ const actualizar_producto_variedades_admin = async function(req,res){
 
 const eliminar_variedad_admin = async function(req,res){
     if(req.user){
-        var id = req.params['id'];
+        try {
+            var id = req.params['id'];
+            let inv = await Inventario.find({variedad:id});
+            //console.log(inv);
+            if(inv.length==0){
+                let reg = await Variedad.deleteOne({_id:id});
+                
+                res.status(200).send({message:"Variedad eliminada"});
+            }else{
 
-        let reg = await Variedad.findByIdAndRemove({_id:id});
-        res.status(200).send({data:reg});
+                res.status(200).send({message:"No se puede eliminar, tiene inventario"});
+            }
+        } catch (error) {
+            //console.log(error);
+            res.status(200).send({message:"Algo salió mal"});
+        }
+        
             
     }else{
         res.status(500).send({message: 'NoAccess'});
@@ -304,12 +370,23 @@ const eliminar_variedad_admin = async function(req,res){
 
 const agregar_nueva_variedad_admin = async function(req,res){
     if(req.user){
-        var data = req.body;
+        try {
+            var data = req.body;
 
-        console.log(data);
-        let reg = await Variedad.create(data);
+            console.log(data);
+            let con = await Variedad.find({producto:data.producto,valor:data.valor});
+            if(con.length==0){
 
-        res.status(200).send({data:reg});
+                let reg = await Variedad.create(data);
+
+                res.status(200).send({data:reg});
+            }else{
+                res.status(200).send({message:"Está varidad ya existe"});
+            }
+        } catch (error) {
+            res.status(200).send({message:"Algo salió mal"});
+        }
+        
         
     }else{
         res.status(500).send({message: 'NoAccess'});
@@ -354,15 +431,55 @@ const registro_inventario_producto_admin = async function(req,res){
         let nuevo_stock_vari = parseInt(varie.stock) + parseInt(reg.cantidad);
 
         //ACTUALICACION DEL NUEVO STOCK AL PRODUCTO
-        let producto = await Producto.findByIdAndUpdate({_id:reg.producto},{
+        let producto = await Producto.updateOne({_id:reg.producto},{
             stock: nuevo_stock
         });
 
-        let variedad = await Variedad.findByIdAndUpdate({_id:reg.variedad},{
+        let variedad = await Variedad.updateOne({_id:reg.variedad},{
             stock: nuevo_stock_vari
         });
 
         res.status(200).send({data:reg});
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+const eliminar_inventario_producto_admin = async function(req,res){
+    if(req.user){
+        let data = req.body;
+        console.log("373",data);
+
+        //OBTENER EL REGISTRO DE PRODUCTO
+        let prod = await Producto.findById({_id:data.producto});
+        let varie = await Variedad.findById({_id:data.variedad._id});
+
+        //CALCULAR EL NUEVO STOCK        
+        //STOCK ACTUAL         
+        //STOCK A AUMENTAR
+        let nuevo_stock = parseInt(prod.stock) - parseInt(data.cantidad);
+
+        let nuevo_stock_vari = parseInt(varie.stock) - parseInt(data.cantidad);
+        if(nuevo_stock >=0 && nuevo_stock_vari>=0){
+            let reg = await Inventario.deleteOne({_id:data._id});
+            console.log("387",reg);
+            //ACTUALICACION DEL NUEVO STOCK AL PRODUCTO
+            let producto = await Producto.updateOne({_id:data.producto},{
+                stock: nuevo_stock
+            });
+
+            let variedad = await Variedad.updateOne({_id:data.variedad._id},{
+                stock: nuevo_stock_vari
+            });
+
+            
+            console.log("Eliminado");
+            res.status(200).send({message:'Eliminado'});
+
+        }else{
+            console.log("Nop");
+            res.status(200).send({message:'No puede eliminar de inventario'});
+        }
+       
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
@@ -377,7 +494,7 @@ const agregar_imagen_galeria_admin = async function(req,res){
             var name = img_path.split('\\');
             var imagen_name = name[2];
 
-            let reg =await Producto.findByIdAndUpdate({_id:id},{ $push: {galeria:{
+            let reg =await Producto.updateOne({_id:id},{ $push: {galeria:{
                 imagen: imagen_name,
                 _id: data._id
             }}});
@@ -394,7 +511,7 @@ const eliminar_imagen_galeria_admin = async function(req,res){
         let data = req.body;
 
 
-        let reg =await Producto.findByIdAndUpdate({_id:id},{$pull: {galeria: {_id:data._id}}});
+        let reg =await Producto.updateOne({_id:id},{$pull: {galeria: {_id:data._id}}});
         res.status(200).send({data:reg});
     }else{
         res.status(500).send({message: 'NoAccess'});
@@ -418,12 +535,12 @@ const cambiar_vs_producto_admin = async function(req,res){
 
         try {
             if(estado == 'Edicion'){
-                await Producto.findByIdAndUpdate({_id:id},{estado:'Publicado'});
+                await Producto.updateOne({_id:id},{estado:'Publicado'});
                 console.log(true);
                 res.status(200).send({data:true});
             }else if(estado == 'Publicado'){
                 console.log(true);
-                await Producto.findByIdAndUpdate({_id:id},{estado:'Edicion'});
+                await Producto.updateOne({_id:id},{estado:'Edicion'});
                 res.status(200).send({data:true});
             }
         } catch (error) {
@@ -443,7 +560,7 @@ const obtener_config_admin = async (req,res)=>{
 const actualizar_config_admin = async (req,res)=>{
     if(req.user){
         let data = req.body;
-        let config = await Config.findByIdAndUpdate({_id:'61abe55d2dce63583086f108'},{
+        let config = await Config.updateOne({_id:'61abe55d2dce63583086f108'},{
             envio_activacion : data.envio_activacion,
             monto_min_soles: data.monto_min_soles,
             monto_min_dolares : data.monto_min_dolares
@@ -478,7 +595,7 @@ const pedido_compra_cliente = async function(req,res){
                 for(var element of detalles){
                     element.venta = venta._id;
                     await Dventa.create(element);
-                    await Carrito.remove({cliente:data.cliente});
+                    await Carrito.deleteOne({cliente:data.cliente});
                 }
                 enviar_email_pedido_compra(venta._id);
                 res.status(200).send({venta:venta});
@@ -592,7 +709,7 @@ const marcar_finalizado_orden = async function(req,res){
         var id = req.params['id'];
         let data = req.body;
 
-        var venta = await Venta.findByIdAndUpdate({_id:id},{
+        var venta = await Venta.updateOne({_id:id},{
             estado: 'Finalizado'
         });
 
@@ -607,8 +724,8 @@ const eliminar_orden_admin = async function(req,res){
 
         var id = req.params['id'];
 
-        var venta = await Venta.findOneAndRemove({_id:id});
-        await Dventa.remove({venta:id});
+        var venta = await Venta.deleteOne({_id:id});
+        await Dventa.deleteOne({venta:id});
 
         res.status(200).send({data:venta});
     }else{
@@ -622,7 +739,7 @@ const marcar_envio_orden = async function(req,res){
         var id = req.params['id'];
         let data = req.body;
 
-        var venta = await Venta.findByIdAndUpdate({_id:id},{
+        var venta = await Venta.updateOne({_id:id},{
             tracking: data.tracking,
             estado: 'Enviado'
         });
@@ -641,7 +758,7 @@ const confirmar_pago_orden = async function(req,res){
         var id = req.params['id'];
         let data = req.body;
 
-        var venta = await Venta.findByIdAndUpdate({_id:id},{
+        var venta = await Venta.updateOne({_id:id},{
             estado: 'Procesando'
         });
 
@@ -654,12 +771,12 @@ const confirmar_pago_orden = async function(req,res){
             let element_variedad = await Variedad.findById({_id:element.variedad});
             let new_stock_variedad = element_variedad.stock - element.cantidad;
 
-            await Producto.findByIdAndUpdate({_id: element.producto},{
+            await Producto.updateOne({_id: element.producto},{
                 stock: new_stock,
                 nventas: new_ventas
             });
 
-            await Variedad.findByIdAndUpdate({_id: element.variedad},{
+            await Variedad.updateOne({_id: element.variedad},{
                 stock: new_stock_variedad,
             });
         }
@@ -749,12 +866,12 @@ const registro_compra_manual_cliente = async function(req,res){
             let element_variedad = await Variedad.findById({_id:element.variedad});
             let new_stock_variedad = element_variedad.stock - element.cantidad;
 
-            await Producto.findByIdAndUpdate({_id: element.producto},{
+            await Producto.updateOne({_id: element.producto},{
                 stock: new_stock,
                 nventas: new_ventas
             });
 
-            await Variedad.findByIdAndUpdate({_id: element.variedad},{
+            await Variedad.updateOne({_id: element.variedad},{
                 stock: new_stock_variedad,
             });
         }
@@ -838,7 +955,7 @@ const  cerrar_mensaje_contacto  = async function(req,res){
     
     if(req.user){
         var id = req.params['id'];
-        var reg = await Contacto.findByIdAndUpdate({_id:id},{
+        var reg = await Contacto.updateOne({_id:id},{
             estado:'Cerrado'
         });
         res.status(200).send({message:'Cerrado con Exito'});
@@ -867,6 +984,7 @@ module.exports = {
     eliminar_variedad_admin,
     listar_inventario_producto_admin,
     registro_inventario_producto_admin,
+    eliminar_inventario_producto_admin,
     agregar_imagen_galeria_admin,
     eliminar_imagen_galeria_admin,
     verificar_token,

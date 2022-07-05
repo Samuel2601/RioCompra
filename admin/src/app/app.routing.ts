@@ -17,6 +17,7 @@ import { ConfigComponent } from "./components/config/config.component";
 import { IndexVentasComponent } from "./components/ventas/index-ventas/index-ventas.component";
 import { CreateVentasComponent } from "./components/ventas/create-ventas/create-ventas.component";
 import { ShowVentasComponent } from "./components/ventas/show-ventas/show-ventas.component";
+import { DetalleClientesComponent } from "./components/clientes/detalle-clientes/detalle-clientes.component";
 
 const appRoute : Routes = [
     {path: '', redirectTo: 'login', pathMatch : 'full'},
@@ -25,7 +26,7 @@ const appRoute : Routes = [
 
 
     {path: 'clientes', component: IndexClientesComponent, canActivate:[AuthGuard]},
-
+    {path: 'clientes/detalle/:id', component: DetalleClientesComponent, canActivate:[AuthGuard]},
     {path: 'productos', component: IndexProductoComponent, canActivate:[AuthGuard]},
     //{path: 'productos/:id', component: IndexProductoComponent, canActivate:[AuthGuard]},
     {path: 'productos/create', component: CreateProductoComponent, canActivate:[AuthGuard]},

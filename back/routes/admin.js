@@ -29,6 +29,7 @@ api.post('/agregar_nueva_variedad_admin',auth.auth,AdminController.agregar_nueva
 api.get('/listar_inventario_admin',auth.auth,AdminController.listar_inventario_admin);
 api.get('/listar_inventario_producto_admin/:id',auth.auth,AdminController.listar_inventario_producto_admin);
 api.post('/registro_inventario_producto_admin',auth.auth,AdminController.registro_inventario_producto_admin);
+api.post('/eliminar_inventario_producto_admin',auth.auth,AdminController.eliminar_inventario_producto_admin);
 api.put('/agregar_imagen_galeria_admin/:id',[auth.auth,path],AdminController.agregar_imagen_galeria_admin);
 api.put('/eliminar_imagen_galeria_admin/:id',auth.auth,AdminController.eliminar_imagen_galeria_admin);
 api.get('/verificar_token',auth.auth,AdminController.verificar_token);

@@ -413,14 +413,14 @@ export class DashboardComponent implements OnInit {
      this.datos=[];
       var labels:any=[]=[];
       var ver:any=[]=[];
-
+      console.log(this.variedad);
       this.variedad.forEach((element:any) => {
         //console.log('Elementos:'+element);
       element.forEach((element2:any) => {
-      // console.log('Elemento2'+element2);
+      console.log('Elemento2'+element2);
       
         //console.log((labels.find((elementl:any)=>elementl==element2.variedad.valor)==undefined)==true);
-        if(this.productos[val]._id==element2.producto&&(labels==undefined||labels.find((elementl:any)=>elementl==element2.variedad.valor)==undefined)){
+        if(element2.variedad!=null&& this.productos[val]._id==element2.producto&&(labels==undefined||labels.find((elementl:any)=>elementl==element2.variedad.valor)==undefined)){
         // console.log('Variedad',element2.variedad.valor);
           labels.push(element2.variedad.valor);
         }

@@ -1,0 +1,122 @@
+<app-sidebar></app-sidebar>
+
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Cliente: {{datos_cliente[0].nombres}} {{datos_cliente[0].apellidos}} <a class="btn btn-warning btn-shadow mr-3" style="float: right;" [routerLink]="['/clientes']" routerLinkActive="router-link-active" >Regresar</a>
+              
+                    </h1>
+
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+
+            <!-- Alert -->
+           
+
+            <!-- Card -->
+            <div class="alert alert-danger" *ngIf="clientes==undefined">
+              <i class="fe fe-info mr-1"></i> No tienes Ventas por mostrar
+            </div>
+            <div class="card-body">
+              <h2>Ventas: {{gasto|currency:'USD'}}</h2>
+              <div class="row">
+                  <div class="col-12">
+                      <canvas class="chart-canvas chartjs-render-monitor"id="myChart" width="10%" height="5%" style="display: block; box-sizing: border-box; height: 35px; width: 75px;"></canvas>
+                  </div>
+              </div>
+          </div>
+            <div class="card">
+              <div class="card-header">
+
+                <!-- Title -->
+                <h4 class="card-header-title">
+                  Mostrando todos tus clientes: {{clientes.length}}
+                </h4>
+                {{gasto|currency:'USD'}}
+              </div>
+              
+              <div class="card-body">
+                <div class="input-group input-group-merge">
+                    <input type="text" class="form-control form-control-appended" placeholder="Buscar cliente" name="filtro" [(ngModel)]="filtro">
+                    <div class="input-group-append">
+                      <button class="btn btn-primary" (click)="filtrar_cliente()">
+                          Buscar
+                      </button>
+                    </div>
+                  </div>
+              </div>
+              <div class="table-responsive table-hover">
+                <table class="table table-sm table-nowrap card-table">
+                  <thead>
+                    <tr>
+                      <th>Número de Venta</th>
+                      <th>Fecha</th>
+                      <th>Estado</th>
+                      <th>Total</th>
+                      
+                    </tr>
+                  </thead>
+                  <tbody class="font-size-base">
+                    <tr *ngFor="let item of clientes | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                      <td>
+                        <a class="text-primary">{{item.metodo_pago}}</a><br>
+                        <small class="text-muted" style="cursor: pointer;" [routerLink]="['/ventas/',item._id]"> {{item._id}} </small>
+                        
+                      </td>
+                      <td>
+                        {{item.createdAt|date:'YYYY-MM-dd'}}
+                      <td>
+                        <span class="badge badge-warning" *ngIf="item.estado == 'En espera'">{{item.estado}}</span>
+                        <span class="badge badge-success" *ngIf="item.estado == 'Procesando'">{{item.estado}}</span>
+                        <span class="badge badge-info" *ngIf="item.estado == 'Enviado'">{{item.estado}}</span>
+                        <span class="badge badge-danger" *ngIf="item.estado == 'Finalizado'">{{item.estado}}</span>
+                        <br>
+                        <span *ngIf="item.tracking!=undefined">{{item.tracking}}</span>
+                      </td>
+                      <td>
+                        <span>{{item.total_pagar|currency:'USD'}}</span>
+                        
+                      </td>
+                      
+                      
+                    </tr>
+                   
+                  </tbody>
+                 
+                </table>
+                
+              </div>
+              
+            </div>
+            <ngb-pagination *ngIf="clientes.length >= 1"
+              [(page)]="page"
+              [pageSize]="pageSize"
+              [maxSize]="10"
+              [rotate]="true" [boundaryLinks]="true"
+              [collectionSize]="clientes.length"></ngb-pagination>
+  
+            
+            
+          </div>
+          
+        </div> <!-- / .row -->
+      </div>
+</div>

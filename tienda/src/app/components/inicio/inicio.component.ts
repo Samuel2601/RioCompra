@@ -46,28 +46,32 @@ export class InicioComponent implements OnInit {
     this._guestService.listar_productos_destacados_publico().subscribe(
       response=>{
         this.mas_vendidos = response.data;
-        console.log(this.mas_vendidos[3]);
+        console.log(this.mas_vendidos);
+
+
+          if(this.mas_vendidos[0] != undefined && this.mas_vendidos[0].producto.estado!="Edicion"){
+            this.producto_destacado_uno =this.mas_vendidos[0];
+          }else{
+            this.producto_destacado_uno = null;
+          }
+          if(this.mas_vendidos[1] != undefined && this.mas_vendidos[1].producto.estado!="Edicion"){
+            this.producto_destacado_dos =this.mas_vendidos[1];
+          }else{
+            this.producto_destacado_dos = null;
+          }
+          if(this.mas_vendidos[2] != undefined && this.mas_vendidos[2].producto.estado!="Edicion"){
+            this.producto_destacado_tres =this.mas_vendidos[2];
+          }else{
+            this.producto_destacado_tres = null;
+          }
+          if(this.mas_vendidos[3] != undefined && this.mas_vendidos[3].producto.estado!="Edicion"){
+            this.producto_destacado_cuatro =this.mas_vendidos[3];
+          }else{
+            this.producto_destacado_cuatro = null;
+          }
+
         
-        if(this.mas_vendidos[0] != undefined){
-          this.producto_destacado_uno =this.mas_vendidos[0];
-        }else{
-          this.producto_destacado_uno = null;
-        }
-        if(this.mas_vendidos[1] != undefined){
-          this.producto_destacado_dos =this.mas_vendidos[1];
-        }else{
-          this.producto_destacado_dos = null;
-        }
-        if(this.mas_vendidos[2] != undefined){
-          this.producto_destacado_tres =this.mas_vendidos[2];
-        }else{
-          this.producto_destacado_tres = null;
-        }
-        if(this.mas_vendidos[3] != undefined){
-          this.producto_destacado_cuatro =this.mas_vendidos[3];
-        }else{
-          this.producto_destacado_cuatro = null;
-        }
+       
       }
     );
   }

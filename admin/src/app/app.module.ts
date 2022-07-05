@@ -14,6 +14,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SidebarComponent } from './components/sidebar/sidebar.component';
 import { TopnavComponent } from './components/topnav/topnav.component';
 import { IndexClientesComponent } from './components/clientes/index-clientes/index-clientes.component';
+import { DetalleClientesComponent } from './components/clientes/detalle-clientes/detalle-clientes.component';
 import { IndexProductoComponent } from './components/productos/index-producto/index-producto.component';
 import { CreateProductoComponent } from './components/productos/create-producto/create-producto.component';
 import { EditProductoComponent } from './components/productos/edit-producto/edit-producto.component';
@@ -44,6 +45,7 @@ registerLocaleData(localeES,'es');
     SidebarComponent,
     TopnavComponent,
     IndexClientesComponent,
+    DetalleClientesComponent,
     IndexProductoComponent,
     CreateProductoComponent,
     EditProductoComponent,

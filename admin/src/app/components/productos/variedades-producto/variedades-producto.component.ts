@@ -16,7 +16,7 @@ export class VariedadesProductoComponent implements OnInit {
   public id = '';
   public token :any = '';
   public variedades :Array<any> = [];
-
+  public prod :Array<any> = [];
   public nueva_variedad = '';
   public load_btn = false;
   public load_data = true;
@@ -48,6 +48,8 @@ export class VariedadesProductoComponent implements OnInit {
     this._adminService.listar_variedades_admin(this.id,this.token).subscribe(
       response=>{
         this.variedades = response.data;
+        this.prod=response.producto;
+        console.log(this.prod);
         console.log(this.variedades);
         this.load_data = false;
       }
@@ -58,7 +60,8 @@ export class VariedadesProductoComponent implements OnInit {
     this.load_del = true;
     this._adminService.eliminar_variedad_admin(id,this.token).subscribe(
       response=>{
-        iziToast.show({
+        if(response.message=="Variedad eliminada"){
+          iziToast.show({
             title: 'SUCCESS',
             titleColor: '#1DC74C',
             color: '#FFF',
@@ -66,6 +69,17 @@ export class VariedadesProductoComponent implements OnInit {
             position: 'topRight',
             message: 'Se eliminó correctamente la variedad.'
         });
+        }else{
+          iziToast.show({
+            title: 'ERROR',
+            titleColor: '#1DC74C',
+            color: '#FFF',
+            class: 'text-info',
+            position: 'topRight',
+            message: response.message
+        });
+        }
+        
 
         $('#delete-'+id).modal('hide');
         $('.modal-backdrop').remove();
@@ -122,7 +136,7 @@ export class VariedadesProductoComponent implements OnInit {
 
   agregar_variedad(){
     if(this.nueva_variedad){
-
+      this.nueva_variedad=this.nueva_variedad.toUpperCase();
       let data = {
         producto: this.id,
         valor:this.nueva_variedad,
@@ -131,7 +145,8 @@ export class VariedadesProductoComponent implements OnInit {
       this._adminService.agregar_nueva_variedad_admin(data,this.token).subscribe(
         response=>{
           console.log(data);
-          iziToast.show({
+          if(response.message==undefined){
+            iziToast.show({
               title: 'SUCCESS',
               titleColor: '#1DC74C',
               color: '#FFF',
@@ -139,6 +154,17 @@ export class VariedadesProductoComponent implements OnInit {
               position: 'topRight',
               message: 'Se agrego la nueva variedad.'
           });
+          }else{
+            iziToast.show({
+              title: 'ERROR',
+              titleColor: '#1DC74C',
+              color: '#FFF',
+              class: 'text-info',
+              position: 'topRight',
+              message: 'Se agrego la nueva variedad.'
+          });
+          }
+         
           this.load_agregar = false;
           this.listar_variedades();
         }

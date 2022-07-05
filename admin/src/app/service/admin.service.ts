@@ -156,6 +156,14 @@ export class AdminService {
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
     return this._http.post(this.url+'registro_inventario_producto_admin',data,{headers:headers});
   }
+  eliminar_inventario_producto_admin(data:any,token:any):Observable<any>{
+    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
+    return this._http.post(this.url+'eliminar_inventario_producto_admin',data,{headers:headers});
+  }
+  obtener_ordenes_cliente(id:any,token:any):Observable<any>{
+    let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});
+    return this._http.get(this.url+'obtener_ordenes_cliente/'+id,{headers:headers});
+  }
 
   agregar_imagen_galeria_admin(id:any,data:any,token:any):Observable<any>{
     let headers = new HttpHeaders({'Authorization':token});
