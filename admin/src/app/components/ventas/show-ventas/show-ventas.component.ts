@@ -154,7 +154,8 @@ export class ShowVentasComponent implements OnInit {
     this.load_conf_pago = true;
     this._adminService.confirmar_pago_orden(id,{data:''},this.token).subscribe(
       response=>{
-        iziToast.show({
+        if(response.message==undefined){
+          iziToast.show({
             title: 'SUCCESS',
             titleColor: '#1DC74C',
             color: '#FFF',
@@ -166,6 +167,17 @@ export class ShowVentasComponent implements OnInit {
         $('.modal-backdrop').remove();
         this.load_conf_pago = false;
         this.init_data();
+        }else{
+          iziToast.show({
+            title: 'ERROR',
+            class: 'iziToast-danger',
+            position: 'topRight',
+            message: response.message
+        });
+        }
+       
+
+       
       }
     );
   }

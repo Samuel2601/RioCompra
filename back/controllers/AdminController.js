@@ -757,12 +757,11 @@ const confirmar_pago_orden = async function(req,res){
 
         var id = req.params['id'];
         let data = req.body;
-
-        var venta = await Venta.updateOne({_id:id},{
-            estado: 'Procesando'
-        });
+        var er=-1;
+        var p_error, v_error;
 
         var detalles = await Dventa.find({venta:id});
+        //Verifica si hay problemas de de stock
         for(var element of detalles){
             let element_producto = await Producto.findById({_id:element.producto});
             let new_stock = element_producto.stock - element.cantidad;
@@ -770,18 +769,43 @@ const confirmar_pago_orden = async function(req,res){
 
             let element_variedad = await Variedad.findById({_id:element.variedad});
             let new_stock_variedad = element_variedad.stock - element.cantidad;
-
-            await Producto.updateOne({_id: element.producto},{
-                stock: new_stock,
-                nventas: new_ventas
-            });
-
-            await Variedad.updateOne({_id: element.variedad},{
-                stock: new_stock_variedad,
-            });
+            if(new_stock<0&&new_stock_variedad<0){
+                er=0;
+                p_error=element_producto.titulo;
+                v_error=element_variedad.valor;
+            }                
         }
+        if(er==-1){
+            //no hay error, grabar
+            var venta = await Venta.updateOne({_id:id},{
+                estado: 'Procesando'
+            });
+            for(var element of detalles){
+                let element_producto = await Producto.findById({_id:element.producto});
+                let new_stock = element_producto.stock - element.cantidad;
+                let new_ventas = element_producto.nventas + 1;
+    
+                let element_variedad = await Variedad.findById({_id:element.variedad});
+                let new_stock_variedad = element_variedad.stock - element.cantidad;
+                await Producto.updateOne({_id: element.producto},{
+                    stock: new_stock,
+                    nventas: new_ventas
+                });
+        
+                await Variedad.updateOne({_id: element.variedad},{
+                    stock: new_stock_variedad,
+                });                
+                
+            }
+            
+            res.status(200).send({data:venta});
+        }else{
+            //hay error, mandar mensaje del producto con el error
+            res.status(200).send({message: 'No hay en inventario el siguiente producto: '
+            +p_error +', de variedad: '+v_error });  
+        }
+        
 
-        res.status(200).send({data:venta});
     }else{
         res.status(500).send({message: 'NoAccess'});
     }
