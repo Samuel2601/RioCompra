@@ -29,6 +29,9 @@ import { IndexVentasComponent } from './components/ventas/index-ventas/index-ven
 import { ShowVentasComponent } from './components/ventas/show-ventas/show-ventas.component';
 import { CreateVentasComponent } from './components/ventas/create-ventas/create-ventas.component';
 
+import { CreateAdminComponent } from "./components/administrativo/create-administrativo/create-administrativo.component";
+import { EditAdminComponent } from "./components/administrativo/edit-administrativo/edit-administrativo.component";
+import { IndexAdminComponent } from "./components/administrativo/index-administrativo/index-administrativo.component";
 
 import localeES from '@angular/common/locales/es';
 import {registerLocaleData} from '@angular/common';
@@ -58,7 +61,10 @@ registerLocaleData(localeES,'es');
     ConfigComponent,
     IndexVentasComponent,
     ShowVentasComponent,
-    CreateVentasComponent
+    CreateVentasComponent,
+    CreateAdminComponent,
+		EditAdminComponent,
+		IndexAdminComponent,
   ],
   imports: [
     

@@ -1,0 +1,198 @@
+<app-sidebar></app-sidebar>
+
+<ng-container *ngIf="estudiante != undefined && (estudiante.estado != 'Fuera'||(estudiante.estado == 'Fuera' && yo==1) )&& (rol!=undefined && rol == 'admin')||idp==id" >
+  <div class="main-content">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+          <div class="col-12 col-lg-10 col-xl-8">
+  
+            <!-- Header -->
+            <div class="header mt-md-5">
+              <div class="header-body">
+                <div class="row align-items-center">
+                  <div class="col">
+  
+                    <!-- Pretitle -->
+                    <h6 class="header-pretitle">
+                      Módulo
+                    </h6>
+  
+                    <!-- Title -->
+                    <h1 class="header-title">
+                        Administrativo
+                    </h1>
+  
+                  </div>
+                </div> <!-- / .row -->
+      
+              </div>
+            </div>
+  
+            <!-- Alert -->
+  
+  
+            <!-- Card -->
+            <form #updateForm="ngForm" (ngSubmit)="actualizar(updateForm)">
+              <div class="card">
+                <div class="card-header">
+  
+                  <!-- Title -->
+                  <h4 class="card-header-title">
+                   Edición Administrativoa
+                  </h4>
+  
+                </div>
+  
+                <div class="card-body">
+                  <div class="row">
+                      <div class="col-lg-12">
+                          <div class="row">
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputName">Nombres (*)</label>
+                                            <input type="text" class="form-control" required placeholder="{{estudiante.nombres}}" pattern="^[A-ZÁÉÍÓÚ ]+$" name="nombres" [(ngModel)]="estudiante.nombres">
+                                        </div>
+                                    </div>
+  
+                                    <div class="col-6">
+                                        <div class="form-group">
+                                            <label for="exampleInputLastName">Apellidos (*)</label>
+                                            <input type="text" class="form-control" required placeholder="{{estudiante.apellidos}}" pattern="^[A-ZÁÉÍÓÚ ]+$" name="apellidos" [(ngModel)]="estudiante.apellidos">
+                                        </div>
+                                    </div>
+  
+                                    <div class="col-6">
+                                      <div class="form-group">
+                                          <label for="exampleInputEmail">Email (*)</label>
+                                          <input type="email" class="form-control" required placeholder="{{estudiante.email}}" pattern="^[a-z0-9@.]+$"name="email" [(ngModel)]="estudiante.email">
+                                      </div>
+                                  </div>
+                                  <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputPhone">Teléfono (*)</label>
+                                        <input type="tel" class="form-control" required placeholder="{{estudiante.telefono}}" pattern="^[0-9]+$"maxlength="10" minlength="8"name="telefono" [(ngModel)]="estudiante.telefono">
+                                    </div>
+  
+                                </div>
+  
+                                  <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword">Contraseña</label>
+                                        <input type="password" class="form-control"  placeholder="Contraseña" maxlength="50" minlength="8"name="password" [(ngModel)]="estudiante.password">
+                                    </div>
+                                  </div>
+  
+                                  <div class="col-6">
+                                    <div class="form-group">
+                                        <label for="exampleInputPassword">Repite Contraseña</label>
+                                        <input type="password" class="form-control"  placeholder="Repite contraseña" maxlength="50" minlength="8"name="auxiliar" [(ngModel)]="estudiante.auxiliar">
+                                    </div>
+                                  </div>  
+  
+                                  
+  
+                                <div class="col-lg-6 form-group">	
+                                  <label for="">Cédula (*)</label>
+                                  <input type="text" class="form-control" placeholder="{{estudiante.dni}}" pattern="^[0-9]+$"maxlength="10" minlength="10" required name="dni" [(ngModel)]="estudiante.dni">
+                              </div>
+                              
+                              <div class="col-lg-6 form-group">
+                                <label >Rol (*)</label>
+                                <ng-container *ngIf="idp!=id">
+                                  
+                                <select class="form-control custom-select" id="select-input" required name="rol" [(ngModel)]="estudiante.rol">
+                                    <option value="" selected disabled>Seleccionar</option>
+                                    <option value="admin" >Administrador</option>
+                                    <option value="vent" >Vendedor</option>
+                                    
+                                </select>
+                              </ng-container>
+                              <ng-container *ngIf="idp==id">
+                               
+                                  <div class="alert alert-info" >
+                                    <i *ngIf="estudiante.rol=='admin'">Administrador</i>
+                                    <i *ngIf="estudiante.rol=='vent'">Vendedor</i>
+                                  </div>
+                                
+                                
+                              </ng-container>
+                              </div>
+                              <ng-container *ngIf="idp!=id">
+                              <div class="col-lg-6 form-group">
+                                <label >Estado (*)</label>
+                                <select class="form-control custom-select" id="select-input-estado" required name="estado" [(ngModel)]="estudiante.estado">
+                                    <option value="" disabled>Seleccionar</option>
+                                    <option value="habilitado" >Habilidado</option>
+                                    <option value="deshabilitado" >Deshabilitado</option>
+                                </select>
+                              </div>
+                            </ng-container>
+                          </div>
+                               
+                      </div>
+                      
+                  </div>
+                </div>
+                <div class="card-footer">
+                  <ng-container *ngIf="idp!=id">
+                    <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/administrativo']" routerLinkActive="router-link-active" >Regresar</a>
+                    <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Actualizar</button>
+                  </ng-container>
+                  <ng-container *ngIf="idp==id">
+                    <a class="btn btn-warning btn-shadow mr-3" [routerLink]="['/administrativo']" routerLinkActive="router-link-active" >Regresar</a>
+                    <button *ngIf="!load_btn" class="btn btn-primary btn-shadow" type="submit">Actualizar</button>
+                  </ng-container>
+                                    
+                    <button disabled *ngIf="load_btn" type="button" class="btn btn-primary btn-shadow">
+                        <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                        Creando...
+                    </button>
+  
+                    
+                </div>
+              </div>
+            </form>
+              
+  
+          </div>
+        </div> <!-- / .row -->
+      </div>
+  </div>
+</ng-container>
+
+
+<ng-container  *ngIf="(estudiante == undefined || (estudiante.estado == 'Fuera' && yo==0) || (rol!=undefined && rol != 'admin'))&&idp!=id">
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+          
+          <div class="text-center">
+          
+            <!-- Preheading -->
+            <h6 class="text-uppercase text-muted mb-4">
+              404 error
+            </h6>
+
+            <!-- Heading -->
+            <h1 class="display-4 mb-3">
+              Está página no se cuentra habilitada para ti 😭
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-muted mb-4">
+              ¿Parece que llegaste aquí por accidente?
+            </p>
+
+            <!-- Button -->
+            <a [routerLink]="['/clientes']"  class="btn btn-lg btn-primary">
+              Regresar a Clientes
+            </a>
+          
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

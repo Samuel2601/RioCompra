@@ -19,11 +19,26 @@ import { CreateVentasComponent } from "./components/ventas/create-ventas/create-
 import { ShowVentasComponent } from "./components/ventas/show-ventas/show-ventas.component";
 import { DetalleClientesComponent } from "./components/clientes/detalle-clientes/detalle-clientes.component";
 
+import {IndexAdminComponent} from "./components/administrativo/index-administrativo/index-administrativo.component"
+import {EditAdminComponent} from "./components/administrativo/edit-administrativo/edit-administrativo.component"
+import {CreateAdminComponent} from "./components/administrativo/create-administrativo/create-administrativo.component"
+
 const appRoute : Routes = [
     {path: '', redirectTo: 'login', pathMatch : 'full'},
     {path: 'dashboard', component: DashboardComponent, canActivate:[AuthGuard]},
     {path: 'login', component: LoginComponent},
 
+    { path: "administrativo", component: IndexAdminComponent, canActivate: [AuthGuard] },
+	{
+		path: "administrativo/create",
+		component: CreateAdminComponent,
+		canActivate: [AuthGuard]
+	},
+	{
+		path: "administrativo/edit/:id",
+		component: EditAdminComponent,
+		canActivate: [AuthGuard]
+	},
 
     {path: 'clientes', component: IndexClientesComponent, canActivate:[AuthGuard]},
     {path: 'clientes/detalle/:id', component: DetalleClientesComponent, canActivate:[AuthGuard]},

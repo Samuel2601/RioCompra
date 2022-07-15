@@ -43,7 +43,7 @@
                   </div>
                   <div class="card-body">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12" *ngIf="rol=='admin'">
                           <form #inventarioForm="ngForm" (ngSubmit)="registro_inventario(inventarioForm)" class="form-inline">
                             <select name="variedad" required [(ngModel)]="inventario.variedad" class="form-control custom-select mb-3 mr-sm-4" id="select-input">
                               <option value="" selected disabled>Seleccionar</option>
@@ -81,7 +81,7 @@
                         
                                     <td>{{item.variedad.valor}}</td>
                                     <td>{{item.cantidad}}</td>
-                                    <td>{{item.createdAt|date: 'short'}} <a style="cursor: pointer; padding-left: 20%;" class="text-danger" (click)="eliminar_inventario(indice)">[Eliminar]</a></td>
+                                    <td>{{item.createdAt|date: 'short'}} <a *ngIf="rol=='admin'" style="cursor: pointer; padding-left: 20%;" class="text-danger" (click)="eliminar_inventario(indice)">[Eliminar]</a></td>
                                     
                         
                                 </tr>

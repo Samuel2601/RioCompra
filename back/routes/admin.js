@@ -51,5 +51,10 @@ api.post('/registro_compra_manual_cliente',auth.auth,AdminController.registro_co
 api.get('/listar_mensaje_contacto',auth.auth,AdminController.listar_mensaje_contacto);
 api.get('/cerrar_mensaje_contacto/:id',auth.auth,AdminController.cerrar_mensaje_contacto);
 
+api.get('/listar_admin',auth.auth,AdminController.listar_admin);
+api.put('/actualizar_admin/:id',auth.auth,AdminController.actualizar_admin);
+api.post('/registro_admin',auth.auth,AdminController.registro_admin);
+api.get('/obtener_admin/:id',auth.auth,AdminController.obtener_admin);
 
+api.get('/eliminar_admin/:id',auth.auth,AdminController.eliminar_admin);
 module.exports = api;

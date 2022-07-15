@@ -58,7 +58,7 @@ export class ShowVentasComponent implements OnInit {
         console.log(response);
         if(response.data != undefined){
           this.venta = response.data;
-
+          console.log(this.venta);
           if(this.venta.metodo_pago=='Tarjeta de crédito'){
             this._adminService.obtenerPago(this.venta.transaccion).subscribe(
               response=>{

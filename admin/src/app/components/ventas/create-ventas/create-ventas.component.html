@@ -200,7 +200,7 @@
                                                     <td>{{item.cantidad}}</td>
                                                     <td>
                                                         <a style="cursor: pointer;" *ngIf="item.cantidad >= 1" class="text-success" (click)="select_producto(item)">[Seleccionar]</a>
-                                                        <button type="button" *ngIf="item.cantidad <= 0" class="text-success" disabled>[Seleccionar]</button>
+                                                        <button type="button" *ngIf="item.cantidad <= 0" class="text-success" disabled>[No Seleccionable]</button>
                                                     </td>
     
                                                 </tr>

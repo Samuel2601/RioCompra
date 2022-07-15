@@ -40,7 +40,10 @@ export class IndexCuponComponent implements OnInit {
   filtrar_cupones(){
     if(this.filtro){
       var term = new RegExp(this.filtro.toString().trim() , 'i');
-      this.cupones = this.cupones_const.filter(item=>term.test(item.codigo)||term.test(item.tipo)||term.test(item.disponibilidad));
+      this.cupones = this.cupones_const.filter(
+        item=>term.test(item.codigo)||
+        term.test(item.tipo)||
+        term.test(item.disponibilidad));
     }else{
       this.cupones = this.cupones_const;
     }
@@ -55,7 +58,7 @@ export class IndexCuponComponent implements OnInit {
             color: '#FFF',
             class: 'text-success',
             position: 'topRight',
-            message: 'Se eliminó correctamente el cliente.'
+            message: 'Se eliminó correctamente el cupón.'
         });
 
         $('#delete-'+id).modal('hide');

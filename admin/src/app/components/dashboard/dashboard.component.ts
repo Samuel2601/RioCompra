@@ -54,15 +54,26 @@ export class DashboardComponent implements OnInit {
   public venta_act="";
   cupones_const: any;
   cupones: any;
+  public rol:any;
+  public yo:any;
 
   constructor(   
     private _adminService:AdminService
     ) {}
 
   ngOnInit(): void {
-    
+    let aux = localStorage.getItem("identity");
+		this._adminService.obtener_admin(aux, this.token).subscribe((response) => {
+			this.rol = response.data.rol;
+			if (this.rol == "admin") {
+				if (response.data.email == "samuel.arevalo@espoch.edu.ec") {
+          this.yo = 1;
+        }
+        this.estadoventas();
+			}
+			
+		});
 
-   this.estadoventas();
   }
 
   estadoventas(): void {
@@ -382,6 +393,9 @@ export class DashboardComponent implements OnInit {
                 console.log( this.variedad);
               }
             );
+            this.filtro_p='Edicion';
+            this.filtro_producto();
+            //this.filtro_p='Publicado';
           }
         );
       }
@@ -528,16 +542,24 @@ export class DashboardComponent implements OnInit {
         this.myChart3.data.datasets.push(element);
 
         });
+        
         this.myChart3.update();
-
+        
     
   }
   filtro_producto(){
     if(this.filtro_p=='Publicado'){
       this.filtro_p='Edicion';
+
     }else{
       this.filtro_p='Publicado';
     }
+    this.productos=[];
+    this.productos_const.forEach((element:any) => {
+      if(element.estado==this.filtro_p){
+        this.productos.push(element);
+      }
+    });
   }
   filtrar_producto(){
     if(this.filtro){

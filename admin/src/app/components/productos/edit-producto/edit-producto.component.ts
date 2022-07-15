@@ -34,6 +34,9 @@ export class EditProductoComponent implements OnInit {
   public load_etiquetas = false;
   public url = GLOBAL.url;
 
+  public rol: any;
+  public idp: any;
+  public yo: number=0;
   constructor(
     private _adminService:AdminService,
     private _router:Router,
@@ -50,7 +53,14 @@ export class EditProductoComponent implements OnInit {
         this.categorias = response;
       }
     );
-
+    let aux = localStorage.getItem("identity");
+    this._adminService.obtener_admin(aux, this.token).subscribe((response) => {
+      this.rol = response.data.rol;
+      this.idp = response.data._id;
+      if (response.data.email == "samuel.arevalo@espoch.edu.ec") {
+        this.yo = 1;
+      }
+    });
     this._route.params.subscribe(
       params=>{
         this.id = params['id'];
@@ -189,7 +199,7 @@ export class EditProductoComponent implements OnInit {
   }
 
   actualizar(actualizarForm:any){
-    if(actualizarForm.valid){
+    if(actualizarForm.valid && this.rol=='admin'){
 
       var data : any= {};
 
@@ -242,7 +252,20 @@ export class EditProductoComponent implements OnInit {
       )
 
     }else{
-      iziToast.show({
+      if(this.rol!='admin'){
+        iziToast.show({
+          title: 'ERROR',
+          titleColor: '#FF0000',
+          color: '#FFF',
+          class: 'text-danger',
+          position: 'topRight',
+          message: 'No tienes permiso de editar'
+      });
+      
+      this.load_btn = false;
+      this.ngOnInit();
+      }else{
+        iziToast.show({
           title: 'ERROR',
           titleColor: '#FF0000',
           color: '#FFF',
@@ -251,6 +274,8 @@ export class EditProductoComponent implements OnInit {
           message: 'Los datos del formulario no son validos'
       });
       this.load_btn = false;
+      }
+
     }
 }
 

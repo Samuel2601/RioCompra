@@ -43,6 +43,11 @@
         "titulo":"Packs",
         "slug":"packs",
         "_id": "1008"
+    },
+    {
+        "titulo":"Calzado",
+        "slug":"zapatos",
+        "_id": "1009"
     }
     
 ]

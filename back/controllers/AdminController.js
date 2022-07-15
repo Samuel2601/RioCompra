@@ -18,37 +18,32 @@ var ejs = require('ejs');
 var nodemailer = require('nodemailer');
 var smtpTransport = require('nodemailer-smtp-transport');
 var path = require('path');
+const { config } = require('process');
 
 const login_admin = async function(req,res){
-    var data = req.body;
-    //console.log(req.body);
+var data = req.body;
     var admin_arr = [];
 
     admin_arr = await Admin.find({email:data.email});
-    
-if(admin_arr.length == 0){
-    res.status(200).send({message: 'El correo electrónico no existe', data: undefined});
-}else{
-    //LOGIN
-    let user = admin_arr[0];
 
-    bcrypt.compare(data.password, user.password, async function(error,check){
-        if(check){
-            res.status(200).send({
-                data:user,
-                token: jwt.createToken(user)
-            });
-        }else{
-            res.status(200).send({message: 'Las credenciales no coinciden', data: undefined}); 
-        }
-    });
+    if(admin_arr.length == 0){
+        res.status(200).send({message: 'El correo electrónico no existe', data: undefined});
+    }else{
+        //LOGIN
+        let user = admin_arr[0];
 
-} 
+        bcrypt.compare(data.password, user.password, async function(error,check){
+            if(check){
+                res.status(200).send({
+                    data:user,
+                    token: jwt.createToken(user)
+                });
+            }else{
+                res.status(200).send({message: 'Las credenciales no coinciden', data: undefined}); 
+            }
+        });
  
-      
-        
-        
-    
+    } 
     
 }
 
@@ -406,6 +401,7 @@ const listar_inventario_producto_admin = async function(req,res){
 }
 const listar_inventario_admin = async function(req,res){
     if(req.user){
+        console.log(req.user);
         var reg = await Inventario.find().sort({createdAt:-1}).populate('producto');
         res.status(200).send({data:reg});
     }else{
@@ -590,6 +586,7 @@ const pedido_compra_cliente = async function(req,res){
 
             if(!access){
                 data.estado = 'En espera';
+                data.f_estado= new Date();
                 let venta = await Venta.create(data);
         
                 for(var element of detalles){
@@ -632,7 +629,7 @@ const enviar_email_pedido_compra = async function(venta){
             host: 'smtp.gmail.com',
             auth: {
                 user: 'saamare99@gmail.com',
-                pass: 'qthkgzvelkwagtig'
+                pass: 'uuiquooktlgulurn'
             }
         }));
     
@@ -673,7 +670,7 @@ const obtener_ventas_admin  = async function(req,res){
             let desde = req.params['desde'];
             let hasta = req.params['hasta'];
 
-            ventas = await Venta.find().populate('cliente').populate('direccion').sort({createdAt:-1});
+            ventas = await Venta.find().populate('cliente').populate('admin').populate('direccion').sort({createdAt:-1});
             res.status(200).send({data:ventas});
 
             
@@ -687,7 +684,8 @@ const obtener_detalles_ordenes_cliente  = async function(req,res){
         var id = req.params['id'];
 
         try {
-            let venta = await Venta.findById({_id:id}).populate('direccion').populate('cliente');
+            let venta = await Venta.findOne({_id:id}).populate('cliente').populate('admin').populate('direccion');
+            console.log(venta);
             let detalles = await Dventa.find({venta:venta._id}).populate('producto').populate('variedad');
             res.status(200).send({data:venta,detalles:detalles});
 
@@ -710,7 +708,8 @@ const marcar_finalizado_orden = async function(req,res){
         let data = req.body;
 
         var venta = await Venta.updateOne({_id:id},{
-            estado: 'Finalizado'
+            estado: 'Finalizado',
+            f_estado: new Date()
         });
 
         res.status(200).send({data:venta});
@@ -741,7 +740,8 @@ const marcar_envio_orden = async function(req,res){
 
         var venta = await Venta.updateOne({_id:id},{
             tracking: data.tracking,
-            estado: 'Enviado'
+            estado: 'Enviado',
+            f_estado: new Date()
         });
 
         mail_confirmar_envio(id);
@@ -778,7 +778,9 @@ const confirmar_pago_orden = async function(req,res){
         if(er==-1){
             //no hay error, grabar
             var venta = await Venta.updateOne({_id:id},{
-                estado: 'Procesando'
+                estado: 'Procesando',
+                f_estado: new Date(),
+                admin: req.user.sub
             });
             for(var element of detalles){
                 let element_producto = await Producto.findById({_id:element.producto});
@@ -831,7 +833,7 @@ const mail_confirmar_envio = async function(venta){
             host: 'smtp.gmail.com',
             auth: {
                 user: 'saamare99@gmail.com',
-                pass: 'qthkgzvelkwagtig'
+                pass: 'uuiquooktlgulurn'
             }
         }));
     
@@ -873,7 +875,8 @@ const registro_compra_manual_cliente = async function(req,res){
         var detalles = data.detalles;
 
         data.estado = 'Procesando';
-        
+        data.f_estado= new Date();
+        data.admin = req.user.sub;
         console.log(data);
 
         let venta = await Venta.create(data);
@@ -927,7 +930,7 @@ const enviar_orden_compra = async function(venta){
             host: 'smtp.gmail.com',
             auth: {
                 user: 'saamare99@gmail.com',
-                pass: 'qthkgzvelkwagtig'
+                pass: 'uuiquooktlgulurn'
             }
         }));
     
@@ -988,6 +991,245 @@ const  cerrar_mensaje_contacto  = async function(req,res){
     }
 
 }
+const registro_admin = async function(req,res){
+    if(req.user){
+        try {
+            var data = req.body;
+            var admin_arr = [];
+            admin_arr = await Admin.find({email:data.email});
+
+            var admin_arr2=[];
+            admin_arr2= await Admin.find({dni:data.dni});
+            
+            var admin_arr3=[];
+            admin_arr3= await Admin.find({rol:'direc'});
+           
+            if(admin_arr.length == 0 && admin_arr2.length==0){
+                if((admin_arr3.length!=0 && data.rol!='direc')||(admin_arr3.length==0)){
+                    try {
+                        bcrypt.hash(data.password,null,null, async function(err,hash){
+                            if(hash){
+                                
+                                data.password = hash;
+                                data.estado = 'habilitado';
+                                var reg = await Admin.create(data);
+                                  res.status(200).send({message:'Registrado con exito'});
+                            }else{
+                                res.status(200).send({message:'ErrorServer'});
+                            }
+                        });
+                    } catch (error) {
+                        res.status(200).send({message:'Algo salió mal'});
+                    }
+                }else{
+                    res.status(200).send({message:'Ya hay una cuenta con el rol de Director'});
+                }
+            }else{
+                if(admin_arr[0].estado=='Fuera'){
+                    try {
+                        bcrypt.hash(data.password,null,null, async function(err,hash){
+                            if(hash){
+                                
+                                data.password = hash;
+                                data.estado = 'habilitado';
+                                var reg = await Admin.updateOne({email:data.email},{
+                                    nombres: data.nombres,
+                                    apellidos: data.apellidos,
+                                    password: data.password,
+                                    rol: 'secrt',
+                                    dni:data.dni,
+                                    telefono: data.telefono,
+                                    estado:data.estado
+                                });
+
+                                  res.status(200).send({message:'Registrado con exito'});
+                            }else{
+                                res.status(200).send({message:'ErrorServer'});
+                            }
+                        });
+                    } catch (error) {
+                        res.status(200).send({message:'Algo salió mal'});
+                    }
+                }else{
+                res.status(200).send({message:'El correo y/o la cedula ya existe en la base de datos'});}
+            }
+
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal'});
+        }            
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+const obtener_admin = async function(req,res){
+    if(req.user){
+        var id = req.params['id'];
+        try {
+            let estudiante = await Admin.findById({_id:id});
+        
+            res.status(200).send({data:estudiante});
+            
+        } catch (error) {
+            res.status(200).send({data:undefined});
+        }
+    }else{
+
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+const actualizar_admin = async function(req,res){
+    if(req.user){
+        try {
+            
+            var id = req.params['id'];
+            var data = req.body;
+            let admin = await Admin.findById(id);
+            ////console.log(admin);
+            ////console.log('Data:',data);
+            var admin_arr = [];
+            var aux= await Admin.find();
+            aux=aux.filter((item)=>item.dni==data.dni);
+            aux=aux.filter((item)=>item._id!=id);
+            admin_arr = await Admin.find({email:data.email});
+            ////console.log('1:',admin_arr);
+            admin_arr=admin_arr.filter((item)=>item._id!=id);
+            ////console.log('2:',admin_arr);
+            if(admin_arr.length==1 || aux.length>=1){
+                res.status(200).send({message:'Correo o cedula ya existente',data:undefined});
+            }else{
+                
+                if(data.password!=''){
+                    bcrypt.hash(data.password,null,null, async function(err,hash){
+                        if(hash){
+                            data.password = hash;
+                            ////console.log(data.password);
+                            var admin_arr3=[];
+                            admin_arr3= await Admin.find({rol:'direc',_id:{$ne:id}});
+                            if((admin_arr3.length!=0 && data.rol!='direc')||(admin_arr3.length==0)){
+                                await Admin.updateOne({_id:id},{
+                                    estado:data.estado,
+                                    nombres:data.nombres,
+                                    apellidos:data.apellidos,
+                                    email:data.email,
+                                    password:data.password,
+                                    telefono:data.telefono,
+                                    rol:data.rol,
+                                    dni:data.dni,
+                                   
+                                });
+
+                                res.status(200).send({message:'Actualizado con exito'});
+                            }else{
+                                await Admin.updateOne({_id:id},{
+                                    estado:data.estado,
+                                    nombres:data.nombres,
+                                    apellidos:data.apellidos,
+                                    email:data.email,
+                                    password:data.password,
+                                    telefono:data.telefono,
+                                    rol:'secrt',
+                                    dni:data.dni,
+                                   
+                                });
+                                res.status(200).send({message:'Actualizado con exito se cambio el rol a Colecturía'});
+                            }
+                           
+                        }else{
+                            res.status(200).send({message:'ErrorServer',data:undefined});
+                        } 
+                    });
+                }else{
+                    var admin_arr3=[];
+                            admin_arr3= await Admin.find({rol:'direc',_id:{$ne:id}});
+                            if((admin_arr3.length!=0 && data.rol!='direc')||(admin_arr3.length==0)){
+                                await Admin.updateOne({_id:id},{
+                                    estado:data.estado,
+                                    nombres:data.nombres,
+                                    apellidos:data.apellidos,
+                                    email:data.email,
+                                    
+                                    telefono:data.telefono,
+                                    rol:data.rol,
+                                    dni:data.dni,
+                                   
+                                });
+                                res.status(200).send({message:'Actualizado con exito'});
+                            }else{
+                                await Admin.updateOne({_id:id},{
+                                    estado:data.estado,
+                                    nombres:data.nombres,
+                                    apellidos:data.apellidos,
+                                    email:data.email,
+                                    password:data.password,
+                                    telefono:data.telefono,
+                                    rol:'secrt',
+                                    dni:data.dni,
+                                   
+                                });
+                                res.status(200).send({message:'Actualizado con exito se cambio el rol a Colecturía'});
+                            }
+                }
+            }
+               
+        }
+        catch (error) {
+            ////console.log(error);
+            res.status(200).send({message:error+'Algo salió mal',data:undefined});
+        }            
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+const eliminar_admin = async function(req,res){
+    if(req.user){
+        var id = req.params['id'];
+        var data = await Admin.findById(id);
+        await Admin.updateOne({_id:id},{
+            rol:'secrt',
+            estado:'Fuera',
+        });    
+        res.status(200).send({message:'Eliminado con exito'});
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+const listar_admin = async function(req,res){
+    if(req.user){
+        try {
+           
+            var admin_arr = [];
+            admin_arr = await Admin.find({});
+        
+            res.status(200).send({data:admin_arr});
+
+        } catch (error) {
+            res.status(200).send({message:'Algo salió mal',data:undefined});
+        }            
+    }else{
+        res.status(500).send({message: 'NoAccess'});
+    }
+}
+const recuperar_pass =async function(req,res){
+    let mail = req.body;
+    if(mail=undefined){
+        res.status(200).send({message:'Es necesario un correo'});
+    }else{
+        let mens='Check your email for a link to reset your password';
+        try {
+            var reg= await Admin.findOne({email:mail});
+            if(reg.length==1){
+                res.status(200).send({
+                    data:user,
+                    token: jwt.createToken(user)
+                });
+            }
+        } catch (error) {
+            res.status(200).send({message:mens});
+        }
+    }
+}
+
+
 
 module.exports = {
     login_admin,
@@ -1026,5 +1268,11 @@ module.exports = {
     listar_variedades_productos_admin,
     listar_mensaje_contacto,
     cerrar_mensaje_contacto,
-    listar_inventario_admin
+    listar_inventario_admin,
+    registro_admin,
+    obtener_admin,
+    actualizar_admin,
+    eliminar_admin,
+    listar_admin,
+    recuperar_pass
 }

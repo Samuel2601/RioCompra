@@ -17,7 +17,7 @@
                     </h6>
 
                     <!-- Title -->
-                    <h1 class="header-title">
+                    <h1 class="header-title" *ngIf="datos_cliente!=[]">
                         Cliente: {{datos_cliente[0].nombres}} {{datos_cliente[0].apellidos}} <a class="btn btn-warning btn-shadow mr-3" style="float: right;" [routerLink]="['/clientes']" routerLinkActive="router-link-active" >Regresar</a>
               
                     </h1>

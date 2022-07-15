@@ -49,7 +49,7 @@
 
                       <div class="form-group row align-items-center">
                         <label class="col-md-3 col-form-label font-weight-medium" for="text-input">Variedades</label>
-                        <div class="col-md-9">
+                        <div class="col-md-9" *ngIf="rol=='admin'">
                           <div class="input-group">
                               <input class="form-control" type="text" placeholder="Nueva variedad" name="nueva_variedad" [(ngModel)]="nueva_variedad">
                               <div class="input-group-append">
@@ -93,7 +93,7 @@
                                   <tr>
                                     <td>{{item.valor}}</td>
                                     <td>{{item.stock}}</td>
-                                    <td><a style="cursor: pointer;" class="text-danger" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#delete-'+item._id">[Eliminar]</a></td>
+                                    <td > <a *ngIf="rol!='admin'" style="cursor: pointer;" class="text-danger" style="cursor: pointer;">[Sin permiso]</a><a *ngIf="rol=='admin'" style="cursor: pointer;" class="text-danger" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#delete-'+item._id">[Eliminar]</a></td>
 
                                     <div class="modal fade" id="delete-{{item._id}}" tabindex="-1" style="display: none;" aria-hidden="true">
                                       <div class="modal-dialog modal-dialog-centered" role="document">

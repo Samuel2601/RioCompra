@@ -27,6 +27,12 @@
 
           <!-- Menu -->
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="sidebarIcon">
+            <a class="dropdown-item" >
+              <span class=""></span> {{nombres}}
+            </a>
+            <a class="dropdown-item" style="cursor:pointer" [routerLink]="['/administrativo/edit',id]">
+              <span class=""></span> Perfil
+            </a>
             <a class="dropdown-item" style="cursor:pointer" (click)="logout()">
               <span class="fe fe-log-out me-4"></span> Cerrar sesión
             </a>
@@ -59,12 +65,17 @@
               <i class="fe fe-user"></i> Clientes
             </a>
           </li>
-        
-          <li class="nav-item d-md-none">
+          <li class="nav-item" *ngIf="rol=='admin'">
+            <a class="nav-link "  [routerLink]="['/administrativo']" routerLinkActive="active" >
+              <i class="fe fe-briefcase"></i> Administrativo
+            </a>
+          </li>
+          <!--<li class="nav-item d-md-none">
             <a class="nav-link" href="#sidebarModalActivity" data-toggle="modal">
               <span class="fe fe-bell"></span> Notifications
             </a>
-          </li>
+          </li>-->
+
         </ul>
 
         <!-- Divider -->
@@ -83,7 +94,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " [routerLink]="['/cupones']" routerLinkActive="active" >
+            <a class="nav-link "  *ngIf="rol=='admin'" [routerLink]="['/cupones']" routerLinkActive="active" >
               <i class="fe fe-tag"></i> Cupones
             </a>
           </li>
@@ -93,12 +104,12 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " [routerLink]="['/dashboard']" routerLinkActive="active" >
+            <a class="nav-link " *ngIf="rol=='admin'"  [routerLink]="['/dashboard']" routerLinkActive="active" >
               <i class="fe fe-book"></i> Panel de Reportes
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link " [routerLink]="['/configuraciones']" routerLinkActive="active" >
+            <a class="nav-link " *ngIf="rol=='admin'"  [routerLink]="['/configuraciones']" routerLinkActive="active" >
               <i class="fe fe-settings"></i> Configuraciones
             </a>
           </li>

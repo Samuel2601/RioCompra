@@ -429,11 +429,19 @@ export class CheckoutComponent implements OnInit {
         this.envio = 35;
       }
     }else if(this.direccion_envio.pais == 'Ecuador'){
-      if(this.direccion_envio.region == 'Lima'){
-        this.envio = 10;
-      }else if(this.direccion_envio.region != 'Lima'){
+      console.log(this.direccion_envio);
+      if(this.direccion.region != 'Galapagos'){
+        if(this.direccion_envio.region == 'Riobamba'){
+          this.envio = 5;
+        }else if(this.direccion_envio.region != 'Riobamba'){
+          this.envio = 12;
+        }
+        //this.envio = 12;
+      }else if(this.direccion.region == 'Galapagos'){
+        //this.precio_envio_soles = 15;
         this.envio = 15;
       }
+      
     }
 
     if(this.currency == 'PEN'){

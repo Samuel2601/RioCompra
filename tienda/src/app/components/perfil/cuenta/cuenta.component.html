@@ -24,13 +24,13 @@
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Nombres <sup>*<sup></sup></sup></label>
-                      <input type="text" required class="form-control form-control-lg" name="nombres" [(ngModel)]="cliente.nombres" placeholder="Nombres completos">
+                      <input type="text" required="" class="form-control form-control-lg" name="nombres" pattern="^[A-ZÁÉÍÓÚ ]+$" [(ngModel)]="cliente.nombres" placeholder="Nombres completos">
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Apellidos <sup>*<sup></sup></sup></label>
-                      <input type="text" required class="form-control form-control-lg" name="apellidos" [(ngModel)]="cliente.apellidos" placeholder="Apellidos completos">
+                      <input type="text" required="" class="form-control form-control-lg" name="apellidos" pattern="^[A-ZÁÉÍÓÚ ]+$" [(ngModel)]="cliente.apellidos" placeholder="Apellidos completos">
                     </div>
                   </div>
                   <div class="col-sm-12">
@@ -42,25 +42,25 @@
                   <div class="col-sm-12">
                     <div class="form-group">
                       <label>Nueva contraseña</label>
-                      <input type="password" autocomplete="new-password" class="form-control form-control-lg" placeholder="Nueva contraseña" id="input_password">
+                      <input type="password" autocomplete="new-password" class="form-control form-control-lg" maxlength="50" minlength="8" placeholder="Nueva contraseña" id="input_password">
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Telefono <sup>*<sup></sup></sup></label>
-                      <input type="number" required class="form-control form-control-lg" placeholder="Telefono" name="telefono" [(ngModel)]="cliente.telefono">
+                      <input type="tel" required="" class="form-control form-control-lg" placeholder="Telefono" pattern="^[0-9]+$" maxlength="10" minlength="8" name="telefono" [(ngModel)]="cliente.telefono">
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>Fecha nacimiento <sup>*<sup></sup></sup></label>
-                      <input type="date" required class="form-control form-control-lg" name="f_nacimiento" [(ngModel)]="cliente.f_nacimiento">
+                      <input type="date" required="" class="form-control form-control-lg" name="f_nacimiento" [(ngModel)]="cliente.f_nacimiento">
                     </div>
                   </div>
                   <div class="col-sm-6">
                     <div class="form-group">
                       <label>DNI <sup>*<sup></sup></sup></label>
-                      <input type="text" required class="form-control form-control-lg" placeholder="12345678" name="dni" [(ngModel)]="cliente.dni">
+                      <input type="text" required="" class="form-control form-control-lg" placeholder="1234567890" pattern="^[0-9]+$" maxlength="10" minlength="10" name="dni" [(ngModel)]="cliente.dni">
                     </div>
                   </div>
                   

@@ -15,7 +15,8 @@ export class ConfigComponent implements OnInit {
   public load_btn = false;
   public token = localStorage.getItem('token');
   public load_data = true;
-
+  public rol:any;
+  public yo:any;
   constructor(
     private _adminService:AdminService,
   
@@ -27,13 +28,24 @@ export class ConfigComponent implements OnInit {
   }
 
   init_data(){
-    this.load_data = true;
-    this._adminService.obtener_config_admin().subscribe(
-      response=>{
-        this.config = response.data;
-        this.load_data = false;
-      }
-    );
+    let aux = localStorage.getItem("identity");
+		this._adminService.obtener_admin(aux, this.token).subscribe((response) => {
+			this.rol = response.data.rol;
+			if (this.rol == "admin") {
+				if (response.data.email == "samuel.arevalo@espoch.edu.ec") {
+          this.yo = 1;
+        }
+        this.load_data = true;
+        this._adminService.obtener_config_admin().subscribe(
+          response=>{
+            this.config = response.data;
+            this.load_data = false;
+          }
+        );
+			}
+			
+		});
+
   }
 
   actualizar(actualizarForm:any){

@@ -53,7 +53,7 @@
                         </div>
                         <div class="col">
                             <button class="btn btn-primary mr-3" data-toggle="modal" [attr.data-target]="'#modalCentered'">Nueva etiqueta</button>
-                            <a class="btn btn-primary" [routerLink]="['/productos/create']" routerLinkActive="router-link-active"  style="cursor: pointer;">Nuevo producto</a>
+                            <a *ngIf="rol=='admin'" class="btn btn-primary" [routerLink]="['/productos/create']" routerLinkActive="router-link-active"  style="cursor: pointer;">Nuevo producto</a>
                             <div id="modalCentered" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" style="display: none;" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-centered" role="document" style="max-width: 600px;">
                                   <div class="modal-content">
@@ -64,7 +64,7 @@
                                       </button>
                                     </div>
                                     <div class="modal-body" >
-                                      <div class="input-group mb-3">
+                                      <div class="input-group mb-3" *ngIf="rol=='admin'">
                                         <input type="text" class="form-control" placeholder="Nueva etiqueta" name="nueva_etiqueta" [(ngModel)]="nueva_etiqueta">
                                         <button *ngIf="!load_btn_etiqueta" class="btn btn-primary" style="border-radius: 0px;" (click)="agregar_etiqueta()">Agregar</button>
                                         <button type="button" class="btn btn-primary"  *ngIf="load_btn_etiqueta">
@@ -91,8 +91,9 @@
                                             <td>{{item.titulo}}</td>
                         
                                             <td>
-                                              <a *ngIf="item._id != '61a390d39b40d02e0cb9d789'" style="cursor: pointer;" class="text-danger" (click)="eliminar_etiqueta(item._id)">[Eliminar]</a>
+                                              <a *ngIf="item._id != '61a390d39b40d02e0cb9d789' && rol=='admin'" style="cursor: pointer;" class="text-danger" (click)="eliminar_etiqueta(item._id)">[Eliminar]</a>
                                               <a *ngIf="item._id == '61a390d39b40d02e0cb9d789'" style="cursor: pointer;" class="text-danger">[No eliminable]</a>
+                                              <a *ngIf="item._id != '61a390d39b40d02e0cb9d789' && rol!='admin'" style="cursor: pointer;" class="text-danger">[No eliminable]</a>
                                             </td>
                                           </tr>
                                         </tbody>
@@ -133,7 +134,7 @@
                           <div class="ms-3">
 
                             <!-- Heading -->
-                            <h4 class="fw-normal mb-1">{{item.titulo}}</h4>
+                            <h4 class="fw-normal mb-1" >{{item.titulo}}</h4>
 
                             <!-- Text -->
                             <span class="badge badge-success" *ngIf="item.estado == 'Publicado'">{{item.estado}}</span>
@@ -162,12 +163,13 @@
                         
                           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonAlias">
                             <li>
-                              <a class="dropdown-item" [routerLink]="['/productos/edit',item._id]">Editar</a>
+                              <a class="dropdown-item" *ngIf="rol=='admin'" [routerLink]="['/productos/edit',item._id]">Editar</a>
+                              <a class="dropdown-item" *ngIf="rol!='admin'" [routerLink]="['/productos/edit',item._id]">Ver</a>
                               <a class="dropdown-item" [routerLink]="['/productos/variedades',item._id]">Variedades</a>
                               <a class="dropdown-item" [routerLink]="['/productos/inventario',item._id]">Inventario</a>
                               <a class="dropdown-item" [routerLink]="['/productos/galeria',item._id]">Galería</a>
-                              <a *ngIf="item.estado == 'Edicion'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Mostrar producto</a>
-                              <a *ngIf="item.estado == 'Publicado'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Ocultar producto</a>
+                              <a *ngIf="item.estado == 'Edicion' && rol=='admin'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Mostrar producto</a>
+                              <a *ngIf="item.estado == 'Publicado' && rol=='admin'" class="dropdown-item" style="cursor: pointer;" data-toggle="modal" [attr.data-target]="'#vs-'+item._id">Ocultar producto</a>
                             
                             </li>
                             

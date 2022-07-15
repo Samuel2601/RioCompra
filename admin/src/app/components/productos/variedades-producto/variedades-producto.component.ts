@@ -23,7 +23,9 @@ export class VariedadesProductoComponent implements OnInit {
   public load_agregar = false;
   public load_del = false;
   public url = '';
-
+  public rol: any;
+  public idp: any;
+  public yo: number=0;
   constructor(
     private _route:ActivatedRoute,
     private _adminService : AdminService
@@ -34,6 +36,14 @@ export class VariedadesProductoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let aux = localStorage.getItem("identity");
+    this._adminService.obtener_admin(aux, this.token).subscribe((response) => {
+      this.rol = response.data.rol;
+      this.idp = response.data._id;
+      if (response.data.email == "samuel.arevalo@espoch.edu.ec") {
+        this.yo = 1;
+      }
+    });
     this._route.params.subscribe(
       params=>{
         this.id = params['id'];

@@ -26,7 +26,9 @@ export class IndexProductoComponent implements OnInit {
   public load_del_etiqueta = false;
   public load_btn = false;
   public load = false;
-
+  public rol: any;
+  public idp: any;
+  public yo: number=0;
   public load_estado = false;
   public url = GLOBAL.url;
 
@@ -37,18 +39,16 @@ export class IndexProductoComponent implements OnInit {
 
   ngOnInit(): void {
     this.listar_etiquetas();
+    let aux = localStorage.getItem("identity");
+        this._adminService.obtener_admin(aux, this.token).subscribe((response) => {
+          this.rol = response.data.rol;
+          this.idp = response.data._id;
+          if (response.data.email == "samuel.arevalo@espoch.edu.ec") {
+            this.yo = 1;
+          }
+        });
     this.init_data();
-    this._route.params.subscribe(
-      params=>{
-        this.id = params['id'];
-        if(this.id!=''&&this.id!='create'&&this.id!='edit'){
-          this.filtro=this.id;
-          //this.filtrar_producto();
-        }
-      }
-    );
-    this.filtrar_producto();
-   
+    
   }
 
   init_data(){

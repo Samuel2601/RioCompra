@@ -2,7 +2,7 @@
 
 var jwt = require('jwt-simple');
 var moment = require('moment');
-var secret = 'pragol2021Monithor';
+var secret = 'Riocompras2022';
 
 exports.auth = function(req,res,next){
 

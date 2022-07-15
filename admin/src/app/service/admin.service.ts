@@ -21,6 +21,43 @@ export class AdminService {
     let headers = new HttpHeaders().set('Content-Type','application/json');
     return this._http.post(this.url + 'login_admin',data,{headers:headers});
   }
+  registro_admin(data: any, token: any): Observable<any> {
+		let headers = new HttpHeaders({
+			"Content-Type": "application/json",
+			Authorization: token
+		});
+		return this._http.post(this.url + "registro_admin", data, { headers: headers });
+	}
+  obtener_admin(id: any, token: any): Observable<any> {
+		let headers = new HttpHeaders({
+			"Content-Type": "application/json",
+			Authorization: token
+		});
+		return this._http.get(this.url + "obtener_admin/" + id, { headers: headers });
+	}
+  actualizar_admin(id: any, data: any, token: any): Observable<any> {
+		let headers = new HttpHeaders({
+			"Content-Type": "application/json",
+			Authorization: token
+		});
+		return this._http.put(this.url + "actualizar_admin/" + id, data, {
+			headers: headers
+		});
+	}
+	eliminar_admin(id: any, token: any): Observable<any> {
+		let headers = new HttpHeaders({
+			"Content-Type": "application/json",
+			Authorization: token
+		});
+		return this._http.get(this.url + "eliminar_admin/" + id, { headers: headers });
+	}
+  listar_admin(token: any): Observable<any> {
+		let headers = new HttpHeaders({
+			"Content-Type": "application/json",
+			Authorization: token
+		});
+		return this._http.get(this.url + "listar_admin", { headers: headers });
+	}
 
   listar_clientes_tienda(token:any):Observable<any>{
     let headers = new HttpHeaders({'Content-Type':'application/json','Authorization':token});

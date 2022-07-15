@@ -36,7 +36,7 @@
 
                 <!-- Title -->
                 <h4 class="card-header-title">
-                  Mostrando todos tus ventas {{ventas.length}}
+                  Mostrando todos tus ventas <ng-container *ngIf="yo==1 || rol=='admin'">: {{ventas.length}}</ng-container> 
                 </h4>
 
               </div>
@@ -91,6 +91,13 @@
                   </thead>
                   <tbody class="font-size-base" *ngIf="!load">
                     <tr *ngFor="let item of ventas | slice: (page-1) * pageSize : (page-1) * pageSize + pageSize">
+                      <ng-container *ngIf="idp!=undefined && rol!=undefined && 
+                                            yo!=1 &&
+                                            rol!='admin' &&
+                                            (item.admin==undefined ||
+                                            (item.admin!=undefined &&
+                                            item.admin._id==idp))">
+                        
                       <td>
                         <a class="text-primary">{{item.cliente.nombres}} {{item.cliente.apellidos}}</a><br>
                         <small class="text-muted"> {{item._id}} </small>
@@ -103,6 +110,7 @@
                         {{item.metodo_pago}}
                       </td>
                       <td>
+                        {{item.createdAt|date:'short'}}<br>
                         <span class="badge badge-warning" *ngIf="item.estado == 'En espera'">{{item.estado}}</span>
                         <span class="badge badge-success" *ngIf="item.estado == 'Procesando'">{{item.estado}}</span>
                         <span class="badge badge-info" *ngIf="item.estado == 'Enviado'">{{item.estado}}</span>
@@ -157,6 +165,80 @@
 
                       
                       </td>
+                      
+                    </ng-container>
+                    <ng-container *ngIf="rol!=undefined&& (yo==1||rol=='admin')">
+                        
+                      <td>
+                        <a class="text-primary">{{item.cliente.nombres}} {{item.cliente.apellidos}}</a><br>
+                        <small class="text-muted"> {{item._id}} </small>
+                      </td>
+                      <td>
+                        <!--<span *ngIf="item.currency == 'PEN'">{{item.total_pagar|currency:'PEN'}}</span>-->
+                        <span *ngIf="item.currency == 'USD'">{{item.total_pagar|currency:'USD'}}</span>
+                      </td>
+                      <td>
+                        {{item.metodo_pago}}
+                      </td>
+                      <td>
+                        {{item.f_estado|date:'short'}}<br>
+                        <span class="badge badge-warning" *ngIf="item.estado == 'En espera'">{{item.estado}}</span>
+                        <span class="badge badge-success" *ngIf="item.estado == 'Procesando'">{{item.estado}}</span>
+                        <span class="badge badge-info" *ngIf="item.estado == 'Enviado'">{{item.estado}}</span>
+                        <span class="badge badge-danger" *ngIf="item.estado == 'Finalizado'">{{item.estado}}</span>
+                      </td>
+                      <td>
+                        <div class="dropdown">
+
+                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButtonAlias" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              Opciones
+                            </button>
+                          
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButtonAlias">
+                              <li>
+                                <a class="dropdown-item" [routerLink]="['/ventas/',item._id]">Detalles</a>
+                              </li>
+                              
+                            </ul>
+                            
+                        </div>
+
+                        <div class="modal fade" id="delete-{{item._id}}" tabindex="-1" role="dialog" style="display: none;" aria-hidden="true">
+                          <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-card card" data-list="{&quot;valueNames&quot;: [&quot;name&quot;]}">
+                                <div class="card-header">
+                    
+                                  <!-- Title -->
+                                  <h4 class="card-header-title" id="exampleModalCenterTitle">
+                                    Confirmación de eliminación
+                                  </h4>
+                    
+                                  <!-- Close -->
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                  </button>
+                    
+                                </div>
+                             
+                                <div class="card-body">
+                                  <p>Desea eliminar el cupón?</p>
+                    
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                                  <button type="button" class="btn btn-danger" (click)="eliminar(item._id)">Eliminar</button>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+
+                      
+                      </td>
+                      
+                    </ng-container>
+
                     </tr>
                    
                   </tbody>

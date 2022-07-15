@@ -34,8 +34,13 @@
   
           <!-- Menu -->
           <div class="dropdown-menu dropdown-menu-right">
-      
-            <a class="dropdown-item" style="cursor:pointer" (click)="logout()">
+            <a class="dropdown-item" style="text-align: right;">
+              <span class=""></span> {{nombres}}
+            </a>
+            <a class="dropdown-item" style="cursor:pointer; text-align: right;" [routerLink]="['/administrativo/edit',id]">
+              <span class=""></span> Perfil
+            </a>
+            <a class="dropdown-item" style="cursor:pointer ;text-align: right;" (click)="logout()">
               <span class="fe fe-log-out me-4"></span> Cerrar sesión
             </a>
           </div>

@@ -17,14 +17,18 @@ export class IndexVentasComponent implements OnInit {
   public desde :any = undefined;
   public hasta :any = undefined;
   public load = false;
-
+  public encargado:any;
   public datosventa = {};
   public anio:Array<any>=[];
+  public rol: any;
+  public idp: any;
+  public yo: number=0;
   constructor(
     private _adminService:AdminService
   ) { }
 
   ngOnInit(): void { 
+    this.yo = 0;
     this.load = true;
     this._adminService.obtener_ventas_admin(this.token).subscribe(
       response=>{
@@ -34,6 +38,14 @@ export class IndexVentasComponent implements OnInit {
        
 
         this.const_ventas = this.ventas;
+        let aux = localStorage.getItem("identity");
+        this._adminService.obtener_admin(aux, this.token).subscribe((response) => {
+          this.rol = response.data.rol;
+          this.idp = response.data._id;
+          if (response.data.email == "samuel.arevalo@espoch.edu.ec") {
+            this.yo = 1;
+          }
+        });
         this.load = false;
         
 

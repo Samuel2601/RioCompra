@@ -1,5 +1,5 @@
 <app-sidebar></app-sidebar>
-
+<ng-container  *ngIf=" rol!=undefined && rol=='admin'">
 <div class="main-content">
     <div class="container-fluid">
         <div class="row justify-content-center">
@@ -281,7 +281,7 @@
         
                         <!-- Title -->
                         <h4 class="card-header-title">
-                          Lista de Productos 
+                          Lista de Productos: {{productos.length}} ({{filtro_p}})
                         </h4>
                         <div class="col-6">
                          
@@ -294,8 +294,8 @@
                             </div>
                           </div>
                         </div>
-                        <button id="mcerrado" class="btn btn-success" *ngIf="filtro_p=='Edicion'" (click)="filtro_producto()"> Publicados</button>
-                        <button id="mabierto" class="btn btn-danger" *ngIf="filtro_p=='Publicado'" (click)="filtro_producto()"> Edición</button>
+                        <button id="mcerrado" class="btn btn-success" *ngIf="filtro_p=='Edicion'" (click)="filtro_producto()"> ⥄ Publicados</button>
+                        <button id="mabierto" class="btn btn-danger" *ngIf="filtro_p=='Publicado'" (click)="filtro_producto()"> Edición ⥂</button>
                       </div>
                     <div class="table-responsive table-hover">
                         <table class="table table-sm table-nowrap card-table">
@@ -390,8 +390,8 @@
                 <button id="mcerrado" class="btn btn-danger" (click)="cerrado()"> Cerrados</button>
                 <button id="mabierto" class="btn btn-success" (click)="abierto()"> Abiertos</button>
               </div>
-            <div class="table-responsive table-hover">
-                <table class="table table-sm  card-table">
+            <div class="table-responsive table-hover" style="min-height: 200px">
+                <table class="table table-sm table-nowrap card-table">
                   <thead>
                     <tr>
                       <th>Asunto</th>
@@ -419,7 +419,7 @@
                       <td>
                         {{item.createdAt |date:'longDate' }}
                       </td>
-                      <td style="max-width:200px; text-align: justify;" >
+                      <td style="max-width:50px; text-align: justify;" >
                         {{item.mensaje}}
                      
                       </td>
@@ -472,4 +472,39 @@
       </div>
       
 </div>
+</ng-container>
+<ng-container  *ngIf=" rol!=undefined && rol!='admin'">
+  <div class="card">
+    <div class="card-body">
+      <div class="row justify-content-center">
+        <div class="col-12 col-md-5 col-xl-4 my-5">
+          
+          <div class="text-center">
+          
+            <!-- Preheading -->
+            <h6 class="text-uppercase text-muted mb-4">
+              404 error
+            </h6>
 
+            <!-- Heading -->
+            <h1 class="display-4 mb-3">
+              Está página no se cuentra habilitada 😭
+            </h1>
+
+            <!-- Subheading -->
+            <p class="text-muted mb-4">
+              ¿Parece que llegaste aquí por accidente?
+            </p>
+
+            <!-- Button -->
+            <a [routerLink]="['/clientes']"  class="btn btn-lg btn-primary">
+              Regresar a Clientes
+            </a>
+          
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-container>

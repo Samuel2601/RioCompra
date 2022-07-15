@@ -48,7 +48,7 @@ export class DpedidosComponent implements OnInit {
         
         if(response.data != undefined){
           this.orden = response.data;
-     
+          console.log(this.orden);
           response.detalles.forEach((element:any) => {
               this._guestService.obtener_review_producto_cliente(element.producto._id).subscribe(
                 response=>{

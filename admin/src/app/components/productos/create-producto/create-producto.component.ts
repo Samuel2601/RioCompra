@@ -27,7 +27,9 @@ export class CreateProductoComponent implements OnInit {
   public new_etiqueta = '';
   public load_data_etiqueta = false;
   public etiquetas : Array<any> = [];
-
+  public rol: any;
+  public idp: any;
+  public yo: number=0;
   constructor(
     private _adminService:AdminService,
     private _router:Router
@@ -38,6 +40,14 @@ export class CreateProductoComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let aux = localStorage.getItem("identity");
+    this._adminService.obtener_admin(aux, this.token).subscribe((response) => {
+      this.rol = response.data.rol;
+      this.idp = response.data._id;
+      if (response.data.email == "samuel.arevalo@espoch.edu.ec") {
+        this.yo = 1;
+      }
+    });
     this._adminService.get_categorias().subscribe(
       response=>{
         this.categorias = response;

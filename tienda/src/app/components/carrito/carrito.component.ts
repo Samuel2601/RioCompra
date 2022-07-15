@@ -233,7 +233,7 @@ export class CarritoComponent implements OnInit {
     
     if(this.direccion.region >= 1 && this.direccion.region < 4){
       //this.precio_envio_soles = 10;
-      this.precio_envio_dolares = 10;
+      this.precio_envio_dolares = 12;
     }else if(this.direccion.region == 4){
       //this.precio_envio_soles = 15;
       this.precio_envio_dolares = 15;

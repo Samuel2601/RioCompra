@@ -174,8 +174,8 @@ export class IndexProductoComponent implements OnInit {
     let min =  parseInt($('.ps-slider__min').text());
     let max = parseInt($('.ps-slider__max').text());
     this.productos = this.productos_const.filter((item)=>{
-      return item.precio >= min &&
-              item.precio <= max
+      return item.precio_dolar >= min &&
+              item.precio_dolar <= max
     });
 
   }
@@ -203,10 +203,10 @@ export class IndexProductoComponent implements OnInit {
     }else if(this.sort_by == '+-Precio'){
       this.productos.sort(function (a, b) {
         
-        if (a.precio < b.precio) {
+        if (a.precio_dolar < b.precio_dolar) {
           return 1;
         }
-        if (a.precio > b.precio) {
+        if (a.precio_dolar > b.precio_dolar) {
           return -1;
         }
         // a must be equal to b
@@ -215,10 +215,10 @@ export class IndexProductoComponent implements OnInit {
     }else if(this.sort_by == '-+Precio'){
       this.productos.sort(function (a, b) {
         
-        if (a.precio > b.precio) {
+        if (a.precio_dolar > b.precio_dolar) {
           return 1;
         }
-        if (a.precio < b.precio) {
+        if (a.precio_dolar < b.precio_dolar) {
           return -1;
         }
         // a must be equal to b

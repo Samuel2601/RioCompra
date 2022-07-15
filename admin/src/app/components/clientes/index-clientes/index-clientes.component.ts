@@ -32,7 +32,14 @@ export class IndexClientesComponent implements OnInit {
   filtrar_cliente(){
     if(this.filtro){
       var term = new RegExp(this.filtro.toString().trim() , 'i');
-      this.clientes = this.clientes_const.filter(item=>term.test(item.nombres)||term.test(item.apellidos)||term.test(item.email)||term.test(item.dni)||term.test(item.telefono)||term.test(item._id));
+      this.clientes = this.clientes_const.filter(
+        item=>term.test(item.nombres)||
+        term.test(item.apellidos)||
+        term.test(item.nombres+' '+item.apellidos)||
+        term.test(item.email)||
+        term.test(item.dni)||
+        term.test(item.telefono)||
+        term.test(item._id));
     }else{
       this.clientes = this.clientes_const;
     }
